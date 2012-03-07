@@ -1,5 +1,14 @@
-execute "start-runsvdir" do
-  command "start runsvdir"
+# for Ubuntu
+# execute "start-runsvdir" do
+#   command "start runsvdir"
+#   action :nothing
+# end
+
+# for Debian squeeze
+
+execute "runit-hup-init" do
+  command "telinit q"
+  only_if "grep ^SV /etc/inittab"
   action :nothing
 end
 
