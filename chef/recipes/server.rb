@@ -42,7 +42,7 @@ directory "/etc/chef/certificates" do
 end
 
 runit_service "chef-solr"
-runit_service "chef-solr-indexer"
+runit_service "chef-expander"
 
 template "/etc/chef/server.rb" do
   owner "chef"
