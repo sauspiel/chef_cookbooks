@@ -1,4 +1,5 @@
 include_recipe "munin::client"
+require_recipe "nginx"
 
 munin_servers = search(:node, "munin:[* TO *]")
 
@@ -41,17 +42,13 @@ else
   end
 end
 
-apache_site "000-default" do
-  enable false
+template "#{node[:nginx][:dir]}/sites-available/munin.conf" do
+  source "nginx.conf.erb"
+  mode 0644
 end
 
-template "#{node[:apache][:dir]}/sites-available/munin.conf" do
-  source "apache2.conf.erb"
-  mode 0644
-  variables(:public_domain => public_domain, :docroot => node['munin']['docroot'])
-  if ::File.symlink?("#{node[:apache][:dir]}/sites-enabled/munin.conf")
-    notifies :reload, resources(:service => "apache2")
-  end
+nginx_site 'munin' do
+  action :enable
 end
 
 directory node['munin']['docroot'] do
@@ -59,5 +56,3 @@ directory node['munin']['docroot'] do
   group "munin"
   mode 0755
 end
-
-apache_site "munin.conf"

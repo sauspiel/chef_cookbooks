@@ -1,0 +1,14 @@
+server {
+  server_name <%= node['fqdn'] %>;
+  root /var/www/munin;
+
+  access_log /var/log/nginx/<%= node['fqdn'] %>.access.log;
+  error_log /var/log/nginx/<%= node['fqdn'] %>.error.log error;
+ 
+  auth_basic            "Restricted";
+  auth_basic_user_file  users.conf;
+
+  location / {
+   index index.html;
+  } 
+}
