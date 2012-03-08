@@ -27,21 +27,6 @@ template "#{node['munin']['basedir']}/munin.conf" do
   variables(:munin_nodes => munin_servers, :docroot => node['munin']['docroot'])
 end
 
-case node['munin']['server_auth_method']
-when "openid"
-  include_recipe "apache2::mod_auth_openid"
-else
-  template "#{node['munin']['basedir']}/htpasswd.users" do
-    source "htpasswd.users.erb"
-    owner "munin"
-    group node['apache']['group']
-    mode 0640
-    variables(
-      :sysadmins => sysadmins
-    )
-  end
-end
-
 template "#{node[:nginx][:dir]}/sites-available/munin.conf" do
   source "nginx.conf.erb"
   mode 0644
@@ -52,6 +37,7 @@ nginx_site 'munin' do
 end
 
 directory node['munin']['docroot'] do
+  recursive true
   owner "munin"
   group "munin"
   mode 0755
