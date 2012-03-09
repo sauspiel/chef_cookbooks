@@ -24,7 +24,7 @@ end
 template "#{node['munin']['basedir']}/munin.conf" do
   source "munin.conf.erb"
   mode 0644
-  variables(:munin_nodes => munin_servers, :docroot => node['munin']['docroot'])
+  variables(:munin_nodes => munin_servers, :docroot => node['munin']['docroot'], :contacts => node['munin']['contacts'])
 end
 
 template "#{node[:nginx][:dir]}/sites-available/munin.conf" do

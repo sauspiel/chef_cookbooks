@@ -1,4 +1,4 @@
-munin_servers = search(:node, "role:#{node['munin']['server_role']}")
+munin_servers = search(:node, "roles:#{node['munin']['server_role']}")
 
 package "munin-node"
 
