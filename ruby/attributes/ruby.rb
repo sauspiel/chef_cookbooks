@@ -5,5 +5,6 @@ default.ruby[:gc][:heap_slots_growth_factor] = 1
 default.ruby[:gc][:malloc_limit] = 50000000
 default.ruby[:gc][:heap_free_min] = 4096
 default.ruby[:gc][:enabled] = true
+default.ruby[:version] = "1.9.3-p125-perf"
 
 default.ruby[:bin_path] = ruby[:gc][:enabled] ? "#{ruby[:bin_dir]}/ruby_gc_wrapper" : "#{ruby[:bin_dir]}/ruby"

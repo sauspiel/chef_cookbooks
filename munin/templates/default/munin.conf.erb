@@ -6,13 +6,18 @@ htmldir <%= @docroot %>
 logdir  /var/log/munin
 rundir  /var/run/munin
 
+includedir /etc/munin/munin-conf.d
+
+<% @contacts.each do |name, value| %>
+contact.<%= value %>
+<% end %>
+
 # Where to look for the HTML templates
 tmpldir <%= node['munin']['tmpldir'] %>
 
 # a simple host tree
 <% @munin_nodes.each do |system| -%>
-[<%= system[:hostname] %>]
-    address <%= system[:ipaddress] %>
-    use_node_name yes
+[chef;<%= system[:fqdn] %>]
+  address <%= system[:network][:interfaces][node[:munin][:interface]][:addresses].keys[1] %>
 
 <% end -%>
