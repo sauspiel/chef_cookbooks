@@ -20,5 +20,5 @@ end
   
 package "runit" do
   action :install
-  notifies :run, resources(:execute => "start-runsvdir")
+  notifies :run, resources(:execute => "runit-hup-init")
 end
