@@ -1,6 +1,6 @@
 These Chef cookbooks assume the following:
 
-* Ubuntu 10.04 (Lucid)
+* Ubuntu 10.04 (Lucid) or Debian 6 Squeeze
 * Chef 0.10.x server and client
 * No site-specific data such as IP addresses, users, etc.
 * Usage as a submodule in another repository containing roles, data bags, etc.
