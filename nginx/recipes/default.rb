@@ -19,6 +19,14 @@ end
 
 directory "/etc/nginx/helpers"
 
+template "#{node[:nginx][:dir]}/nginx.conf" do
+  source "nginx.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :reload, resources(:service => "nginx")
+end
+
 # helpers to be included in your vhosts
 node[:nginx][:helpers].each do |h|
   template "/etc/nginx/helpers/#{h}.conf" do
