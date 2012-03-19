@@ -43,7 +43,7 @@ end
 
 execute "install-chef-solr" do
   command "chef-solr-installer"
-  not_if File.exists?("/var/chef/solr")
+  not_if { File.exists?("/var/chef/solr") }
 end
 
 runit_service "chef-solr"
