@@ -1,4 +1,5 @@
 package "libffi5"
+package "libyaml-0-2"
 
 tmp = node[:tmp] ? node[:tmp] : "/tmp"
 rubypkg = "ruby-#{node.ruby.version}.deb"
