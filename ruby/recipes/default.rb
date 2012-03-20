@@ -1,10 +1,16 @@
-remote_file "/tmp/#{node.ruby.version}.deb" do
-  source "#{node[:package_url]}/#{node.ruby.version}.deb"
-  not_if { File.exists?("/tmp/#{node.ruby.version}.deb") }
+package "libffi5"
+
+tmp = node[:tmp] ? node[:tmp] : "/tmp"
+rubypkg = "ruby-#{node.ruby.version}.deb"
+debpath = "#{tmp}/#{rubypkg}"
+
+remote_file "#{debpath}" do
+  source "#{node[:package_url]}/#{rubypkg}"
+  not_if { File.exists?("#{debpath}") }
 end
 
 dpkg_package "ruby" do
   version node.ruby.version
-  source "/tmp/#{node.ruby.version}.deb"
-  only_if { File.exists?("/tmp/#{node.ruby.version}.deb") }
+  source "#{debpath}"
+  only_if { File.exists?("#{debpath}") }
 end
