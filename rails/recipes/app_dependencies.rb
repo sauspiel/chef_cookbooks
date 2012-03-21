@@ -8,6 +8,12 @@ require_recipe "users"
   end
 end
 
+template "/etc/nginx/sites-include/common.conf" do
+  source "app_nginx_include.conf.erb"
+  variables :full_name => full_name, :conf => conf, :app_name => app_name
+  notifies :reload, resources(:service => "nginx")
+end
+
 if node[:active_applications]
   
   node[:active_applications].each do |name, conf|

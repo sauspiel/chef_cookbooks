@@ -1,12 +1,12 @@
 ENV['PATH'] = "#{ENV['PATH']}:/usr/local/bin"
 
-Bluepill.application("<%= @full_name %>") do |app|
+Bluepill.application("<%= @name %>") do |app|
   app.working_dir = "<%= @app_root %>/current"
   <% if @environment_vars %>
   app.environment = {<% @environment_vars.each do |k, v| %><%= "\"#{k}\" => \"#{v}\"" %><% end %>}
   <% end %>
-  app.process("<%= @full_name %>") do |process|
-    process.start_command = "/usr/bin/env RAILS_ENV=<%= @env %> /usr/local/bin/bundle exec unicorn <%= @app_root %>/current/config.ru -Dc <%=@node[:unicorn][:config_path] %>/<%= @full_name %> -E <%= @env %>"
+  app.process("<%= @name %>") do |process|
+    process.start_command = "/usr/bin/env RAILS_ENV=<%= @env %> /usr/local/bin/bundle exec unicorn <%= @app_root %>/current/config.ru -Dc <%=@node[:unicorn][:config_path] %>/<%= @name %> -E <%= @env %>"
     process.stop_command = "kill -QUIT {{PID}}"
     process.restart_command = "kill -<%= @preload ? 'USR2' : 'HUP' %> {{PID}}"
     process.stdout = process.stderr = "<%= @app_root %>/shared/log/unicorn.log"

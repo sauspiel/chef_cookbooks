@@ -6,6 +6,8 @@ require_recipe "users"
 require_recipe "bundler"
 
 if node[:active_applications]
+
+  @apps = search(:apps, "*:*")
   
   directory "/etc/nginx/sites-include" do
     mode 0755
@@ -13,52 +15,40 @@ if node[:active_applications]
   
   node[:active_applications].each do |name, conf|
   
-    app = search(:apps, "id:#{conf[:app_name] || name}").first
+    app = search(:apps, "id:#{name}").first
 
-    app_name = name
     app_root = "/u/apps/#{name}"
   
-    full_name = "#{app_name}_#{conf[:env]}"
-    filename = "#{filename}_#{conf[:env]}.conf"
-
-    domain = app[:environments][conf[:env]]["domain"]
-
-    ssl_name = domain =~ /\*\.(.+)/ ? "#{$1}_wildcard" : domain
+    domain = app["domain"]
     
-    ssl_certificate ssl_name
-
-    template "/etc/nginx/sites-include/#{full_name}" do
-      source "app_nginx_include.conf.erb"
-      variables :full_name => full_name, :conf => conf, :app_name => app_name
-      notifies :reload, resources(:service => "nginx")
-    end
-              
+    ssl_certificate domain
+    
+    other_apps = @apps.collect {|a| a['id']}.join("|")
+    
     template "/etc/nginx/sites-available/#{full_name}" do
-      source "app_nginx.conf.erb"
-      variables :full_name => full_name, :conf => conf, :app_name => app_name, 
-                :domain => domain, :ssl_name => ssl_name, :app => app
+      source "multiapp_nginx.conf.erb"
+      variables :app_name => name, :server_name => domain, :other_apps => other_apps
       notifies :reload, resources(:service => "nginx")
     end
 
     common_variables = {
       :preload => app[:preload] || true,
       :app_root => app_root,
-      :full_name => full_name,
-      :app_name => app_name,
-      :env => conf[:env],
+      :app_name => name,
+      :env => conf['env'],
       :user => "app",
       :group => "app",
       :listen_port => app[:listen_port] || 8600
     }
 
-    template "#{node[:unicorn][:config_path]}/#{full_name}" do
+    template "#{node[:unicorn][:config_path]}/#{name}" do
       mode 0644
       cookbook "unicorn"
       source "unicorn.conf.erb"
       variables common_variables
     end
 
-    template "#{node[:bluepill][:conf_dir]}/#{full_name}.pill" do
+    template "#{node[:bluepill][:conf_dir]}/#{name}.pill" do
       mode 0644
       source "bluepill_unicorn.conf.erb"
       variables common_variables.merge(
@@ -71,12 +61,5 @@ if node[:active_applications]
       action [:enable, :load, :start]
     end
     
-    logrotate full_name do
-      files "/u/apps/#{app_name}/current/log/*.log"
-      frequency "daily"
-      rotate_count 14
-      compress true
-      restart_command "/etc/init.d/nginx reload > /dev/null"
-    end
   end
 end
