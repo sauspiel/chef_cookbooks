@@ -11,7 +11,7 @@ default.nginx[:expires][:enabled] = true
 default.nginx[:expires][:regex] = '^/(application|javascripts|stylesheets|images|sprockets|favicon)[/\.]'
 default.nginx[:expires][:time] = "max"
 default.nginx[:extras] = ['lb_addresses']
-default.nginx[:helpers] = ['headers', 'expires', 'lb_filter', 'maintenance', 'invalid_requests', 'lb_addresses', 'ie', 'fcgi_params']
+default.nginx[:helpers] = ['proxy', 'expires', 'lb_filter', 'maintenance', 'invalid_requests', 'lb_addresses', 'ie', 'fcgi_params']
 default.nginx[:log_keep_days] = 7
 default.nginx[:enable_logging] = true
 
