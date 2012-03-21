@@ -19,7 +19,7 @@ if node[:active_applications]
 
     app_root = "/u/apps/#{name}"
   
-    domain = app["domain"]
+    domain = app["environments"][conf["env"]]["domain"]
     
     ssl_certificate domain
     
