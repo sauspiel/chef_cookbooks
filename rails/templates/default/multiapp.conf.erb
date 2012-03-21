@@ -14,7 +14,7 @@ server {
     return 404;
   }
 
-  include /etc/nginx/common/servers.conf;
+  include /etc/nginx/sites-include/rails-common.conf;
 
   location @rails {
 
@@ -38,9 +38,15 @@ server {
     return 404;
   }
 
-  include /etc/nginx/common/servers.conf;
+  ssl on;
+  ssl_certificate /etc/ssl_certs/<%=  @server_name %>.crt;
+  ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
 
-  # SSL config here
+  # for PCI compliance
+  ssl_protocols SSLv3 TLSv1;
+  ssl_ciphers ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
+
+  include /etc/nginx/sites-include/rails-common.conf;
 
   location @rails {    
     include /etc/nginx/common/proxy.conf;

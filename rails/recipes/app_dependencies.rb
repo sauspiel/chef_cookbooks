@@ -8,7 +8,7 @@ require_recipe "users"
   end
 end
 
-template "/etc/nginx/sites-include/common.conf" do
+template "/etc/nginx/sites-include/rails-common.conf" do
   source "app_nginx_include.conf.erb"
   variables :full_name => full_name, :conf => conf, :app_name => app_name
   notifies :reload, resources(:service => "nginx")
