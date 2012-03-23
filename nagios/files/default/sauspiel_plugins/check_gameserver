@@ -1,0 +1,36 @@
+#!/bin/sh
+function usage
+{
+	echo >&2 "Usage: $0 [-H host]"
+	exit 1;
+}
+
+if [ $# -lt 1 ]; then
+	usage
+	exit 1
+fi
+
+HOST=""
+while getopts "H:h" o
+do
+	case "$o" in
+	H) HOST="$OPTARG";;
+	h) usage
+	   exit 1;;
+	\?) usage
+	   exit 1;;
+	:) usage
+	   exit 1;;
+	esac
+done
+shift `expr $OPTIND - 1`
+
+CONTENT=`wget -q -O - http://${HOST}:3830/info/status`
+if [ "$CONTENT" = "" ]; then
+	echo "CRITICAL: gameserver not running!"
+	exit 2
+else
+	TRIMMED=`echo ${CONTENT} | xargs -d, -L 1`
+	echo "OK: ${TRIMMED}"
+	exit 0
+fi

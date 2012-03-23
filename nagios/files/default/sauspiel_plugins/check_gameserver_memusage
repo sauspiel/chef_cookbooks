@@ -1,0 +1,52 @@
+#!/bin/sh
+
+function usage
+{
+  echo >&2 "Usage: $0 [-w %] [-c %]"
+  exit 1;
+}
+
+WARG=50
+CARG=70
+
+if [ $# -lt 1 ]; then
+	usage
+	exit 1
+fi
+
+while getopts "w:c:h" o
+do
+	case "$o" in
+	w) WARG="$OPTARG";;
+	c) CARG="$OPTARG";;
+	h) usage
+	   exit 1;;
+	\?) usage
+	    exit 1;;
+	:)  usage
+	    exit 1;;
+	esac
+done
+shift `expr $OPTIND - 1`
+
+PID=`ps ax|grep -i beam|grep -v grep|grep -i game| head -1 | awk {'print $1'}`
+if [ $? = '1' ]; then
+	echo "Gameserver not running"; exit 2;
+fi
+
+ALL=`free -m | head -2 |awk {'print $2'}|grep -v used`
+VMRSS=`cat /proc/${PID}/status |grep -i vmrss| awk {'print $2'}`
+VMRSS=`expr ${VMRSS} / 1024`
+USED=`expr ${VMRSS} \* 100 / ${ALL}`
+
+if [ $USED -ge "$CARG" ]; then
+	echo "CRITICAL: ${VMRSS} MB or ${USED}% out of ${ALL} MB used!"
+	exit 2;
+elif [ $USED -ge "$WARG" ]; then
+	echo "WARNING: ${VMRSS} MB or ${USED}% out of ${ALL} MB used!"
+	exit 1;
+else
+     echo "OK: ${VMRSS}MB or ${USED}% out of ${ALL} MB used";
+     exit 0
+fi
+

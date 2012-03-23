@@ -1,0 +1,8 @@
+#!/bin/sh
+
+`id uebersau >/dev/null 2>&1`
+if [ $? = '1' ]; then
+	echo "uebersau user is missing"; exit 1;
+else
+	echo "Ok"; exit 0;
+fi

@@ -1,0 +1,3 @@
+server_address=<%= @node[:ipaddress] %> 
+allowed_hosts=<% @node[:nagios][:allowed_hosts].each do |allowed_host| -%>,<%= allowed_host %><% end -%>
+dont_blame_nrpe=1

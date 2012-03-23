@@ -1,0 +1,29 @@
+#!/bin/sh
+
+USER=icinga
+HOME=/home/$USER
+#DBGFILE=/var/tmp/check_mailtest.log
+#echo "-----" >> $DBGFILE
+#echo $USER >> $DBGFILE
+#echo `pwd` >> $DBGFILE
+#echo $HOME >> $DBGFILE
+#echo `whoami` >> $DBGFILE
+#echo "Hostname $1" >> $DBGFILE
+
+if [ $# -lt 1 ]; then
+	echo "You must pass filename name as argument!"
+	exit 1;
+fi
+
+/usr/bin/fetchmail -f $HOME/.fetchmailrc_$1 >/dev/null 2>&1
+#/usr/bin/fetchmail -f $HOME/icinga/.fetchmailrc_$1 >> $DBGFILE 
+
+FILENAME=$HOME/mail/$1
+if [ -f ${FILENAME} ]; then
+	rm ${FILENAME} 
+	echo "Mail(s) received"
+	exit 0
+else
+	echo "No mail(s) received!"
+	exit 2
+fi
