@@ -5,7 +5,7 @@ command[check_http]=<%= @node[:nagios][:plugins_dir] %>/check_http --ssl -H <%= 
 command[check_gameserver]=<%= @node[:nagios][:extra_plugins_dir] %>/check_gameserver -H <%= @node[:fqdn] %>
 command[check_gameserver_memusage]=<%= @node[:nagios][:extra_plugins_dir] %>/check_gameserver_memusage -w <%= @node[:nagios][:checks][:gameserver_memusage][:warning] %> -c <%= @node[:nagios][:checks][:gameserver_memusage][:critical] %>
 command[check_mount]=<%= @node[:nagios][:extra_plugins_dir] %>/check_mounts
-command[check_linux_raid]=<%= @node[:nagios][:extra_plugins_dir] %>/check_linux_raid
+command[check_linux_raid]=<%= @node[:nagios][:plugins_dir] %>/check_linux_raid
 command[check_megaraid_sas]=<%= @node[:nagios][:extra_plugins_dir] %>/check_megaraid_sas
 command[check_rootdisk]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:rootdisk][:warning] %> -c <%= @node[:nagios][:checks][:rootdisk][:critical] %>
 command[check_sdb1]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:sdb1][:warning] %> -c <%= @node[:nagios][:checks][:sdb1][:critical] %> -p /dev/sdb1
