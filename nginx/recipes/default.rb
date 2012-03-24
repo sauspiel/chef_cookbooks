@@ -17,6 +17,7 @@ directory node[:nginx][:log_dir] do
   action :create
 end
 
+directory "/etc/nginx/sites-include"
 directory "/etc/nginx/helpers"
 
 template "#{node[:nginx][:dir]}/nginx.conf" do

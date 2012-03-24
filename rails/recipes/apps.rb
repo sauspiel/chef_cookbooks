@@ -25,7 +25,7 @@ if node[:active_applications]
     
     other_apps = @apps.collect {|a| a['id']}.join("|")
     
-    template "/etc/nginx/sites-available/#{full_name}" do
+    template "/etc/nginx/sites-available/#{name}" do
       source "multiapp_nginx.conf.erb"
       variables :app_name => name, :server_name => domain, :other_apps => other_apps
       notifies :reload, resources(:service => "nginx")
@@ -57,7 +57,7 @@ if node[:active_applications]
         :cpu_limit => app[:cpu_limit] || node[:rails][:cpu_limit])
     end
     
-    bluepill_service full_name do
+    bluepill_service name do
       action [:enable, :load, :start]
     end
     

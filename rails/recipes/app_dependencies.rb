@@ -1,16 +1,7 @@
 require_recipe "users"
 
-["/u", "/u/apps"].each do |dir|
-  directory dir do
-    owner "app"
-    group "app"
-    mode 0755
-  end
-end
-
 template "/etc/nginx/sites-include/rails-common.conf" do
   source "app_nginx_include.conf.erb"
-  variables :full_name => full_name, :conf => conf, :app_name => app_name
   notifies :reload, resources(:service => "nginx")
 end
 
