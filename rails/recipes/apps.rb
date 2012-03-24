@@ -41,7 +41,7 @@ if node[:active_applications]
       :listen_port => app[:listen_port] || 8600
     }
 
-    template "#{node[:unicorn][:config_path]}/#{name}" do
+    template "#{node[:unicorn][:config_path]}/#{name}.conf.rb" do
       mode 0644
       cookbook "unicorn"
       source "unicorn.conf.erb"

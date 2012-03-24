@@ -12,15 +12,7 @@ if node[:active_applications]
     app = search(:apps, "id:#{conf[:app_name] || name}").first
     app_name = name
     app_root = "/u/apps/#{app_name}"
-
-    %w(config tmp sockets log tmp/pids system bin).each do |dir|
-      directory "/u/apps/#{app_name}/shared/#{dir}" do
-        recursive true
-        owner "app"
-        group "app"
-      end
-    end
-            
+           
     if app
 
       if app[:packages]
