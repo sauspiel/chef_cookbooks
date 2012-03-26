@@ -36,8 +36,8 @@ if node[:active_applications]
       :app_root => app_root,
       :app_name => name,
       :env => conf['env'],
-      :user => "app",
-      :group => "app",
+      :user => "deploy",
+      :group => "deploy",
       :listen_port => app[:listen_port] || 8600
     }
 
