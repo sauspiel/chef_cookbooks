@@ -64,5 +64,15 @@ if node[:active_applications]
     nginx_site name do
       action :enable
     end
+    
+    logrotate name do
+      files ["#{app_root}/current/log/*.log"]
+      frequency "daily"
+      rotate_count 10
+      compress true
+      user 'deploy'
+      group 'deploy'
+      restart_command "kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
+    end
   end
 end
