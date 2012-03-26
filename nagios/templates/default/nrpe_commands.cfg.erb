@@ -1,7 +1,6 @@
 command[check_swap]=<%= @node[:nagios][:plugins_dir] %>/check_swap -w <%= @node[:nagios][:checks][:swap][:warning] %> -c <%= @node[:nagios][:checks][:swap][:critical] %>
 command[check_total_procs]=<%= @node[:nagios][:plugins_dir] %>/check_procs -w <%= @node[:nagios][:checks][:procs][:warning] %> -c <%= @node[:nagios][:checks][:procs][:critical] %>
 command[check_uebersau]=<%= @node[:nagios][:extra_plugins_dir] %>/check_uebersau 
-command[check_http]=<%= @node[:nagios][:plugins_dir] %>/check_http --ssl -H <%= @node[:network_ext][:fqdn] %>
 command[check_gameserver]=<%= @node[:nagios][:extra_plugins_dir] %>/check_gameserver -H <%= @node[:fqdn] %>
 command[check_gameserver_memusage]=<%= @node[:nagios][:extra_plugins_dir] %>/check_gameserver_memusage -w <%= @node[:nagios][:checks][:gameserver_memusage][:warning] %> -c <%= @node[:nagios][:checks][:gameserver_memusage][:critical] %>
 command[check_mount]=<%= @node[:nagios][:extra_plugins_dir] %>/check_mounts
