@@ -17,9 +17,9 @@ if node[:active_applications]
   
     app = search(:apps, "id:#{name}").first
 
-    app_root = "/var/www/#{name}"
-  
     domain = app["environments"][conf["env"]]["domain"]
+
+    app_root = "/var/www/#{domain}"  
     
     ssl_certificate domain
     
