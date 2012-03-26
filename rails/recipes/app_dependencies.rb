@@ -13,7 +13,7 @@ if node[:active_applications]
 
     app = search(:apps, "id:#{conf[:app_name] || name}").first
     app_name = name
-    app_root = "/u/apps/#{app_name}"
+    app_root = "/var/www/#{app_name}"
            
     if app
 

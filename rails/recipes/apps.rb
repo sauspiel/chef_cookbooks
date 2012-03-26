@@ -17,7 +17,7 @@ if node[:active_applications]
   
     app = search(:apps, "id:#{name}").first
 
-    app_root = "/u/apps/#{name}"
+    app_root = "/var/www/#{name}"
   
     domain = app["environments"][conf["env"]]["domain"]
     
@@ -25,7 +25,7 @@ if node[:active_applications]
     
     other_apps = @apps.collect {|a| a['id']}.join("|")
     
-    template "/etc/nginx/sites-available/#{name}" do
+    template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
       variables :app_name => name, :server_name => domain, :other_apps => other_apps
       notifies :reload, resources(:service => "nginx")
@@ -61,5 +61,8 @@ if node[:active_applications]
       action [:enable, :load, :start]
     end
     
+    nginx_site name do
+      action :enable
+    end
   end
 end

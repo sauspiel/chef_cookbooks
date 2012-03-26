@@ -10,16 +10,15 @@ server {
 
   # Don't serve images from other apps
   # Must come before includes
-  location ~ ^/images/(<%= @other_apps %>)/ {
-    return 404;
-  }
+  # location ~ ^/images/(<%= @other_apps %>)/ {
+  #  return 404;
+  # }
 
   include /etc/nginx/sites-include/rails-common.conf;
 
   location @rails {
 
     include /etc/nginx/common/proxy.conf;
-    include /etc/nginx/helpers/maintenance.conf;
 
     # We never want http hitting rails
     rewrite ^ https://$domain$request_uri permanent;
@@ -50,7 +49,6 @@ server {
 
   location @rails {    
     include /etc/nginx/common/proxy.conf;
-    include /etc/nginx/helpers/maintenance.conf;
     proxy_set_header X_FORWARDED_PROTO https;
     proxy_pass http://unicorn_server;
   }
