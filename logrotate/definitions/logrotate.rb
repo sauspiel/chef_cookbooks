@@ -4,6 +4,5 @@ define :logrotate, :frequency => "daily", :rotate_count => 5, :rotate_if_empty =
     cookbook "logrotate"
     source "logrotate.conf.erb"
     variables(:p => params)
-    backup 0
   end
 end

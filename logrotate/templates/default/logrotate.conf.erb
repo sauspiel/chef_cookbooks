@@ -8,7 +8,11 @@
 	<% if @p[:compress] %>
 	dateext
 	compress
+	delaycompress
 	<% end %>
+	<% if @p[:user] %>
+  create 640 <%= @p[:user] %> <%= @p[:group] %>
+  <% end %>
 	<% if @p[:missing_ok] %>
 	missingok
 	<% end %>
