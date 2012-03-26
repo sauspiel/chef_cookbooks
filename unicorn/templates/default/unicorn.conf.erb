@@ -1,14 +1,14 @@
 app_root = "<%= @app_root %>"
 
-worker_processes 10
+worker_processes 6
 working_directory "#{app_root}/current"
 preload_app <%= @preload ? "true" : "false" %>
 timeout 300
-listen "#{app_root}/shared/sockets/unicorn.sock", :backlog => 2048
-listen "0.0.0.0:<%= @listen_port %>"
-pid "#{app_root}/current/tmp/pids/unicorn.pid"
-stderr_path "#{app_root}/shared/log/unicorn.log"
-stdout_path "#{app_root}/shared/log/unicorn.log"
+listen "var/run/unicorn/unicorn.sock", :backlog => 2048
+
+pid "#{app_root}/current/tmp/unicorn/unicorn.pid"
+stderr_path "#{app_root}/log/unicorn_stderr.log"
+stdout_path "#{app_root}/log/unicorn_stdout.log"
 
 if GC.respond_to?(:copy_on_write_friendly=)
   GC.copy_on_write_friendly = true
@@ -23,6 +23,8 @@ before_fork do |server, worker|
     rescue Errno::ENOENT, Errno::ESRCH
     end
   end
+  
+  sleep 1
 end
 
 after_fork do |server, worker|
