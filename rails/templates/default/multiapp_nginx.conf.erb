@@ -10,9 +10,9 @@ server {
 
   # Don't serve images from other apps
   # Must come before includes
-  # location ~ ^/images/(<%= @other_apps %>)/ {
-  #  return 404;
-  # }
+  location ~ ^/images/(<%= @other_apps %>)/ {
+    return 404;
+  }
 
   include /etc/nginx/sites-include/rails-common.conf;
 

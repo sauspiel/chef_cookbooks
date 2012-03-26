@@ -23,7 +23,7 @@ if node[:active_applications]
     
     ssl_certificate domain
     
-    other_apps = @apps.collect {|a| a['id']}.join("|")
+    other_apps = @apps.collect {|a| a['id'] unless a['id'] == name }.compact.sort.join("|")
     
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
