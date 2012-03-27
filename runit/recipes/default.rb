@@ -1,10 +1,7 @@
-# for Ubuntu
-# execute "start-runsvdir" do
-#   command "start runsvdir"
-#   action :nothing
-# end
-
-# for Debian squeeze
+execute "start-runsvdir" do
+  command "start runsvdir"
+  action :nothing
+end
 
 execute "runit-hup-init" do
   command "telinit q"
@@ -20,5 +17,5 @@ end
   
 package "runit" do
   action :install
-  notifies :run, resources(:execute => "runit-hup-init")
+  notifies :run, resources(:execute => node[:platform_family] == "debian" ? "runit-hup-init" : "start-runsvdir")
 end
