@@ -13,6 +13,10 @@ ClientAliveInterval 5
 HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_dsa_key
 
+<% @addresses.each do |iface| %>
+ListenAddress = <%= iface[:address] %>
+<% end %>
+
 #Privilege Separation is turned on for security
 UsePrivilegeSeparation yes
 
@@ -49,7 +53,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication <%= @node[:ssh][:passwordauthentication] %>
+PasswordAuthentication <%= @node[:ssh][:passwordauthentication] ? 'yes' : 'no' %>
 
 X11Forwarding yes
 X11DisplayOffset 10
