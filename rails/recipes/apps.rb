@@ -13,6 +13,11 @@ if node[:active_applications]
     mode 0755
   end
   
+  directory "/etc/nginx/sites-available" do
+      mode 0755
+  end 
+
+  
   node[:active_applications].each do |name, conf|
   
     app = search(:apps, "id:#{name}").first
