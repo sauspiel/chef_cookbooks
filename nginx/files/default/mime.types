@@ -7,6 +7,7 @@ types {
     image/jpeg                            jpeg jpg;
     application/x-javascript              js;
     application/atom+xml                  atom;
+    application/json                      json;
 
     text/mathml                           mml;
     text/plain                            txt;
