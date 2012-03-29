@@ -67,6 +67,10 @@ server {
 server {
   listen 443 default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
-  include /etc/nginx/common/ssl/<%= @node[:rails][:default_app] %>.conf;
+
+  ssl on;
+  ssl_certificate /etc/ssl_certs/<%=  @server_name %>.crt;
+  ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
+  ssl_verify_depth 3;
 }
 
