@@ -42,6 +42,12 @@ node[:nginx][:extras].each do |ex|
   end
 end  
 
+cookbook_file "#{node[:nginx][:dir]}/mime.types" do
+  source "mime.types"
+  mode "0644"
+  notifies :reload, resources(:service => "nginx")
+end
+
 service "nginx" do
   action [ :enable, :start ]
 end
