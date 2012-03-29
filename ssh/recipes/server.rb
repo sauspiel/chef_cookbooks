@@ -1,13 +1,17 @@
 package "openssh-server"
 
-Chef::Log.debug("Sauspiel #{Sauspiel.allif(node)}")
 service "ssh" do
   supports :restart => true, :reload => true
   action :enable
 end
 
 nodes = search(:node, "*:*")
-#keys = search(:known_ssh_keys, "*:*")
+
+addresses = []
+node[:ssh][:ipaddresses].each do |address|
+  addresses << Sauspiel.interfacebyaddr(node, address)[:address]
+end
+
 
 template "/etc/ssh/known_hosts" do
   source "known_hosts.erb"
@@ -30,7 +34,7 @@ template "/etc/ssh/sshd_config" do
   owner "root"
   group "root"
   notifies :restart, resources(:service => "ssh")
-  variables(:addresses => Sauspiel.allif(node))
+  variables(:addresses => addresses) 
 end
 
 

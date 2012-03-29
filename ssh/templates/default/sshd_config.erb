@@ -13,8 +13,8 @@ ClientAliveInterval 5
 HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_dsa_key
 
-<% @addresses.each do |iface| %>
-ListenAddress = <%= iface[:address] %>
+<% @addresses.each do |address| %>
+ListenAddress = <%= address %>
 <% end %>
 
 #Privilege Separation is turned on for security
