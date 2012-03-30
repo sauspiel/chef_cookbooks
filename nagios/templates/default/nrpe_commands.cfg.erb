@@ -9,3 +9,6 @@ command[check_megaraid_sas]=<%= @node[:nagios][:extra_plugins_dir] %>/check_mega
 command[check_rootdisk]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:rootdisk][:warning] %> -c <%= @node[:nagios][:checks][:rootdisk][:critical] %>
 command[check_sdb1]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:sdb1][:warning] %> -c <%= @node[:nagios][:checks][:sdb1][:critical] %> -p /dev/sdb1
 command[check_sdc1]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:sdc1][:warning] %> -c <%= @node[:nagios][:checks][:sdc1][:critical] %> -p /dev/sdc1
+# temporary fix
+command[check_raid]=<%= @node[:nagios][:extra_plugins_dir] %>/check_megaraid_sas
+
