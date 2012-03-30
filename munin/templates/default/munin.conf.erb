@@ -18,6 +18,6 @@ tmpldir <%= node['munin']['tmpldir'] %>
 # a simple host tree
 <% @munin_nodes.each do |system| -%>
 [chef;<%= system[:fqdn] %>]
-  address <%= system[:network][:interfaces][node[:munin][:interface]][:addresses].keys[1] %>
+  address <%= system[:network][:interfaces][system[:munin][:interface]][:addresses].keys[1] %>
 
 <% end -%>
