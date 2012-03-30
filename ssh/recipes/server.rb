@@ -8,8 +8,14 @@ end
 nodes = search(:node, "*:*")
 
 addresses = []
-node[:ssh][:interfaces].each do |interface|
-  addresses << node[:network][:interfaces][interface].addresses.keys[1]
+if node[:ssh][:interfaces].nil?
+  addresses << "0.0.0.0"
+else
+  node[:ssh][:interfaces].each do |interface|
+    if node[:network][:interfaces].has_key? interface
+      addresses << node[:network][:interfaces][interface].addresses.keys[1]
+    end
+  end
 end
 
 
