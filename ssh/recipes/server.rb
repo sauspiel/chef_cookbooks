@@ -8,8 +8,8 @@ end
 nodes = search(:node, "*:*")
 
 addresses = []
-node[:ssh][:ipaddresses].each do |address|
-  addresses << Sauspiel.interfacebyaddr(node, address)[:address]
+node[:ssh][:interfaces].each do |interface|
+  addresses << node[:network][:interfaces][interface].addresses.keys[1]
 end
 
 
