@@ -29,7 +29,7 @@ end
 template "/etc/nagios/nrpe_local.cfg" do
   source "nrpe_local.cfg.erb"
   notifies :restart, resources(:service => "nagios-nrpe-server")
-  variables(:address => Sauspiel.externalif(node)[:address])
+  variables(:address => node[:ipaddress])
 end
 
 template "/etc/nagios/nrpe.d/commands.cfg" do
