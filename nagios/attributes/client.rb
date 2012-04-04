@@ -74,6 +74,11 @@ default.nagios[:checks][:sdc1][:enable] = true
 default.nagios[:checks][:sdc1][:warning] = "20%"
 default.nagios[:checks][:sdc1][:critical] = "10%"
 
+# check tmp
+default.nagios[:checks][:tmp][:enable] = true
+default.nagios[:checks][:tmp][:warning] = "20%"
+default.nagios[:checks][:tmp][:critical] = "10%"
+
 # check mega raid sas
 default.nagios[:checks][:megaraid_sas][:enable] = true
 
