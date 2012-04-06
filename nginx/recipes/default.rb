@@ -1,4 +1,17 @@
-package "nginx"
+require_recipe "apt"
+
+apt_repository "nginx" do
+  uri "http://nginx.org/packages/debian"
+  components ["nginx"]
+  distribution node[:lsb][:codename]
+  keyserver "keyserver.ubuntu.com"
+  key "ABF5BD827BD9BF62"
+  action :add
+end
+
+package "nginx" do
+  action :upgrade
+end
 
 template "/etc/logrotate.d/nginx" do
   source "logrotate.erb"
@@ -20,6 +33,8 @@ end
 directory "/etc/nginx/sites-include"
 directory "/etc/nginx/helpers"
 directory "/etc/nginx/common"
+directory "/etc/nginx/sites-available"
+directory "/etc/nginx/sites-enabled"
 
 template "#{node[:nginx][:dir]}/nginx.conf" do
   source "nginx.conf.erb"
