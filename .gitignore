@@ -1,2 +1,4 @@
 *.swp
 metadata.json
+
+.DS_Store
