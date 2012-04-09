@@ -30,13 +30,11 @@ directory node[:nginx][:log_dir] do
   action :create
 end
 
-%w{"sites-available", "sites-enabled", "helpers", "site-include", "common"}.each do |dir|
-  directory "#{node[:nginx][:dir]}/#{dir}" do
-    owner "root"
-    group "root"
-    action :create
-  end
-end
+directory "#{node[:nginx][:dir]}/sites-available"
+directory "#{node[:nginx][:dir]}/sites-enabled"
+directory "#{node[:nginx][:dir]}/helpers"
+directory "#{node[:nginx][:dir]}/site-include"
+directory "#{node[:nginx][:dir]}/common"
 
 template "#{node[:nginx][:dir]}/nginx.conf" do
   source "nginx.conf.erb"
