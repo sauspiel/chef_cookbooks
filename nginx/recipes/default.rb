@@ -1,16 +1,42 @@
 require_recipe "apt"
 
-apt_repository "nginx" do
-  uri "http://nginx.org/packages/debian"
-  components ["nginx"]
-  distribution node[:lsb][:codename]
-  keyserver "keyserver.ubuntu.com"
-  key "ABF5BD827BD9BF62"
-  action :add
-end
+if !node[:nginx][:with_pam_authentication]
+  apt_repository "nginx" do
+    uri "http://nginx.org/packages/debian"
+    components ["nginx"]
+    distribution node[:lsb][:codename]
+    keyserver "keyserver.ubuntu.com"
+    key "ABF5BD827BD9BF62"
+    action :add
+  end
 
-package "nginx" do
-  action :upgrade
+  package "nginx" do
+    version node[:nginx][:version]
+    action :install
+  end
+
+else
+  tmp = node[:tmp] ? node[:tmp] : "/tmp"
+  pamversion = "#{node[:nginx][:version]}+authpam1"
+  deb = "nginx_#{pamversion}_amd64.deb"
+  debpath = "#{tmp}/#{deb}"
+
+  remote_file "#{debpath}" do
+    version = pamversion
+    source "#{node[:package_url]}/#{deb}"
+    not_if { File.exists?("#{debpath}")}
+  end
+
+  dpkg_package "nginx_with_pam" do
+    source "#{debpath}"
+    action :install
+    only_if { File.exists?("#{debpath}")}
+  end
+
+  group "shadow" do
+    members node[:nginx][:user]
+    append true
+  end
 end
 
 template "/etc/logrotate.d/nginx" do
