@@ -16,6 +16,7 @@ if !node[:nginx][:with_pam_authentication]
   end
 
 else
+  # see https://github.com/sauspiel/hosting/wiki/Nginx
   tmp = node[:tmp] ? node[:tmp] : "/tmp"
   pamversion = "#{node[:nginx][:version]}+authpam1"
   deb = "nginx_#{pamversion}_amd64.deb"
