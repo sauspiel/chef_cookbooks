@@ -43,6 +43,7 @@ if node[:active_applications]
       :env => conf['env'],
       :user => "deploy",
       :group => "deploy",
+      :worker_count => app["environments"][conf["env"]]["worker_count"] || node[:unicorn][:worker_count],
       :listen_port => app[:listen_port] || 8600
     }
 

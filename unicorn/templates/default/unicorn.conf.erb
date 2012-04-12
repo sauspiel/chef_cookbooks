@@ -1,6 +1,6 @@
 app_root = "<%= @app_root %>"
 
-worker_processes 6
+worker_processes <%= @worker_count %>
 working_directory "#{app_root}/current"
 preload_app <%= @preload ? "true" : "false" %>
 timeout 300
