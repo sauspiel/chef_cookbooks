@@ -78,7 +78,7 @@ if node[:active_applications]
       compress true
       user 'deploy'
       group 'deploy'
-      restart_command "kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
+      restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
     end
   end
 end
