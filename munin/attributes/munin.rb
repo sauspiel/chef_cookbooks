@@ -10,4 +10,5 @@ default['munin']['root']['group'] = "root"
 
 default['munin']['plugins'] = "#{default['munin']['basedir']}/plugins"
 default['munin']['tmpldir'] = "#{default['munin']['basedir']}/templates"
+default['munin']['servername'] = node[:fqdn]
 default.munin[:interface] = 'eth1'

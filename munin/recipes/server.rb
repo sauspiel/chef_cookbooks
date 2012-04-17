@@ -29,6 +29,7 @@ end
 
 template "#{node[:nginx][:dir]}/sites-available/munin.conf" do
   source "nginx.conf.erb"
+  variables(:servername => node[:munin][:servername])
   mode 0644
 end
 
