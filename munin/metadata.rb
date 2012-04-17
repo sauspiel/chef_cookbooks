@@ -1,5 +1,5 @@
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Installs and configures munin"
-version           "0.0.2"
+version           "0.0.3"
 depends "nginx"
