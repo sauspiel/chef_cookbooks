@@ -1,27 +1,27 @@
 <%= @p[:files].to_a.join("\n") %> {
     <% if @p[:size_limit] %>
-	size <%= @p[:size_limit] %>
+  size <%= @p[:size_limit] %>
 	<% else %>
 	<%= @p[:frequency] %>
 	<% end %>
-	rotate <%= @p[:rotate_count] %>
+  rotate <%= @p[:rotate_count] %>
 	<% if @p[:compress] %>
-	dateext
-	compress
-	delaycompress
+  dateext
+  compress
+  delaycompress
 	<% end %>
 	<% if @p[:user] %>
   create 640 <%= @p[:user] %> <%= @p[:group] %>
   <% end %>
 	<% if @p[:missing_ok] %>
-	missingok
+  missingok
 	<% end %>
 	<% %>
 	<% if !@p[:rotate_if_empty] %>
-	notifempty
+  notifempty
 	<% end %>
-	sharedscripts
-	postrotate
+  sharedscripts
+  postrotate
 	<%= @p[:restart_command] %>
-	endscript
+  endscript
 }
