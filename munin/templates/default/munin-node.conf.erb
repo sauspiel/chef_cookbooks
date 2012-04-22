@@ -10,7 +10,7 @@ background 1
 setseid 1
 
 # Which port to bind to;
-host *
+host <%= node[:network][:interfaces][node[:munin][:interface]][:addresses].keys[1] %>
 user root
 group <%= node['munin']['root']['group'] %>
 setsid yes
@@ -41,5 +41,5 @@ host_name <%= node[:hostname] %>.ec2.internal
 <% @munin_servers.each do |server| -%>
 allow ^<%= server[:network][:interfaces][server[:munin][:interface]][:addresses].keys[1].to_s.gsub(/\./, '\.') %>$
 <% end -%>
-# allow ^127\.0\.0\.1$
+allow ^127\.0\.0\.1$
 

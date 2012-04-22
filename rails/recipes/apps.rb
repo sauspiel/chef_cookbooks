@@ -62,7 +62,7 @@ if node[:active_applications]
         :memory_limit => app[:memory_limit] || node[:rails][:memory_limit],
         :cpu_limit => app[:cpu_limit] || node[:rails][:cpu_limit])
     end
-    
+
     bluepill_service name do
       action [:enable, :load, :start]
     end
@@ -78,7 +78,13 @@ if node[:active_applications]
       compress true
       user 'deploy'
       group 'deploy'
-      restart_command "kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
+      restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
+    end
+
+    # deleting old logrotate entries for rails apps
+    file "/etc/logrotate.d/rails" do
+      action :delete
+      only_if { File.exists?("/etc/logrotate.d/rails")}
     end
   end
 end
