@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default.riak.bind_address = node[:network][:interfaces][:eth1][:addresses].find{|address, interface| interface[:family] == "inet"}.first
+default.local_bind_address = node[:network][:interfaces][:eth1][:addresses].find{|address, interface| interface[:family] == "inet"}.first
 
 include_attribute "riak::package"
 include_attribute "riak::core"
