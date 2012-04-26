@@ -71,13 +71,13 @@ user "riak" do
   system true
 end
 
-directory "/tmp/riak_pkg" do
+directory "#{node[:tmp_dir]}/riak_pkg" do
   owner "root"
   mode 0755
   action :create
 end
 
-remote_file "/tmp/riak_pkg/#{package_file}" do
+remote_file "#{node[:tmp_dir]}/riak_pkg/#{package_file}" do
   source package_uri
   owner "root"
   mode 0644
@@ -88,7 +88,7 @@ end
 case node[:riak][:package][:type]
 when "binary"
   package package_name do
-    source "/tmp/riak_pkg/#{package_file}"
+    source "#{node[:tmp_dir]}/riak_pkg/#{package_file}"
     action :install
     provider value_for_platform(
       [ "ubuntu", "debian" ] => {"default" => Chef::Provider::Package::Dpkg},
@@ -97,17 +97,17 @@ when "binary"
   end
 when "source"
   execute "riak-src-unpack" do
-    cwd "/tmp/riak_pkg"
+    cwd "#{node[:tmp_dir]}/riak_pkg"
     command "tar xvfz #{package_file}"
   end
 
   execute "riak-src-build" do
-    cwd "/tmp/riak_pkg/#{base_filename}"
+    cwd "#{node[:tmp_dir]}/riak_pkg/#{base_filename}"
     command "make clean all rel"
   end
 
   execute "riak-src-install" do
-    command "mv /tmp/riak_pkg/#{base_filename}/rel/riak #{node[:riak][:package][:prefix]}"
+    command "mv #{node[:tmp_dir]}/riak_pkg/#{base_filename}/rel/riak #{node[:riak][:package][:prefix]}"
     not_if { File.directory?("#{node[:riak][:package][:prefix]}/riak") }
   end
 end

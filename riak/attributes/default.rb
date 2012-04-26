@@ -18,6 +18,7 @@
 #
 
 default.local_bind_address = node[:network][:interfaces][:eth1][:addresses].find{|address, interface| interface[:family] == "inet"}.first
+default.tmp_dir = ENV['TMPDIR'] = '/var/tmp'
 
 include_attribute "riak::package"
 include_attribute "riak::core"
