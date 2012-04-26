@@ -24,7 +24,7 @@ if (node.riak.package.type.eql?("source"))
 end
 
 # erlang.rb
-node.default.riak.erlang.node_name = "riak@#{node.ipaddress}"
+node.default.riak.erlang.node_name = "riak@#{node.local_bind_address}"
 
 # core.rb
 # Make sure the bare minimums are set so the cluster works
