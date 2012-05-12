@@ -1,4 +1,10 @@
-require_recipe 'ruby-shadow'
+gem_package "ruby-shadow"
+ruby_block "require shadow library" do
+  block do
+    Gem.clear_paths
+    require 'shadow'
+  end
+end
 
 groups = search(:groups)
 
