@@ -10,7 +10,7 @@ background 1
 setseid 1
 
 # Which port to bind to;
-host <%= node[:network][:interfaces][node[:munin][:interface]][:addresses].keys[1] %>
+host <%= node[:network][:interfaces][node[:munin][:interface]][:addresses].select { |address, data| data[:family] == "inet" }[0][0] %>
 user root
 group <%= node['munin']['root']['group'] %>
 setsid yes
