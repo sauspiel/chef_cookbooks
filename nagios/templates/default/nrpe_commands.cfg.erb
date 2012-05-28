@@ -12,4 +12,7 @@ command[check_sdc1]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[
 command[check_tmp]=<%= @node[:nagios][:plugins_dir] %>/check_disk -w <%= @node[:nagios][:checks][:tmp][:warning] %> -c <%= @node[:nagios][:checks][:tmp][:critical] %> -p /tmp
 # temporary fix
 command[check_raid]=<%= @node[:nagios][:extra_plugins_dir] %>/check_megaraid_sas
+command[check_users]=<%= @node[:nagios][:plugins_dir] %>/check_users -w <%= @node[:nagios][:checks][:users][:warning] %> -c <%= @node[:nagios][:checks][:users][:critical] %>
+command[check_load]=<%= @node[:nagios][:plugins_dir] %>/check_load -w <%= @node[:nagios][:checks][:load][:warning] %> -c <%= @node[:nagios][:checks][:load][:critical] %>
+command[check_zombie_procs]=<%= @node[:nagios][:plugins_dir] %>/check_procs -w <%= @node[:nagios][:checks][:zombie_procs][:warning] %> -c <%= @node[:nagios][:checks][:zombie_procs][:critical] %> -s Z
 

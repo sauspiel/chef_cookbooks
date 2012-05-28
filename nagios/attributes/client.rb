@@ -84,3 +84,12 @@ default.nagios[:checks][:megaraid_sas][:enable] = true
 
 # check raid
 default.nagios[:checks][:linux_raid][:enable] = true
+
+
+default.nagios[:checks][:users][:enable] = true
+default.nagios[:checks][:users][:warning] = 5
+default.nagios[:checks][:users][:critical] = 10
+
+default.nagios[:checks][:zombie_procs][:enable] = true
+default.nagios[:checks][:zombie_procs][:warning] = 150
+default.nagios[:checks][:zombie_procs][:critical] = 250
