@@ -13,7 +13,7 @@ if node[:ssh][:interfaces].nil?
 else
   node[:ssh][:interfaces].each do |interface|
     if node[:network][:interfaces].has_key? interface
-      addresses << node[:network][:interfaces][interface].addresses.keys[1]
+      addresses << node[:network][:interfaces][interface][:addresses].select { |address, data| data["family"] == "inet" }[0][0]
     end
   end
 end

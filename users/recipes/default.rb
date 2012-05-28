@@ -1,15 +1,23 @@
-require_recipe 'ruby-shadow'
+gem_package "ruby-shadow"
+ruby_block "require shadow library" do
+  block do
+    Gem.clear_paths
+    require 'shadow'
+  end
+end
 
 groups = search(:groups)
 
 groups.each do |group|
-  group group[:id] do
-    group_name group[:id]
-    gid group[:gid]
-    action [ :create, :modify, :manage ]
-  end
-
+  
   if node[:active_groups].include?(group[:id])
+
+    group group[:id] do
+      group_name group[:id]
+      gid group[:gid]
+      action [ :create, :modify, :manage ]
+    end
+
     search(:users, "groups:#{group[:id]}").each do |user|
       home_dir = user[:home_dir] || "/home/#{user[:id]}"
       user user[:id] do
