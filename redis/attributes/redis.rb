@@ -1,8 +1,7 @@
-default.redis[:root_path] = "/u/redis"
+default.redis[:root_path] = "/var/lib/redis"
 default.redis[:port] = 6379
-default.redis[:bind_address] = "0.0.0.0"
+default.redis[:bind_address] = "127.0.0.1"
 default.redis[:timeout] = 300
-default.redis[:filename] = "redis-server_2.2.12-ubuntu2%7Elucid_amd64.deb"
 # max memory in MB
 default.redis[:max_memory] = "250"
 
