@@ -15,6 +15,7 @@ dpkg_package deb.split("_").shift do
 end
 
 deb = "logentries-daemon_0.7.2_all.deb"
+debpath = "/var/tmp/#{deb}"
 
 remote_file "#{debpath}" do
   source "#{node[:package_url]}/#{deb}"
