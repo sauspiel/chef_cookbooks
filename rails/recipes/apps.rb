@@ -4,6 +4,7 @@ require_recipe "unicorn"
 require_recipe "bluepill"
 require_recipe "users"
 require_recipe "bundler"
+require_recipe "logentries"
 
 if node[:active_applications]
 
@@ -80,7 +81,12 @@ if node[:active_applications]
       group 'deploy'
       restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
     end
-
+    
+    execute "follow production log" do
+      command "le follow #{app_root}/current/log/production.log --name #{name}-production"
+      not_if "le whoami | grep #{name}-production"
+    end
+    
     # deleting old logrotate entries for rails apps
     file "/etc/logrotate.d/rails" do
       action :delete
