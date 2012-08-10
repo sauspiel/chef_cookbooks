@@ -89,7 +89,7 @@ if node[:active_applications]
     
     execute "follow nginx access log" do
       command "le follow /var/log/nginx/#{domain}.access.log --name #{name}-nginx-access"
-      not_if "le whoami | grep #{name}-production"
+      not_if "le whoami | grep #{name}-nginx-access"
     end
     
     # deleting old logrotate entries for rails apps
