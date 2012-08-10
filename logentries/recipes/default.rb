@@ -1,5 +1,3 @@
-return if node.roles.include?("ec2")
-
 package "python-simplejson"
 
 deb = "logentries_1.1.1_all.deb"
