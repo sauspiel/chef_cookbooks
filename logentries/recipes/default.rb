@@ -8,7 +8,7 @@ remote_file "#{debpath}" do
   not_if { File.exists?("#{debpath}")}
 end
 
-dpkg_package deb.split("_").shift do
+dpkg_package deb do
   source "#{debpath}"
   action :install
   only_if { File.exists?("#{debpath}")}
