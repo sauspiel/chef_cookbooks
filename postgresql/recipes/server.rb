@@ -83,6 +83,13 @@ else
   end
 end
 
+template "/etc/sysctl.d/30-postgresql-shm.conf" do
+  source "30-postgresql-shm.conf.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 service "postgresql" do
   action [:enable, :start]
 end

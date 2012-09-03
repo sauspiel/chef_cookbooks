@@ -6,3 +6,5 @@ default[:postgresql][:listen_addresses] = "localhost"
 default[:postgresql][:networks] = []
 default[:postgresql][:port] = 5432
 default[:postgresql][:shared_buffers] = "128kB"
+default[:postgresql][:shmmax] = 33554432
+default[:postgresql][:shmall] = 2097152

@@ -1,0 +1,4 @@
+# configured by chef for <%= @node[:fqdn] %>
+
+kernel.shmmax = <%= @node[:postgresql][:shmmax].to_i %>
+kernel.shmall = <%= @node[:postgresql][:shmall].to_i %>
