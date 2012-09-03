@@ -1,16 +1,19 @@
-data_directory = '/var/lib/postgresql/9.0/main'		# use data in another directory, change requires restart
-hba_file = '/etc/postgresql/9.0/main/pg_hba.conf'	# host-based authentication file, change requires restart
-ident_file = '/etc/postgresql/9.0/main/pg_ident.conf'	# ident configuration file, change requires restart
+# configured by chef for <%= @node[:fqdn] %>
 
-external_pid_file = '/var/run/postgresql/9.0-main.pid'		# write an extra PID file, change requires restart
 
-listen_addresses = '<%= node[:postgresql][:listen_addresses]%>' # defaults to 'localhost', '*' = all, (change requires restart)
-port = 5433				# (change requires restart)
+data_directory = '<%= @datadir %>'	# use data in another directory, change requires restart
+hba_file = '<%= @confdir %>/pg_hba.conf'	# host-based authentication file, change requires restart
+ident_file = '<%= @confdir %>/pg_ident.conf'	# ident configuration file, change requires restart
+
+external_pid_file = '/var/run/postgresql/<%= @node[:postgresql][:version] %>-main.pid'		# write an extra PID file, change requires restart
+
+listen_addresses = '<%= @node[:postgresql][:listen_addresses]%>' # defaults to 'localhost', '*' = all, (change requires restart)
+port = <%= @node[:postgresql][:port] %>				# (change requires restart)
 max_connections = 100			# (change requires restart)
 
 unix_socket_directory = '/var/run/postgresql'		# (change requires restart)
 
-shared_buffers = <%= @node[:postgresql][:shared_buffers]%>MB			# min 128kB, change requires restart
+shared_buffers = <%= @node[:postgresql][:shared_buffers]%>			# min 128kB, change requires restart
 
 datestyle = 'iso, dmy'
 

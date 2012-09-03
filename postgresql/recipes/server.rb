@@ -1,19 +1,27 @@
 include_recipe "postgresql::client"
 
-package "postgresql-#{node[:postgresql][:version]}"
-package "postgresql-server-dev-#{node[:postgresql][:version]}"
 
-%w(postgresql-contrib libpq-dev libxslt1-dev libxml2-dev libpam0g-dev libedit-dev).each {|p| package p }
-
-remote_file "/tmp/postgresql-repmgr-9.0_1.0.0.deb" do
-  source "#{node[:package_url]}/postgresql-repmgr-9.0_1.0.0.deb"
-  not_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
+execute "installing postgresql-common" do
+  command "apt-get install -y -t #{node[:postgresql][:deb_release]} postgresql-common"
 end
 
-dpkg_package "postgresql-repmgr" do
-  source "/tmp/postgresql-repmgr-9.0_1.0.0.deb"
-  only_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
+%w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
+  package "#{pkg}-#{node[:postgresql][:version]}" do
+    version node[:postgresql][:debversion]
+  end
 end
+
+%w(libxslt1-dev libxml2-dev libpam0g-dev libedit-dev).each {|p| package p }
+
+#remote_file "/tmp/postgresql-repmgr-9.0_1.0.0.deb" do
+#  source "#{node[:package_url]}/postgresql-repmgr-9.0_1.0.0.deb"
+#  not_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
+#end
+
+#dpkg_package "postgresql-repmgr" do
+#  source "/tmp/postgresql-repmgr-9.0_1.0.0.deb"
+#  only_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
+#end
 
 directory "/etc/postgresql" do
   mode 0755
@@ -21,10 +29,14 @@ directory "/etc/postgresql" do
   group "postgres"
 end
 
-directory "#{node[:postgresql][:data_dir]}/wal_archive" do
-  mode 0755
-  owner "postgres"
-  group "postgres"
+datadir = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
+
+if node[:postgresql][:role] == "slave"
+  directory "#{datadir}/pg_xlog_archive" do
+    mode 0755
+    owner "postgres"
+    group "postgres"
+  end
 end
 
 service "postgresql" do
@@ -33,7 +45,9 @@ service "postgresql" do
   action :nothing
 end
 
-template "#{node[:postgresql][:config_dir]}/pg_hba.conf" do
+confdir = "/etc/postgresql/#{node[:postgresql][:version]}/main"
+
+template "#{confdir}/pg_hba.conf" do
   source "pg_hba.conf.erb"
   owner "postgres"
   group "postgres"
@@ -41,18 +55,20 @@ template "#{node[:postgresql][:config_dir]}/pg_hba.conf" do
   notifies :reload, resources(:service => "postgresql")
 end
 
-template "#{node[:postgresql][:config_dir]}/postgresql.conf" do
+template "#{confdir}/postgresql.conf" do
   source "postgresql.conf.erb"
   owner "postgres"
   group "postgres"
   mode 0644
+  variables(:datadir => datadir, :confdir => confdir)
   
   # disabled to prevent accidental restarts in production
   # notifies :restart, resources(:service => "postgresql")
 end
 
+
 if node[:postgresql][:role] == "slave"
-  template "#{node[:postgresql][:data_dir]}/main/recovery.conf" do
+  template "#{datadir}/recovery.conf" do
     source "recovery.conf.erb"
     owner "postgres"
     group "postgres"
@@ -62,7 +78,7 @@ if node[:postgresql][:role] == "slave"
     # notifies :restart, resources(:service => "postgresql")
   end  
 else
-  file "#{node[:postgresql][:data_dir]}/main/recovery.conf" do
+  file "#{datadir}/recovery.conf" do
     action :delete
   end
 end

@@ -1,7 +1,8 @@
 default[:postgresql][:version] = "9.0"
-default[:postgresql][:config_dir] = "/etc/postgresql/#{node[:postgresql][:version]}/main"
-default[:postgresql][:data_dir] = "/var/lib/postgresql/#{node[:postgresql][:version]}"
-default[:postgresql][:archive_dir] = "#{node[:postgresql][:data_dir]}/wal_archive"
-
+default[:postgresql][:debversion] = "9.0.4-1+b1"
+default[:postgresql][:deb_release] = "squeeze-backports"
 # comma-separated, * means all
-default[:postgresql][:listen_addresses] = "*"
+default[:postgresql][:listen_addresses] = "localhost"
+default[:postgresql][:networks] = []
+default[:postgresql][:port] = 5432
+default[:postgresql][:shared_buffers] = "128kB"

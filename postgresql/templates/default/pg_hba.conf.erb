@@ -1,8 +1,10 @@
+# configured by chef for <%= @node[:fqdn] %>
+
+
 local   all           postgres                                ident
 local   all           all                                     trust
 host    all           all             127.0.0.1/32            trust
 
-<% @node[:networks].each do |name, addresses| %>
-host    replication   all             <%= addresses[:network] %>/<%= IPAddr.new(addresses[:netmask]).to_i.to_s(2).count("1") %>         trust
-host    all           all             <%= addresses[:network] %>/<%= IPAddr.new(addresses[:netmask]).to_i.to_s(2).count("1") %>         trust
+<% @node[:postgresql][:networks].each do |n| %>
+host    all           all             <%= n[:network] %> <%= n[:mode] %>
 <% end %>
