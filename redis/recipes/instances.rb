@@ -1,6 +1,9 @@
 require_recipe "redis"
 
 if node[:redis][:instances]  
+
+  require_recipe "bluepill"
+
   node[:redis][:instances].each do |name, config|  
 
     default_config = {
