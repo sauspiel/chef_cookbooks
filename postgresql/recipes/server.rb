@@ -90,6 +90,17 @@ template "/etc/sysctl.d/30-postgresql-shm.conf" do
   mode 0755
 end
 
+template "/etc/init.d/postgres_perf" do
+  source "postgres_perf.init.sh.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+service "postgres_perf" do
+  action [:enable, :start]
+end
+
 service "postgresql" do
   action [:enable, :start]
 end

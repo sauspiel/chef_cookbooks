@@ -1,0 +1,33 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: Performance settings for postgres
+# Required-Start:
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Decription: Performance settings for postgres
+# Description: Perfomance settings for postgres
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+    log_daemon_msg "Executing performance settings for postgres"
+
+    <% @node[:postgresql][:blockdev].each do |dev,value| -%>
+    blockdev --setra <%= value %> <%= dev %>
+    <% end-%>
+
+    log_end_msg 0
+    ;;
+  stop)
+    log_end_msg 0
+    ;;
+  *)
+    log_action_msg "Usage: $0 {start|stop}"
+    exit 1
+esac
+
+exit 0
+  
