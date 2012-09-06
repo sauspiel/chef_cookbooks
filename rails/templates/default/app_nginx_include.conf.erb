@@ -11,15 +11,6 @@ location / {
   try_files $uri/index.html $uri.html $uri @rails;
 }
 
-# Set correct expires/cache headers for static files
-location ~ ^/(uploads|images|versioned_assets|assets|sounds|rsls|swfs) {
-  expires max;
-  add_header  Cache-Control public;
-  # We again use try_files (and not an evil if) and 404 instead of going to rails
-  try_files $uri =404;
-  break; # SHOULD serve images when maint page is up (but doesn't)
-}
-
 include /etc/nginx/helpers/expires.conf;
 include /etc/nginx/helpers/invalid_requests.conf;
 
