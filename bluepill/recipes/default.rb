@@ -21,8 +21,8 @@ logrotate "bluepill" do
   frequency "daily"
   rotate_count 10
   compress true
-  user 'deploy'
-  group 'deploy'
+  user 'root'
+  group 'root'
   restart_command "/etc/init.d/bluepill restart > /dev/null" 
 end
 
