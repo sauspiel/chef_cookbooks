@@ -1,3 +1,5 @@
+require_recipe "logrotate"
+
 gem_package "bluepill" do
   version node[:bluepill][:version]
 end
@@ -12,6 +14,16 @@ end
 template "/etc/init.d/bluepill" do
   source "init.sh.erb"
   mode 0755
+end
+
+logrotate "bluepill" do
+  files ["#{node[:bluepill][:log_dir]}/*.log"]
+  frequency "daily"
+  rotate_count 10
+  compress true
+  user 'deploy'
+  group 'deploy'
+  restart_command "/etc/init.d/bluepill restart > /dev/null" 
 end
 
 service "bluepill" do
