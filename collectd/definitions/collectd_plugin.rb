@@ -1,17 +1,16 @@
 define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
-  t = nil
-  begin
-    t = resources(:template => "#{node[:collectd][:conf_dir]}/conf.d/python.conf")
-  rescue ArgumentError,Chef::Exceptions::ResourceNotFound
-    collectd_plugin "python" do
-      options :paths=>[node[:collectd][:plugin_dir]], :modules=>{}
-      template "python_plugin.conf.erb"
-      cookbook "collectd"
-    end
-    retry
-  end
+  newoptions = {}
+  newoptions[:paths] = [node[:collectd][:plugin_dir]]
+  newoptions[:modules] = {}
   if not params[:path].empty?
-    t.variables[:options][:paths] << params[:path]
+    newoptions[:paths] << params[:path]
   end
-  t.variables[:options][:modules][params[:module] || params[:name]] = params[:options]
+  newoptions[:modules][params[:module] || params[:name]] = params[:options]
+
+  collectd_plugin "python" do
+    options newoptions 
+    template "python_plugin.conf.erb"
+    cookbook "collectd"
+    not_if { File.exists?("#{node[:collectd][:conf_dir]}/conf.d/python.conf") }
+  end
 end

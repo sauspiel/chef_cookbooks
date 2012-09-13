@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-CUSTOM_TEMPLATES = [ "write_graphite" ]
+CUSTOM_TEMPLATES = [ "write_graphite", "python" ]
 
 def template_map(type)
    plugin_prefix = CUSTOM_TEMPLATES.include?(type.to_s) ? "#{type}_" : ""
@@ -40,7 +40,7 @@ action :create do
       mode "644"
       source template
       cookbook new_resource.cookbook
-      variables :type => type, :config => new_resource.config
+      variables :type => type, :config => new_resource.config, :options => new_resource.options
       notifies :restart, resources(:service => "collectd")
     end
   end

@@ -10,7 +10,7 @@
 repo = node[:collectd_librato][:repo]
 ver = node[:collectd_librato][:version]
 
-package "libpython2.7"
+package "libpython2.6"
 
 directory "/opt/src"
 
