@@ -24,6 +24,7 @@ attribute :cookbook, :kind_of => String, :default => "collectd"
 
 attribute :type, :kind_of => String, :default => nil
 attribute :config, :kind_of => Hash, :default => {}
+attribute :options, :kind_of => Hash, :default => {}
 
 def initialize( *args )
   super
