@@ -35,6 +35,11 @@ directory "#{node[:collectd][:conf_dir]}/conf.d" do
   recursive true
 end
 
+package "lvm2" do
+  action :remove
+  ignore_failure true
+end
+
 template "#{node[:collectd][:conf_dir]}/collectd.conf" do
   source "collectd.conf.erb"
   owner "root"
@@ -44,5 +49,5 @@ template "#{node[:collectd][:conf_dir]}/collectd.conf" do
 end
 
 service "collectd" do
-  action [:enable, :start]
+  action [:enable]
 end
