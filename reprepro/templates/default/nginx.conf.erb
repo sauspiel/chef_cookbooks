@@ -1,0 +1,19 @@
+server {
+  listen 80;
+  server_name <%= @node[:reprepro][:fqdn] %>;
+  access_log /var/log/nginx/reprepro-access.log;
+  error_log /var/log/nginx/reprepro-error.log;
+
+  location / {
+    root <%= @node[:reprepro][:repo_dir] %>;
+    index index.html;
+  }
+  
+  location ~ /(.*)/conf {
+    deny all;
+  }
+
+  location ~ /(.*)/db {
+    deny all;
+  }
+}
