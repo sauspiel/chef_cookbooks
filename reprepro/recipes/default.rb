@@ -20,12 +20,12 @@
 
 include_recipe "nginx"
 
-apt_repo = data_bag_item("reprepro", "main")
+apt_repo = Chef::EncryptedDataBagItem.load("reprepro", "main")
 
-node.set_unless.reprepro.fqdn = apt_repo['fqdn']
-node.set_unless.reprepro.description = apt_repo['description']
-node.set_unless.reprepro.pgp_email = apt_repo['pgp']['email']
-node.set_unless.reprepro.pgp_fingerprint = apt_repo['pgp']['fingerprint']
+node.set.reprepro.fqdn = apt_repo['fqdn']
+node.set.reprepro.description = apt_repo['description']
+node.set.reprepro.pgp_email = apt_repo['pgp']['email']
+node.set.reprepro.pgp_fingerprint = apt_repo['pgp']['fingerprint']
 
 apt_repo_allow = apt_repo["allow"] || []
 
@@ -45,6 +45,7 @@ end
     owner "nobody"
     group "nogroup"
     mode "0755"
+    recursive true
   end
 end
 
@@ -67,7 +68,8 @@ end
       :codenames => apt_repo["codenames"],
       :architectures => apt_repo["architectures"],
       :incoming => apt_repo["incoming"],
-      :pulls => apt_repo["pulls"]
+      :pulls => apt_repo["pulls"],
+      :basedir => apt_repo["repo_dir"]
     )
   end
 end
@@ -94,6 +96,7 @@ template "#{node[:nginx][:dir]}/sites-available/reprepro.conf" do
   mode 0644
   owner "root"
   group "root"
+  variables(:dir => apt_repo["base_dir"])
 end
 
 nginx_site "reprepro" do

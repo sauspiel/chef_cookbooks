@@ -5,7 +5,7 @@ server {
   error_log /var/log/nginx/reprepro-error.log;
 
   location / {
-    root <%= @node[:reprepro][:repo_dir] %>;
+    root <%= @dir %>;
     index index.html;
   }
   
