@@ -4,6 +4,22 @@ package "sudo" do
   action :upgrade
 end
 
+directory "/etc/sudoers.d" do
+  mode 0755
+  owner 'root'
+  group 'root'
+  action :create
+end
+
+cookbook_file "/etc/sudoers.d/README" do
+  cookbook "sudo"
+  source "README.sudoers"
+  mode 0440
+  owner "root"
+  group "root"
+  action :create
+end
+
 template "/etc/sudoers" do
   source "sudoers.erb"
   mode 0440

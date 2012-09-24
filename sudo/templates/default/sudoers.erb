@@ -23,3 +23,5 @@ root    			ALL=(ALL) ALL
 <%= conf[:user] %> ALL=(<%= conf[:target_user] || "ALL" %>) <% if conf[:nopassword] %><%= "NOPASSWD: " %><% end %><%= conf[:command] || "ALL" %>
 <% end -%>
 <% end %>
+
+#includedir /etc/sudoers.d
