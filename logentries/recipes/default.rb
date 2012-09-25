@@ -16,9 +16,7 @@ template "/etc/le/config" do
   not_if { File.exists?("/etc/le/config") }
 end
 
-package "logentries-daemon" do
-  action :install
-end
+execute "echo Y | apt-get install --yes logentries-daemon"
 
 execute "register agent" do
   command "le register"
