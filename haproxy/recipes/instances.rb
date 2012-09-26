@@ -1,5 +1,5 @@
-require_recipe 'haproxy'
-require_recipe "bluepill"
+include_recipe 'haproxy'
+include_recipe "bluepill"
 
 if node[:haproxy][:instances]
   node[:haproxy][:instances].each do |name, config|

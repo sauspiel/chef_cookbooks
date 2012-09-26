@@ -1,8 +1,8 @@
-require_recipe "redis"
+include_recipe "redis"
 
 if node[:redis][:instances]  
 
-  require_recipe "bluepill"
+  include_recipe "bluepill"
 
   node[:redis][:instances].each do |name, config|  
 

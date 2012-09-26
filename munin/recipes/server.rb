@@ -1,5 +1,5 @@
 include_recipe "munin::client"
-require_recipe "nginx"
+include_recipe "nginx"
 
 munin_servers = search(:node, "munin:[* TO *]")
 

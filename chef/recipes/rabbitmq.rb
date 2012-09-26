@@ -1,4 +1,4 @@
-require_recipe "rabbitmq"
+include_recipe "rabbitmq"
 
 execute "rabbitmqctl add_vhost /chef" do
   not_if "rabbitmqctl list_vhosts| grep /chef"

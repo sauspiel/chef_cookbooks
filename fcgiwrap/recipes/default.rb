@@ -1,4 +1,4 @@
-require_recipe "bluepill"
+include_recipe "bluepill"
 
 #remote_file "/tmp/#{node.fcgiwrap[:version]}.deb" do
 #  source "#{node[:package_url]}/#{node.fcgiwrap[:version]}.deb"

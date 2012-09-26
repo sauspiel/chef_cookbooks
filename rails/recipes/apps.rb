@@ -1,10 +1,10 @@
-require_recipe "nginx"
-require_recipe "rails::app_dependencies"
-require_recipe "unicorn"
-require_recipe "bluepill"
-require_recipe "users"
-require_recipe "bundler"
-require_recipe "logentries"
+include_recipe "nginx"
+include_recipe "rails::app_dependencies"
+include_recipe "unicorn"
+include_recipe "bluepill"
+include_recipe "users"
+include_recipe "bundler"
+include_recipe "logentries"
 
 if node[:active_applications]
 

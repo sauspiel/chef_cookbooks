@@ -1,4 +1,4 @@
-require_recipe "memcached"
+include_recipe "memcached"
 
 service "memcached" do
   action [:stop, :disable]

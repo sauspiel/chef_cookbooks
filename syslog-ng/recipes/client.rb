@@ -1,4 +1,4 @@
-require_recipe "syslog-ng"
+include_recipe "syslog-ng"
 
 template "/etc/syslog-ng/syslog-ng.conf" do
   source "syslog-ng-client.conf.erb"

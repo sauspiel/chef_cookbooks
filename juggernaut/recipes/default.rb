@@ -1,4 +1,4 @@
-require_recipe 'bluepill'
+include_recipe 'bluepill'
 
 # TODO: install nodejs, using chris-lea/node.js ppa
 # TODO: install npm

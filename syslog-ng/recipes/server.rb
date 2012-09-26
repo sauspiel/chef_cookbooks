@@ -1,4 +1,4 @@
-require_recipe "syslog-ng"
+include_recipe "syslog-ng"
 
 directory "/u/logs" do
   mode 0755

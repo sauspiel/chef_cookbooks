@@ -1,4 +1,4 @@
-require_recipe "apt"
+include_recipe "apt"
 
 if !node[:nginx][:with_pam_authentication]
   apt_repository "nginx" do
@@ -12,6 +12,7 @@ if !node[:nginx][:with_pam_authentication]
 
   package "nginx" do
     version node[:nginx][:version]
+    default_release node[:nginx][:debian_release]
     action :install
   end
 

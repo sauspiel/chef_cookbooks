@@ -1,4 +1,4 @@
-require_recipe "logrotate"
+include_recipe "logrotate"
 
 gem_package "bluepill" do
   version node[:bluepill][:version]

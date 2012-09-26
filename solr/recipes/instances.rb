@@ -1,4 +1,4 @@
-require_recipe "java"
+include_recipe "java"
 package "tomcat6"
 package "tomcat6-user"
 

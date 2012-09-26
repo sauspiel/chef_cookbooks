@@ -1,7 +1,7 @@
-require_recipe "nginx"
-require_recipe "fcgiwrap"
-require_recipe  "runit"
-require_recipe "ssl_certificates"
+include_recipe "nginx"
+include_recipe "fcgiwrap"
+include_recipe  "runit"
+include_recipe "ssl_certificates"
 include_recipe "users"
 
 package "nagios3"

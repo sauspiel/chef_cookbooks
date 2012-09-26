@@ -1,4 +1,4 @@
-require_recipe 'apt'
+include_recipe 'apt'
 
 if node[:apt][:packages]
   node[:apt][:packages].each do |group, packages|
