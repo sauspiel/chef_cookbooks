@@ -18,14 +18,20 @@ if node[:active_applications]
       mode 0755
   end 
 
-  
+  ["/var/www", "/var/run/unicorn"].each do |dir|
+    directory dir do
+      owner "deploy"
+      group "deploy"
+    end
+  end
+    
   node[:active_applications].each do |name, conf|
   
     app = search(:apps, "id:#{name}").first
 
     domain = app["environments"][conf["env"]]["domain"]
 
-    app_root = "/var/www/#{domain}"  
+    app_root = "/var/www/#{domain}"
     
     ssl_certificate domain
     
