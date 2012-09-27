@@ -10,7 +10,7 @@ if !node[:nginx][:with_pam_authentication]
     action :add
   end
 
-  package "nginx" do
+  apt_package "nginx" do
     version node[:nginx][:version]
     default_release node[:nginx][:debian_release]
     action :install
