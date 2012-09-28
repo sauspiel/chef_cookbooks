@@ -1,15 +1,15 @@
 include_recipe "apt"
 
-if !node[:nginx][:with_pam_authentication]
-  apt_repository "nginx" do
-    uri "http://nginx.org/packages/debian"
-    components ["nginx"]
-    distribution node[:lsb][:codename]
-    keyserver "keyserver.ubuntu.com"
-    key "ABF5BD827BD9BF62"
-    action :add
-  end
+apt_repository "nginx" do
+  uri "http://nginx.org/packages/debian"
+  components ["nginx"]
+  distribution node[:lsb][:codename]
+  keyserver "keyserver.ubuntu.com"
+  key "ABF5BD827BD9BF62"
+  action :add
+end
 
+if !node[:nginx][:with_pam_authentication]
   apt_package "nginx" do
     version node[:nginx][:version]
     default_release node[:nginx][:debian_release]
@@ -18,21 +18,10 @@ if !node[:nginx][:with_pam_authentication]
 
 else
   # see https://github.com/sauspiel/hosting/wiki/Nginx
-  tmp = node[:tmp] ? node[:tmp] : "/tmp"
-  pamversion = "#{node[:nginx][:version]}+authpam1"
-  deb = "nginx_#{pamversion}_amd64.deb"
-  debpath = "#{tmp}/#{deb}"
-
-  remote_file "#{debpath}" do
-    version = pamversion
-    source "#{node[:package_url]}/#{deb}"
-    not_if { File.exists?("#{debpath}")}
-  end
-
-  dpkg_package "nginx_with_pam" do
-    source "#{debpath}"
+  apt_package "nginx" do
+    version "#{node[:nginx][:version]}+authpam1"
+    default_release node[:nginx][:debian_release]
     action :install
-    only_if { File.exists?("#{debpath}")}
   end
 
   group "shadow" do
