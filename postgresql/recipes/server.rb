@@ -1,13 +1,14 @@
 include_recipe "postgresql::client"
 
 
-execute "installing postgresql-common" do
-  command "apt-get install -y -t #{node[:postgresql][:deb_release]} postgresql-common"
+apt_package "postgresql-common" do
+  default_release node[:postgresql][:deb_release]
 end
 
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
-  package "#{pkg}-#{node[:postgresql][:version]}" do
+  apt_package "#{pkg}" do
     version node[:postgresql][:debversion]
+    default_release node[:postgresql][:deb_release]
   end
 end
 
@@ -55,6 +56,7 @@ template "#{confdir}/pg_hba.conf" do
   notifies :reload, resources(:service => "postgresql")
 end
 
+addresses = Array.new
 node[:postgresql][:interfaces].each do |eth|
   addresses <<  node[:network][:interfaces]["eth"][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
 end
