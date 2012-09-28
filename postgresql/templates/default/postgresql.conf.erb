@@ -1,35 +1,57 @@
 # configured by chef for <%= @node[:fqdn] %>
 
 
-data_directory = '<%= @datadir %>'	# use data in another directory, change requires restart
-hba_file = '<%= @confdir %>/pg_hba.conf'	# host-based authentication file, change requires restart
-ident_file = '<%= @confdir %>/pg_ident.conf'	# ident configuration file, change requires restart
+data_directory = '<%= @datadir %>'	
+hba_file = '<%= @confdir %>/pg_hba.conf'	
+ident_file = '<%= @confdir %>/pg_ident.conf'	
 
-external_pid_file = '/var/run/postgresql/<%= @node[:postgresql][:version] %>-main.pid'		# write an extra PID file, change requires restart
+external_pid_file = '/var/run/postgresql/<%= @node[:postgresql][:version] %>-main.pid'
+unix_socket_directory = '/var/run/postgresql'
 
-listen_addresses = '<%= @node[:postgresql][:listen_addresses]%>' # defaults to 'localhost', '*' = all, (change requires restart)
-port = <%= @node[:postgresql][:port] %>				# (change requires restart)
-max_connections = 100			# (change requires restart)
+listen_addresses = '<%= @addresses.join(",")%>'
+port = <%= @node[:postgresql][:port] %>	
+max_connections = <% @node[:postgresql][:max_connections] %>
+superuser_reserved_connections = <% @node[:postgresql][:superuser_reserved_connections] %>
+ssl = <% @node[:postgresql][:ssl] %>
 
-unix_socket_directory = '/var/run/postgresql'		# (change requires restart)
+shared_buffers = <%= @node[:postgresql][:shared_buffers] %> 
+temp_buffers = <%= @node[:postgresql][:temp_buffers] %>
+work_mem = <%= @node[:postgresql][:work_mem] %>
+maintenance_work_mem = <%= @node[:postgresql][:maintenance_work_mem] %>
 
-shared_buffers = <%= @node[:postgresql][:shared_buffers]%>			# min 128kB, change requires restart
+effective_io_concurrency = <%= @node[:postgresql][:effective_io_concurrency] %>
 
-datestyle = 'iso, dmy'
+datestyle = '<%= @node[:postgresql][:datestyle] %>'
+lc_messages = '<%= @node[:postgresql][:lc_language] %>' 
+lc_monetary = '<%= @node[:postgresql][:lc_language] %>' 
+lc_numeric =  '<%= @node[:postgresql][:lc_language] %>'
+lc_time =     '<%= @node[:postgresql][:lc_language] %>'	
+default_text_search_config = '<%= @node[:postgresql][:text_search_config] %>'
 
-lc_messages = 'en_US.UTF-8'			# locale for system error message strings
-lc_monetary = 'en_US.UTF-8'			# locale for monetary formatting
-lc_numeric = 'en_US.UTF-8'			# locale for number formatting
-lc_time = 'en_US.UTF-8'				# locale for time formatting
 
-default_text_search_config = 'pg_catalog.english'
+wal_level = "<%= @node[:postgresql][:wal_level] %>"
+max_wal_senders = <%= @node[:postgresql][:max_wal_senders] %>
+wal_keep_segments = <%= @node[:postgresql][:wal_keep_segments %>
 
-# replication
+hot_standby = <%= @node[:postgresql][:hot_standby] %>
+archive_mode = <%= @node[:postgresql][:archive_mode] %> 
+archive_command = "<%= @node[:postgresql][:archive_command] %>"
 
-wal_level = hot_standby
-max_wal_senders = 5
-wal_keep_segments = 5000 # ~ 80GB required for repmgr
+fsync = <%= @node[:postgresql][:fsync] %>
+synchronous_commit = <%= @node[:postgresql][:synchronous_commit] %>
 
-hot_standby = on # allows read-only queries while recovering. only active when recovery.conf is present.
-archive_mode = on
-archive_command = 'cd .' # disabled for simplicity, see http://groups.google.com/group/repmgr/browse_thread/thread/d5d2a7303270a360
+commit_delay = <%= @node[:postgresql][:commit_delay] %>
+commit_siblings = <%= @node[:postgresql][:commit_siblings %>
+
+checkpoint_segments = <%= @node[:postgresql][:checkpoint_segments] %>
+
+log_min_duration_statements = <%= @node[:postgresql][:log_min_duration_statements %>
+log_line_prefix = '%t %d %p '
+log_timezone = 'localtime'
+
+track_activities = on
+track_counts = on
+
+autovacuum = on
+autovacuum_max_workers = <%= @node[:postgresql][:autovacuum_max_workers] %>
+autovacuum_naptime = <%= @node[:postgresql][:autovacuum_naptime] %>

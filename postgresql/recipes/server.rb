@@ -55,12 +55,16 @@ template "#{confdir}/pg_hba.conf" do
   notifies :reload, resources(:service => "postgresql")
 end
 
+node[:postgresql][:interfaces].each do |eth|
+  addresses <<  node[:network][:interfaces]["eth"][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
+end
+
 template "#{confdir}/postgresql.conf" do
   source "postgresql.conf.erb"
   owner "postgres"
   group "postgres"
   mode 0644
-  variables(:datadir => datadir, :confdir => confdir)
+  variables(:datadir => datadir, :confdir => confdir, :addresses => addresses)
   
   # disabled to prevent accidental restarts in production
   # notifies :restart, resources(:service => "postgresql")
