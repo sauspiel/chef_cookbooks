@@ -6,7 +6,7 @@ apt_package "postgresql-common" do
 end
 
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
-  apt_package "#{pkg}" do
+  apt_package "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
   end
@@ -58,7 +58,7 @@ end
 
 addresses = Array.new
 node[:postgresql][:interfaces].each do |eth|
-  addresses <<  node[:network][:interfaces]["eth"][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
+  addresses <<  node[:network][:interfaces][eth][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
 end
 
 template "#{confdir}/postgresql.conf" do
