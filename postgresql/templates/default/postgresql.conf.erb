@@ -22,7 +22,7 @@ maintenance_work_mem = <%= @node[:postgresql][:maintenance_work_mem] %>
 effective_io_concurrency = <%= @node[:postgresql][:effective_io_concurrency] %>
 
 datestyle = '<%= @node[:postgresql][:datestyle] %>'
-lc_messages = '<%= @node[:postgresql][:lc_language] %>' 
+lc_messages = '<%= @node[:postgresql][:log_language] %>' 
 lc_monetary = '<%= @node[:postgresql][:lc_language] %>' 
 lc_numeric =  '<%= @node[:postgresql][:lc_language] %>'
 lc_time =     '<%= @node[:postgresql][:lc_language] %>'	
