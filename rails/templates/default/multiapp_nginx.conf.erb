@@ -8,6 +8,11 @@ server {
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
 
+  <% if @htpasswd %>
+  auth_basic "<%= @app_name %> Restricted Access";
+  auth_basic_user_file /etc/nginx/htpasswd.d/<%= @app_name %>.htpasswd;
+  <% end -%>
+
   # Don't serve images from other apps
   # Must come before includes
   location ~ ^/images/(<%= @other_apps %>)/ {
@@ -30,6 +35,11 @@ server {
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
+
+  <% if @htpasswd %>
+  auth_basic "<%= @app_name %> Restricted Access";
+  auth_basic_user_file /etc/nginx/htpasswd.d/<%= @app_name %>.htpasswd;
+  <% end -%>
 
   # Don't serve images from other apps
   # Must come before includes

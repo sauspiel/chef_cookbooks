@@ -36,10 +36,27 @@ if node[:active_applications]
     ssl_certificate domain
     
     other_apps = @apps.collect {|a| a['id'] unless a['id'] == name }.compact.sort.join("|")
-    
+
+    htpasswd = nil
+    if app["environments"][conf["env"]]["htpasswd"]
+      htpasswd = Hash.new
+      htpasswd[:user] = app["environments"][conf["env"]]["htpasswd"]
+      htpasswd[:passwd] = Chef::EncryptedDataBagItem.load("passwords", "http")[htpasswd[:user]].crypt("salt")
+    end
+
+    if htpasswd
+      template "/etc/nginx/htpasswd.d/#{name}.htpasswd" do
+        source "htpasswd.erb"
+        variables :htpasswd => htpasswd
+        owner node[:nginx][:user]
+        group node[:nginx][:group]
+        mode 0600
+      end
+    end
+
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
-      variables :app_name => name, :server_name => domain, :other_apps => other_apps
+      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd
       notifies :reload, resources(:service => "nginx")
     end
 
