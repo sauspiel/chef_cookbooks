@@ -19,9 +19,11 @@
 
 package "build-essential"
 
-package "collectd" do
-  version node[:collectd][:version]
-  action :install
+%w(collectd-core collectd).each do |pkg|
+  package "#{pkg}" do
+    version node[:collectd][:version]
+    action :install
+  end
 end
 
 service "collectd" do
