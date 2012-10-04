@@ -24,7 +24,7 @@ end
 
 def collectd_option(option)
   return option if option.instance_of?(Fixnum) || option == true || option == false
-  "\"#{option}\""
+  return option.split(" ").collect { |str| "\"#{str}\"" }.join(" ")
 end
 
 def collectd_settings(options, level=0)
