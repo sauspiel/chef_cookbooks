@@ -41,3 +41,5 @@ default.nginx[:maintenance][:bypass_ip_addresses] = ["1.2.3.4"]
 
 # pam authentication
 default.nginx[:with_pam_authentication] = false
+
+default.nginx[:with_stats] = true

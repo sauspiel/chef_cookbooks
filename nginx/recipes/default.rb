@@ -78,6 +78,15 @@ node[:nginx][:helpers].each do |h|
   end
 end
 
+template "/etc/nginx/conf.d/default.conf" do
+  source "default.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :reload, resources(:service => "nginx")
+  variables(:with_stats => node[:nginx][:with_stats])
+end
+
 # server-wide defaults, automatically loaded
 node[:nginx][:extras].each do |ex|
   template "/etc/nginx/conf.d/#{ex}.conf" do
