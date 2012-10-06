@@ -44,10 +44,26 @@ directory "#{node[:collectd][:custom_plugins]}" do
   recursive true
 end
 
+directory File.dirname("#{node[:collectd][:custom_typesdb]}") do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "#{node[:collectd][:custom_typesdb]}" do
+  owner "root"
+  group "root"
+  mode 644
+  source "custom_typesdb.erb"
+  action :create_if_missing
+end
+
 package "lvm2" do
   action :remove
   ignore_failure true
 end
+
+node[:collectd][:types_db] << node[:collectd][:custom_typesdb]
 
 template "#{node[:collectd][:conf_dir]}/collectd.conf" do
   source "collectd.conf.erb"

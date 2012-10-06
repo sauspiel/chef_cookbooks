@@ -30,3 +30,4 @@ default[:collectd][:name] = node[:fqdn]
 
 default[:collectd][:plugins] = Mash.new
 default[:collectd][:servers] = []
+default[:collectd][:custom_typesdb] = "/usr/local/collectd/custom_types.db"
