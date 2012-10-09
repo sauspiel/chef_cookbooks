@@ -23,6 +23,9 @@ execute "register agent" do
   not_if "grep agent-key /etc/le/config"
 end
 
+service "logentries" do
+  supports :restart => true
+end
 
 if node[:logentries][:logs]
   node[:logentries][:logs].each do |name, path|
@@ -32,3 +35,10 @@ if node[:logentries][:logs]
     end
   end
 end
+
+service "logentries" do
+  action [:enable, :restart]
+end
+
+
+
