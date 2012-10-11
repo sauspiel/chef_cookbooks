@@ -53,7 +53,6 @@ template "#{confdir}/pg_hba.conf" do
   owner "postgres"
   group "postgres"
   mode 0644
-  notifies :reload, resources(:service => "postgresql")
 end
 
 addresses = Array.new
@@ -67,9 +66,6 @@ template "#{confdir}/postgresql.conf" do
   group "postgres"
   mode 0644
   variables(:datadir => datadir, :confdir => confdir, :addresses => addresses)
-  
-  # disabled to prevent accidental restarts in production
-  # notifies :restart, resources(:service => "postgresql")
 end
 
 
@@ -79,9 +75,6 @@ if node[:postgresql][:role] == "slave"
     owner "postgres"
     group "postgres"
     mode 0644
-    
-    # disabled to prevent accidental restarts in production    
-    # notifies :restart, resources(:service => "postgresql")
   end  
 else
   file "#{datadir}/recovery.conf" do
