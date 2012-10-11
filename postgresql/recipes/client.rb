@@ -5,11 +5,11 @@
   end
 end
 
-execute "installing postgresql-client-common" do
-  command "apt-get install -y -t #{node[:postgresql][:deb_release]} postgresql-client-common"
+apt_package "postgresql-client-common" do
+  default_release "squeeze-backports"
 end
 
-package "postgresql-client-#{node[:postgresql][:version]}" do
+apt_package "postgresql-client-#{node[:postgresql][:version]}" do
   version node[:postgresql][:debversion]
-  action :install
+  default_release node[:postgresql][:deb_release]
 end

@@ -2,7 +2,7 @@ include_recipe "postgresql::client"
 
 
 apt_package "postgresql-common" do
-  default_release node[:postgresql][:deb_release]
+  default_release "squeeze-backports"
 end
 
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
