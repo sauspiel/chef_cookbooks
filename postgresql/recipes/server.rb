@@ -14,15 +14,7 @@ end
 
 %w(libxslt1-dev libxml2-dev libpam0g-dev libedit-dev).each {|p| package p }
 
-#remote_file "/tmp/postgresql-repmgr-9.0_1.0.0.deb" do
-#  source "#{node[:package_url]}/postgresql-repmgr-9.0_1.0.0.deb"
-#  not_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
-#end
-
-#dpkg_package "postgresql-repmgr" do
-#  source "/tmp/postgresql-repmgr-9.0_1.0.0.deb"
-#  only_if { File.exists?("/tmp/postgresql-repmgr-9.0_1.0.0.deb") }
-#end
+package "repmgr" if node[:postgresql][:with_repmgr]
 
 directory "/etc/postgresql" do
   mode 0755
