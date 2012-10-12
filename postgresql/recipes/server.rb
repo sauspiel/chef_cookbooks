@@ -68,10 +68,6 @@ if node[:postgresql][:role] == "slave"
     group "postgres"
     mode 0644
   end  
-else
-  file "#{datadir}/recovery.conf" do
-    action :delete
-  end
 end
 
 template "/etc/sysctl.d/30-postgresql-shm.conf" do
