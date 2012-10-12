@@ -6,5 +6,5 @@ local   all           all                                     trust
 host    all           all             127.0.0.1/32            trust
 
 <% @node[:postgresql][:networks].each do |n| %>
-host    all           all             <%= n[:network] %> <%= n[:mode] %>
+<%= n[:host] || 'host' %>    <%= n[:database] || 'all' %> <%= n[:user] || 'all' %>  <%= n[:address] || ''%> <%= n[:mode] || 'trust' %>
 <% end %>
