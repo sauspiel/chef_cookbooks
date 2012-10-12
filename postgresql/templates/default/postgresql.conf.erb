@@ -22,6 +22,7 @@ maintenance_work_mem = <%= @node[:postgresql][:maintenance_work_mem] %>
 effective_io_concurrency = <%= @node[:postgresql][:effective_io_concurrency] %>
 
 datestyle = '<%= @node[:postgresql][:datestyle] %>'
+timezone = '<%= @node[:postgresql][:timezone] %>'
 lc_messages = '<%= @node[:postgresql][:log_language] %>' 
 lc_monetary = '<%= @node[:postgresql][:lc_language] %>' 
 lc_numeric =  '<%= @node[:postgresql][:lc_language] %>'
@@ -55,3 +56,4 @@ track_counts = on
 autovacuum = on
 autovacuum_max_workers = <%= @node[:postgresql][:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @node[:postgresql][:autovacuum_naptime] %>
+

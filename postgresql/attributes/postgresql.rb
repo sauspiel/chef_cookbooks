@@ -34,3 +34,4 @@ default[:postgresql][:log_min_duration_statement] = 2000
 default[:postgresql][:autovacuum_max_workers] = 3
 default[:postgresql][:autovacuum_naptime] = "1min"
 default[:postgresql][:with_repmgr] = true
+default[:postgresql][:timezone] = "GMT"
