@@ -5,6 +5,11 @@ apt_package "postgresql-common" do
   default_release "squeeze-backports"
 end
 
+apt_package "ptop" do
+  default_release node[:postgresql][:deb_release]
+  options "--no-install-recommends"
+end
+
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
   apt_package "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
