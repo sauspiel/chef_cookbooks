@@ -8,5 +8,6 @@ Bluepill.application("repmgrd", :log_file => "<%= node[:bluepill][:log_dir] %>/b
     process.stdout = process.stderr = "<%= node[:repmgr][:log] %>"
     process.uid = "root"
     process.gid = "root"
+    process.daemonize = true
   end
 end
