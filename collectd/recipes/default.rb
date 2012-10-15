@@ -37,6 +37,13 @@ directory "#{node[:collectd][:conf_dir]}/conf.d" do
   recursive true
 end
 
+directory "#{node[:collectd][:conf_dir]}/conf_unmanaged.d" do
+  owner "root"
+  group "root"
+  mode "755"
+  recursive true
+end
+
 directory "#{node[:collectd][:custom_plugins]}" do
   owner "root"
   group "root"

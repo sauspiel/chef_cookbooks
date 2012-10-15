@@ -20,3 +20,4 @@ Interval <%= node[:collectd][:interval] %>
 ReadThreads <%= node[:collectd][:read_threads] %>
 
 Include "<%= node[:collectd][:conf_dir] %>/conf.d/*.conf"
+Include "<%= node[:collectd][:conf_dir] %>/conf_unmanaged.d/*.conf"
