@@ -3,4 +3,5 @@
 cluster=<%= node[:repmgr][:cluster] %>
 node=<%= node[:repmgr][:node] %>
 conninfo='host=<%= node[:repmgr][:host] %> user=<%= node[:repmgr][:user] %> dbname=<%= node[:repmgr][:dbname] %>'
+rsync_options=--archive --checksum --progress --rsh=ssh
 
