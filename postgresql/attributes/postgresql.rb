@@ -36,3 +36,4 @@ default[:postgresql][:autovacuum_naptime] = "1min"
 default[:postgresql][:with_repmgr] = true
 default[:postgresql][:timezone] = "GMT"
 default[:postgresql][:log_lock_waits] = "on"
+default[:postgresql][:max_standby_streaming_delay] = 30

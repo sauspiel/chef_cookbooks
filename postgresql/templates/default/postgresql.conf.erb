@@ -37,6 +37,7 @@ wal_keep_segments = <%= @node[:postgresql][:wal_keep_segments] %>
 hot_standby = <%= @node[:postgresql][:hot_standby] %>
 archive_mode = <%= @node[:postgresql][:archive_mode] %> 
 archive_command = '<%= @node[:postgresql][:archive_command] %>'
+max_standby_streaming_delay = <%= @node[:postgresql][:max_standby_streaming_delay] %>
 
 fsync = <%= @node[:postgresql][:fsync] %>
 synchronous_commit = <%= @node[:postgresql][:synchronous_commit] %>
