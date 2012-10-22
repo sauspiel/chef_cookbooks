@@ -29,8 +29,8 @@ http {
 
   ssl_session_cache    shared:SSL:<%= @node[:nginx][:ssl_session_cache][:size] %>;
   ssl_session_timeout  8m;
-  ssl_protocols SSLv3 TLSv1;
-  ssl_ciphers ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
+  ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers !ADH:RC4+RSA:MEDIUM:-SSLv2:-EXP:RC4:HIGH:!aNULL:!MD5:!kEDH:-LOW;
   ssl_prefer_server_ciphers on;
   
   <% if @node[:nginx][:keepalive] == "on" %>
