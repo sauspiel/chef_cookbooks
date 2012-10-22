@@ -32,6 +32,7 @@ if node[:logentries][:logs]
     execute "follow file #{name} at #{path}" do
       command "le follow #{path} --name #{name}"
       not_if "le whoami | grep #{name}"
+      ignore_failure true
     end
   end
 end
