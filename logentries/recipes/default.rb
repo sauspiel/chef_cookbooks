@@ -30,8 +30,8 @@ end
 if node[:logentries][:logs]
   node[:logentries][:logs].each do |name, path|
     execute "follow file #{name} at #{path}" do
-      command "le follow #{path} --name #{name}"
-      not_if "le whoami | grep #{name}"
+      command "le follow #{path} --name \"#{name}\""
+      not_if "le whoami | grep \"#{name}\""
       ignore_failure true
     end
   end
