@@ -38,3 +38,4 @@ default[:postgresql][:timezone] = "GMT"
 default[:postgresql][:log_lock_waits] = "on"
 default[:postgresql][:max_standby_streaming_delay] = 30
 default[:postgresql][:max_standby_archive_delay] = 30
+default[:postgresql][:log_checkpoints] = "on"
