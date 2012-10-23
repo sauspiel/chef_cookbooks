@@ -7,6 +7,7 @@ collectd_plugin "postgres-slave" do
   config :user => node[:repmgr][:user], 
           :cluster => node[:repmgr][:cluster], 
           :host => node[:repmgr][:host], 
-          :dbname => node[:repmgr][:dbname]
+          :dbname => node[:repmgr][:dbname],
+          :node => node[:repmgr][:node]
   
 end

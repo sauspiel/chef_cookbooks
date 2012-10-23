@@ -2,7 +2,7 @@ LoadPlugin "postgresql"
 
 <Plugin postgresql>
   <Query replication_lag>
-    Statement "SELECT EXTRACT(EPOCH FROM time_lag) as time_lag FROM repmgr_<%= @config[:cluster] %>.repl_status"
+  Statement "SELECT EXTRACT(EPOCH FROM time_lag) as time_lag FROM repmgr_<%= @config[:cluster] %>.repl_status where standby_node = <%= @config[:node] %>"
     <Result>
       Type gauge
       InstancePrefix "replication_time_lag"
