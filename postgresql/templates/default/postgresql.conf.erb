@@ -52,6 +52,7 @@ log_min_duration_statement = <%= @node[:postgresql][:log_min_duration_statement]
 log_line_prefix = '%t %d %p '
 log_timezone = 'localtime'
 log_lock_waits = <%= @node[:postgresql][:log_lock_waits] %>
+log_checkpoints = <%= @node[:postgresql][:log_checkpoints] %>
 
 track_activities = on
 track_counts = on
