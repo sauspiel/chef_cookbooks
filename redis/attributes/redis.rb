@@ -12,3 +12,5 @@ default.redis[:syslog] = true
 # default to full durability persistence
 default.redis[:appendonly] = true
 default.redis[:version] = '2:2.4.15-1~bpo60+2'
+default.redis[:appendfsync] = 'everysec'
+

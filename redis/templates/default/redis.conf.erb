@@ -24,7 +24,7 @@ dbfilename dump.rdb
 <% if @appendonly %>
 appendonly yes
 # appendfilename appendonly.aof
-appendfsync everysec
+appendfsync <%= @node[:redis][:appendfsync] %>
 no-appendfsync-on-rewrite no
 <% end %>
 
