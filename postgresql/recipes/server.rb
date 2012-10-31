@@ -10,6 +10,10 @@ apt_package "ptop" do
   options "--no-install-recommends"
 end
 
+apt_package "check-postgres" do
+  default_release node[:postgresql][:deb_release]
+end
+
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
   apt_package "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
