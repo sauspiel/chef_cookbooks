@@ -5,7 +5,7 @@ description      "Manages unbound DNS resolver"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
-recipe "unbound::default", "Installs unbound and sets up configuration files"
+recipe "unbound::server", "Installs unbound and sets up configuration files"
 recipe "unbound::chroot", "Sets up the chroot environment if chroot attribute is enabled"
 recipe "unbound::remote_control", "Sets up remote control certificates"
 
