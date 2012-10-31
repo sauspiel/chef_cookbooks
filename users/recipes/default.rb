@@ -20,6 +20,15 @@ groups.each do |group|
 
     search(:users, "groups:#{group[:id]}").each do |user|
       home_dir = user[:home_dir] || "/home/#{user[:id]}"
+
+      # make sure users main group exists before creating the user and assigning a group to it
+      usergroup = user[:groups].first
+      group usergroup do 
+        group_name usergroup.to_s
+        gid groups.find { |grp| grp[:id] == usergroup }[:gid]
+        action [ :create, :modify, :manage ]
+      end
+
       user user[:id] do
         comment user[:full_name]
         uid user[:uid]
