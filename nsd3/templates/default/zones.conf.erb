@@ -11,7 +11,7 @@ zone:
     <% end -%>
   <% elsif node[:nsd3][:type] == "slave" %>
   allow-notify: <%= zone['ns'][0].values[0] %> NOKEY
-  request-xfr: AXFR <%= node[:ipaddress] %> NOKEY
+  request-xfr: AXFR <%= zone['ns'][0].values[0] %> NOKEY
   <% end -%>
 <% end -%>
 
