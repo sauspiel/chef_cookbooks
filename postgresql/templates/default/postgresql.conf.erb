@@ -5,59 +5,59 @@ data_directory = '<%= @datadir %>'
 hba_file = '<%= @confdir %>/pg_hba.conf'	
 ident_file = '<%= @confdir %>/pg_ident.conf'	
 
-external_pid_file = '/var/run/postgresql/<%= @node[:postgresql][:version] %>-main.pid'
+external_pid_file = '/var/run/postgresql/<%= @config[:version] %>-<%= @instance %>.pid'
 unix_socket_directory = '/var/run/postgresql'
 
 listen_addresses = '<%= @addresses.join(",")%>'
-port = <%= @node[:postgresql][:port] %>	
-max_connections = <%= @node[:postgresql][:max_connections] %>
-superuser_reserved_connections = <%= @node[:postgresql][:superuser_reserved_connections] %>
-ssl = <%= @node[:postgresql][:ssl] %>
+port = <%= @config[:port] %>
+max_connections = <%= @config[:max_connections] %>
+superuser_reserved_connections = <%= @config[:superuser_reserved_connections] %>
+ssl = <%= @config[:ssl] %>
 
-shared_buffers = <%= @node[:postgresql][:shared_buffers] %> 
-temp_buffers = <%= @node[:postgresql][:temp_buffers] %>
-work_mem = <%= @node[:postgresql][:work_mem] %>
-maintenance_work_mem = <%= @node[:postgresql][:maintenance_work_mem] %>
+shared_buffers = <%= @config[:shared_buffers] %> 
+temp_buffers = <%= @config[:temp_buffers] %>
+work_mem = <%= @config[:work_mem] %>
+maintenance_work_mem = <%= @config[:maintenance_work_mem] %>
 
-effective_io_concurrency = <%= @node[:postgresql][:effective_io_concurrency] %>
+effective_io_concurrency = <%= @config[:effective_io_concurrency] %>
 
-datestyle = '<%= @node[:postgresql][:datestyle] %>'
-timezone = '<%= @node[:postgresql][:timezone] %>'
-lc_messages = '<%= @node[:postgresql][:log_language] %>' 
-lc_monetary = '<%= @node[:postgresql][:lc_language] %>' 
-lc_numeric =  '<%= @node[:postgresql][:lc_language] %>'
-lc_time =     '<%= @node[:postgresql][:lc_language] %>'	
-default_text_search_config = '<%= @node[:postgresql][:text_search_config] %>'
+datestyle = '<%= @config[:datestyle] %>'
+timezone = '<%= @config[:timezone] %>'
+lc_messages = '<%= @config[:log_language] %>' 
+lc_monetary = '<%= @config[:lc_language] %>' 
+lc_numeric =  '<%= @config[:lc_language] %>'
+lc_time =     '<%= @config[:lc_language] %>'	
+default_text_search_config = '<%= @config[:text_search_config] %>'
 
 
-wal_level = <%= @node[:postgresql][:wal_level] %>
-max_wal_senders = <%= @node[:postgresql][:max_wal_senders] %>
-wal_keep_segments = <%= @node[:postgresql][:wal_keep_segments] %>
+wal_level = <%= @config[:wal_level] %>
+max_wal_senders = <%= @config[:max_wal_senders] %>
+wal_keep_segments = <%= @config[:wal_keep_segments] %>
 
-hot_standby = <%= @node[:postgresql][:hot_standby] %>
-archive_mode = <%= @node[:postgresql][:archive_mode] %> 
-archive_command = '<%= @node[:postgresql][:archive_command] %>'
-max_standby_streaming_delay = <%= @node[:postgresql][:max_standby_streaming_delay] %>
-max_standby_archive_delay = <%= @node[:postgresql][:max_standby_archive_delay] %>
+hot_standby = <%= @config[:hot_standby] %>
+archive_mode = <%= @config[:archive_mode] %> 
+archive_command = '<%= @config[:archive_command] %>'
+max_standby_streaming_delay = <%= @config[:max_standby_streaming_delay] %>
+max_standby_archive_delay = <%= @config[:max_standby_archive_delay] %>
 
-fsync = <%= @node[:postgresql][:fsync] %>
-synchronous_commit = <%= @node[:postgresql][:synchronous_commit] %>
+fsync = <%= @config[:fsync] %>
+synchronous_commit = <%= @config[:synchronous_commit] %>
 
-commit_delay = <%= @node[:postgresql][:commit_delay] %>
-commit_siblings = <%= @node[:postgresql][:commit_siblings] %>
+commit_delay = <%= @config[:commit_delay] %>
+commit_siblings = <%= @config[:commit_siblings] %>
 
-checkpoint_segments = <%= @node[:postgresql][:checkpoint_segments] %>
+checkpoint_segments = <%= @config[:checkpoint_segments] %>
 
-log_min_duration_statement = <%= @node[:postgresql][:log_min_duration_statement] %>
+log_min_duration_statement = <%= @config[:log_min_duration_statement] %>
 log_line_prefix = '%t %d %p '
 log_timezone = 'localtime'
-log_lock_waits = <%= @node[:postgresql][:log_lock_waits] %>
-log_checkpoints = <%= @node[:postgresql][:log_checkpoints] %>
+log_lock_waits = <%= @config[:log_lock_waits] %>
+log_checkpoints = <%= @config[:log_checkpoints] %>
 
 track_activities = on
 track_counts = on
 
 autovacuum = on
-autovacuum_max_workers = <%= @node[:postgresql][:autovacuum_max_workers] %>
-autovacuum_naptime = <%= @node[:postgresql][:autovacuum_naptime] %>
+autovacuum_max_workers = <%= @config[:autovacuum_max_workers] %>
+autovacuum_naptime = <%= @config[:autovacuum_naptime] %>
 

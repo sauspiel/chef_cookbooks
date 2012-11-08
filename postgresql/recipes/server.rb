@@ -28,15 +28,6 @@ directory "/etc/postgresql" do
   group "postgres"
 end
 
-datadir = "/var/lib/postgresql/#{node[:postgresql][:version]}/main"
-
-if node[:postgresql][:role] == "slave"
-  directory "#{datadir}/pg_xlog_archive" do
-    mode 0755
-    owner "postgres"
-    group "postgres"
-  end
-end
 
 service "postgresql" do
   service_name "postgresql"
@@ -44,36 +35,84 @@ service "postgresql" do
   action :nothing
 end
 
-confdir = "/etc/postgresql/#{node[:postgresql][:version]}/main"
+instances = node[:postgresql][:instances] || Hash.new
+instances["main"] = node[:postgresql] if instances.empty?
 
-template "#{confdir}/pg_hba.conf" do
-  source "pg_hba.conf.erb"
-  owner "postgres"
-  group "postgres"
-  mode 0644
-end
+instances.each do |instance, instconfig|
 
-addresses = Array.new
-node[:postgresql][:interfaces].each do |eth|
-  addresses <<  node[:network][:interfaces][eth][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
-end
+  config = (instconfig.nil?) ? node[:postgresql].to_hash :  node[:postgresql].to_hash.merge(instconfig)
+  config = config.each_with_object({}){|(k,v),h|h[k.to_sym] = v}
 
-template "#{confdir}/postgresql.conf" do
-  source "postgresql.conf.erb"
-  owner "postgres"
-  group "postgres"
-  mode 0644
-  variables(:datadir => datadir, :confdir => confdir, :addresses => addresses)
-end
+  datadir = "/var/lib/postgresql/#{node[:postgresql][:version]}/#{instance}"
+  confdir = "/etc/postgresql/#{node[:postgresql][:version]}/#{instance}"
 
+  [datadir, confdir].each do |dir|
+    directory confdir do
+      mode 0755
+      owner "postgres"
+      group "postgres"
+    end
+  end
 
-if node[:postgresql][:role] == "slave"
-  template "#{datadir}/recovery.conf" do
-    source "recovery.conf.erb"
+  execute "creating database for #{instance}" do
+    command "/usr/lib/postgresql/#{node[:postgresql][:version]}/bin/initdb -D #{datadir}"
+    user "postgres"
+    creates "#{datadir}/PG_VERSION"
+    action :run
+  end
+
+  if node[:postgresql][:role] == "slave"
+    directory "#{datadir}/pg_xlog_archive" do
+      mode 0755
+      owner "postgres"
+      group "postgres"
+    end
+  end
+
+  ['pg_hba.conf','pg_ident.conf'].each do |conf|
+    template "#{confdir}/#{conf}" do
+      source "#{conf}.erb"
+      owner "postgres"
+      group "postgres"
+      mode 0644
+    end
+  end
+
+  addresses = Array.new
+  config[:interfaces].each do |eth|
+    begin
+      addresses <<  node[:network][:interfaces][eth][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
+    rescue
+      Chef::Log.error("Interface #{eth} does not exist!")
+    end
+  end
+
+  template "#{confdir}/postgresql.conf" do
+    source "postgresql.conf.erb"
     owner "postgres"
     group "postgres"
     mode 0644
-  end  
+    variables(:datadir => datadir, :confdir => confdir, :addresses => addresses, :instance => instance, :config => config)
+  end
+
+  template "#{confdir}/start.conf" do
+    source "start.conf.erb"
+    owner "postgres"
+    group "postgres"
+    mode 0644
+    variables(:start => config[:start] || 'auto')
+  end
+
+
+  if node[:postgresql][:role] == "slave"
+    template "#{datadir}/recovery.conf" do
+      source "recovery.conf.erb"
+      owner "postgres"
+      group "postgres"
+      mode 0644
+    end  
+  end
+
 end
 
 template "/etc/sysctl.d/30-postgresql-shm.conf" do
