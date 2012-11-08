@@ -11,7 +11,7 @@ $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
                   <%= @zone['times']['negative_cache'] %> ; Negative Cache-TTL
                   )
                                                     
-                  <% @zone['ns'].each do |ns| %>
+                  <% @zone['ns'].select { |s| !s.fetch("exclude_from_ns_list", false) }.each do |ns| %>
                   IN  NS  <%= ns.keys[0] %>.
                   <% end -%>
                                               
