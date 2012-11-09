@@ -1,5 +1,6 @@
 /var/log/nginx/*.log {
 	daily
+  dateext
 	missingok
 	rotate <%= @node[:nginx][:log_keep_days] %>
 	compress
