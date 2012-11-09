@@ -44,7 +44,7 @@ logrotate "nsd3" do
   compress true
   user 'nsd'
   group 'nsd'
-  restart_command "/etc/init.d/nsd3 restart >/dev/null"
+  restart_command "/usr/sbin/nsdc reload >/dev/null"
 end
 
 service "nsd3" do
