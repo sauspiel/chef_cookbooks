@@ -65,9 +65,11 @@ template "#{node[:collectd][:custom_typesdb]}" do
   action :create_if_missing
 end
 
-package "lvm2" do
-  action :remove
-  ignore_failure true
+if node[:collectd][:remove_lvm2]
+  package "lvm2" do
+    action :remove
+    ignore_failure true
+  end
 end
 
 node[:collectd][:types_db] << node[:collectd][:custom_typesdb]
