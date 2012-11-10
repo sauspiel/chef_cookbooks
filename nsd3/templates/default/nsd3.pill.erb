@@ -1,8 +1,8 @@
 Bluepill.application("nsd3", :log_file => "<%= @node[:bluepill][:log_dir] %>/nsd3.log") do |app|
   app.working_dir = "/var/tmp"
   app.process("nsd3") do |process|
-    process.start_command = "/usr/sbin/nsdc start"
-    process.stop_command = "/usr/sbin/nsdc stop"
+    process.start_command = "/etc/init.d/nsd3 start"
+    process.stop_command = "/etc/init.d/nsd3 stop"
     process.stop_grace_time = 5.seconds
     process.stop_signals = [:term, 3.seconds, :kill]
     process.pid_file = "<%= @pid %>"
