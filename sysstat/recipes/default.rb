@@ -21,6 +21,20 @@ package "sysstat" do
   action :upgrade
 end
 
+template "/etc/cron.d/sysstat" do
+  source "sysstat.cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+template "/etc/cron.daily/sysstat" do
+  source "sysstat.cron.daily.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 service "sysstat" do
   supports :restart => true, :status => true
 
