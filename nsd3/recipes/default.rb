@@ -1,4 +1,5 @@
 include_recipe "logrotate"
+include_recipe "bluepill"
 
 package "dnsutils"
 
@@ -40,13 +41,25 @@ end
 logrotate "nsd3" do
   files ["#{node[:nsd3][:logfile]}"]
   frequency "daily"
-  rotate_count 10
+  rotate_count 3 
   compress true
   user 'nsd'
   group 'nsd'
-  restart_command "/usr/sbin/nsdc reload >/dev/null"
+  restart_command "/usr/sbin/nsdc reload"
 end
 
 service "nsd3" do
   action [:enable, :restart] 
+end
+
+template "#{node[:bluepill][:conf_dir]}/nsd3.pill" do
+  source "nsd3.pill.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :owner => "nsd", :group => "nsd", :pid => "/var/run/nsd.pid"
+end
+
+bluepill_service "nsd3" do
+  action [:load, :start]
 end
