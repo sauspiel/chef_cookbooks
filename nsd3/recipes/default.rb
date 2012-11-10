@@ -57,7 +57,7 @@ template "#{node[:bluepill][:conf_dir]}/nsd3.pill" do
   owner "root"
   group "root"
   mode 0644
-  variables :owner => "nsd", :group => "nsd", :pid => "/var/run/nsd.pid"
+  variables :owner => "nsd", :group => "nsd", :pid => node[:nsd3][:pid]
 end
 
 bluepill_service "nsd3" do
