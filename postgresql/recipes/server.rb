@@ -103,6 +103,14 @@ instances.each do |instance, instconfig|
     variables(:start => config[:start] || 'auto')
   end
 
+  template "#{datadir}/archive_command.sh" do
+    source "pg_archive_command.sh.erb"
+    owner "postgres"
+    group "postgres"
+    mode 0700
+    variables :cmd => config[:archive_command]
+  end
+
 
   if node[:postgresql][:role] == "slave"
     template "#{datadir}/recovery.conf" do

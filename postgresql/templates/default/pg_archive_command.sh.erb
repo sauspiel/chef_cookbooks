@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# wrapper script for preventing reloading postgres
+# $1 : %p
+# $2 : %f
+
+<%= node[:postgresql][:archive_command] %> $1 $2
