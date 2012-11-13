@@ -17,6 +17,7 @@ default[:postgresql][:wal_level] = "hot_standby"
 default[:postgresql][:max_wal_senders] = 5
 default[:postgresql][:wal_keep_segments] = 32
 default[:postgresql][:hot_standby] = "on" 
+default[:postgresql][:hot_standby_feedback] = "on"
 default[:postgresql][:archive_command] = "/bin/true"
 default[:postgresql][:archive_mode] = "on"
 default[:postgresql][:archive_timeout] = 180

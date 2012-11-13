@@ -35,6 +35,7 @@ max_wal_senders = <%= @config[:max_wal_senders] %>
 wal_keep_segments = <%= @config[:wal_keep_segments] %>
 
 hot_standby = <%= @config[:hot_standby] %>
+hot_standby_feedback = <%= @config[:hot_standby_feedback] %>
 archive_mode = <%= @config[:archive_mode] %> 
 archive_command = '<%= @datadir %>/archive_command.sh %p %f'
 archive_timeout = <%= @config[:archive_timeout] %>
