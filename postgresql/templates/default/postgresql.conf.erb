@@ -37,6 +37,7 @@ wal_keep_segments = <%= @config[:wal_keep_segments] %>
 hot_standby = <%= @config[:hot_standby] %>
 archive_mode = <%= @config[:archive_mode] %> 
 archive_command = '<%= @datadir %>/archive_command.sh %p %f'
+archive_timeout = <%= @config[:archive_timeout] %>
 max_standby_streaming_delay = <%= @config[:max_standby_streaming_delay] %>
 max_standby_archive_delay = <%= @config[:max_standby_archive_delay] %>
 

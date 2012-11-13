@@ -19,6 +19,7 @@ default[:postgresql][:wal_keep_segments] = 32
 default[:postgresql][:hot_standby] = "on" 
 default[:postgresql][:archive_command] = "/bin/true"
 default[:postgresql][:archive_mode] = "on"
+default[:postgresql][:archive_timeout] = 180
 default[:postgresql][:superuser_reserved_connections] = 10
 default[:postgresql][:ssl] = false
 default[:postgresql][:temp_buffers] = "8MB"
