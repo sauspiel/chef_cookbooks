@@ -1,5 +1,5 @@
-package "red5-server"
+package "red5"
 
-service "red5-server" do
+service "red5" do
   action [:enable, :start]
 end

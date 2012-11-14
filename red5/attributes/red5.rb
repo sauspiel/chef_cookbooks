@@ -1,1 +1,1 @@
-default.red5[:webapps] = "/usr/share/red5/webapps"
+default.red5[:webapps] = "/usr/lib/red5/webapps"
