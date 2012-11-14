@@ -111,16 +111,6 @@ instances.each do |instance, instconfig|
     variables :cmd => config[:archive_command]
   end
 
-
-  if node[:postgresql][:role] == "slave"
-    template "#{datadir}/recovery.conf" do
-      source "recovery.conf.erb"
-      owner "postgres"
-      group "postgres"
-      mode 0644
-    end  
-  end
-
 end
 
 template "/etc/sysctl.d/30-postgresql-shm.conf" do
