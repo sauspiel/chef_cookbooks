@@ -54,6 +54,8 @@ node[:barman][:databases].each do |db|
   end
 end
 
+include_recipe "barman::user" if node[:barman][:manage_keys]
+
 template node[:barman][:config] do
   source "barman.conf.erb"
   owner 'barman'
