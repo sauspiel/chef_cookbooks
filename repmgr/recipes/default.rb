@@ -8,3 +8,5 @@ template "#{node[:repmgr][:config]}" do
   group "root"
   mode 0644
 end
+
+include_recipe "repmgr::clear_history"
