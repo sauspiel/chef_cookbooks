@@ -131,6 +131,8 @@ service "postgres_perf" do
   action [:enable, :start]
 end
 
+include_recipe "postgresql::user" if node[:postgresql][:manage_keys]
+
 service "postgresql" do
   action [:enable, :start]
 end

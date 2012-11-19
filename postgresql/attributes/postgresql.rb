@@ -1,6 +1,7 @@
 default[:postgresql][:version] = "9.0"
 default[:postgresql][:debversion] = "9.0.4-1+b1"
 default[:postgresql][:deb_release] = "squeeze-backports"
+default[:postgresql][:manage_keys] = false
 default[:postgresql][:interfaces] = []
 default[:postgresql][:networks] = []
 default[:postgresql][:port] = 5432
