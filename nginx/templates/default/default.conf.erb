@@ -1,5 +1,5 @@
 server {
-  listen 80;
+  listen <%= bind_address_to_s(80) %>;
   server_name localhost;
 
   location / {

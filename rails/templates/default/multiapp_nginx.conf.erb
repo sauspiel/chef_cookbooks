@@ -3,7 +3,7 @@ upstream unicorn_server {
 }
 
 server {  
-  listen 80;
+  listen <%= bind_address_to_s(80) %>;
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
@@ -31,7 +31,7 @@ server {
 }
 
 server {
-  listen 443;
+  listen <%= bind_address_to_s(443) %>;
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
@@ -70,12 +70,12 @@ server {
 # Rule 2) Specify this is a catch_all with "default_server"
 # Rule 3) Forget rewrites, just return a 301
 server {
-  listen 80 default_server;
+  listen <%= bind_address_to_s(80) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 }
 
 server {
-  listen 443 default_server;
+  listen <%= bind_address_to_s(443) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 
   ssl on;

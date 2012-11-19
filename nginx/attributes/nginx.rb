@@ -16,6 +16,8 @@ default.nginx[:helpers] = ['proxy', 'expires', 'lb_filter', 'maintenance', 'inva
 default.nginx[:log_keep_days] = 7
 default.nginx[:enable_logging] = true
 
+default.nginx[:bind_interface] = "all"
+
 default.nginx[:gzip] = "on"
 default.nginx[:gzip_http_version] = "1.0"
 default.nginx[:gzip_comp_level] = "2"

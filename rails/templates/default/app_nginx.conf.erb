@@ -7,7 +7,7 @@ upstream <%= @full_name %> {
 }
 
 server {
-  listen 80;
+  listen <%= bind_address_to_s(80) %>;
   server_name <%= @domain %>;
   <% if @app[:ssl_only] -%>
   rewrite ^(.*) https://$host$1 permanent;
@@ -17,7 +17,7 @@ server {
 }
 
 server {  
-  listen 443;
+  listen <%= bind_address_to_s(443) %>;
   server_name <%= @domain %>;
   
   ssl on;
