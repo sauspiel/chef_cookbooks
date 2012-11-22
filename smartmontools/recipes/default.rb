@@ -18,7 +18,8 @@
 #
 
 package "smartmontools" do
-  action :upgrade
+  action :install
+  version node['smartmontools']['version']
 end
 
 template "/etc/default/smartmontools" do
@@ -46,6 +47,11 @@ node['smartmontools']['run_d'].each do |rund|
     mode 0755
   end
 
+end
+
+execute "update-smart-drivedb" do
+  command "/usr/sbin/update-smart-drivedb"
+  action :run
 end
 
 service "smartmontools" do

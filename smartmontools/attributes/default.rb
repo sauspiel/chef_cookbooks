@@ -22,3 +22,4 @@ default['smartmontools']['smartd_opts']  = ""
 default['smartmontools']['devices']      = []
 default['smartmontools']['device_opts']  = "-H -l error -l selftest"
 default['smartmontools']['run_d']        = ["10mail"]
+default['smartmontools']['version']      = '5.41+svn3365-1~bpo60+1'
