@@ -30,12 +30,19 @@ template "/etc/default/smartmontools" do
   notifies :reload, "service[smartmontools]"
 end
 
+devices = Array.new
+devices.concat(node['smartmontools']['devices'])
+
+devices.concat(smartmontools_megaraid_devices) if node['smartmontools']['detect_megaraid_devices']
+
+
 template "/etc/smartd.conf" do
   source "smartd.conf.erb"
   owner "root"
   group "root"
   mode 0644
   notifies :reload, "service[smartmontools]"
+  variables :devices => devices, :opts => node['smartmontools']['device_opts']
 end
 
 node['smartmontools']['run_d'].each do |rund|
