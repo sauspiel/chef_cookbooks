@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default[:collectd][:version] = "5.1.0-3~bpo60+1"
+default[:collectd][:version] = "5.1.0-3~bpo60+2"
 default[:collectd][:base_dir] = "/var/lib/collectd"
 default[:collectd][:conf_dir] = "/etc/collectd"
 default[:collectd][:plugin_dir] = "/usr/lib/collectd"
