@@ -36,6 +36,6 @@ end
 cron "sfs_deny_list" do
   hour "1"
   minute "0"
-  command "/usr/local/bin/ruby /usr/local/bin/fetch_sfs_list.rb && /etc/init.d/nginx restart"
+  command "/usr/local/bin/fetch_sfs_list.rb && /etc/init.d/nginx restart"
 end
 
