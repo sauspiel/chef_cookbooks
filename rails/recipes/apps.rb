@@ -32,8 +32,10 @@ if node[:active_applications]
     domain = app["environments"][conf["env"]]["domain"]
 
     app_root = "/var/www/#{domain}"
+
+    ssl = app["environments"][conf["env"]]["ssl"].nil? || app["environments"][conf["env"]]["ssl"] == true
     
-    ssl_certificate domain
+    ssl_certificate domain if ssl
     
     other_apps = @apps.collect {|a| a['id'] unless a['id'] == name }.compact.sort.join("|")
 
@@ -56,7 +58,7 @@ if node[:active_applications]
 
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
-      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd
+      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :ssl => ssl
       notifies :reload, resources(:service => "nginx")
     end
 

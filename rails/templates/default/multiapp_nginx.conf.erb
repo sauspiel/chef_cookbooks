@@ -1,5 +1,5 @@
-upstream unicorn_server {
- server unix:/var/run/unicorn/unicorn.sock fail_timeout=0;
+upstream unicorn_server_<%= @app_name %> {
+  server unix:/var/run/unicorn/unicorn_<%= @app_name %>.sock fail_timeout=0;
 }
 
 server {  
@@ -25,11 +25,19 @@ server {
 
     include /etc/nginx/common/proxy.conf;
 
-    # We never want http hitting rails
+    <% if @ssl %>
+      # We never want http hitting rails
     rewrite ^ https://$domain$request_uri permanent;
+    <% else %>
+    location @rails {
+      include /etc/nginx/common/proxy.conf;
+      proxy_pass http://unicorn_server_<%= @app_name %>;
+    }
+    <% end -%>
   }
 }
 
+<% if @ssl %>
 server {
   listen <%= bind_address_to_s(443) %>;
   server_name <%= @server_name %>;
@@ -60,9 +68,10 @@ server {
   location @rails {    
     include /etc/nginx/common/proxy.conf;
     proxy_set_header X_FORWARDED_PROTO https;
-    proxy_pass http://unicorn_server;
+    proxy_pass http://unicorn_server_<%= @app_name %>;
   }
 }
+<% end -%>
 
 # The better way to "catch" and rewrite domains
 # http://wiki.nginx.org/Pitfalls
@@ -74,6 +83,7 @@ server {
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 }
 
+<% if @ssl %>
 server {
   listen <%= bind_address_to_s(443) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
@@ -83,4 +93,5 @@ server {
   ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
   ssl_verify_depth 3;
 }
+<% end -%>
 

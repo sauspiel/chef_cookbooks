@@ -1,7 +1,7 @@
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures rails apps"
-version           "0.2.3"
+version           "0.3"
 depends           "users"
 depends           "unicorn"
 depends           "logrotate"
