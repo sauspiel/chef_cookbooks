@@ -26,13 +26,10 @@ server {
     include /etc/nginx/common/proxy.conf;
 
     <% if @ssl %>
-      # We never want http hitting rails
+    # We never want http hitting rails
     rewrite ^ https://$domain$request_uri permanent;
     <% else %>
-    location @rails {
-      include /etc/nginx/common/proxy.conf;
-      proxy_pass http://unicorn_server_<%= @app_name %>;
-    }
+    proxy_pass http://unicorn_server_<%= @app_name %>;
     <% end -%>
   }
 }
