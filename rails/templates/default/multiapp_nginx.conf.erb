@@ -75,12 +75,14 @@ server {
 # Rule 1) No using ifs, use server blocks
 # Rule 2) Specify this is a catch_all with "default_server"
 # Rule 3) Forget rewrites, just return a 301
+
+<% if @set_default_domain %>
 server {
   listen <%= bind_address_to_s(80) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 }
 
-<% if @ssl %>
+  <% if @ssl %>
 server {
   listen <%= bind_address_to_s(443) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
@@ -90,5 +92,6 @@ server {
   ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
   ssl_verify_depth 3;
 }
+  <% end -%>
 <% end -%>
 

@@ -25,7 +25,10 @@ if node[:active_applications]
     end
   end
     
+  default_domain_count = 0
   node[:active_applications].each do |name, conf|
+
+    default_domain_count = default_domain_count + 1
   
     app = search(:apps, "id:#{name}").first
 
@@ -80,7 +83,8 @@ if node[:active_applications]
       :group => "deploy",
       :worker_count => app["environments"][conf["env"]]["worker_count"] || node[:unicorn][:worker_count],
       :listen_port => app[:listen_port] || 8600,
-      :unicorn_cmd => unicorn_cmd
+      :unicorn_cmd => unicorn_cmd,
+      :set_default_domain => default_domain_count == 1
     }
 
     template "#{node[:unicorn][:config_path]}/#{name}.conf.rb" do
@@ -126,6 +130,7 @@ if node[:active_applications]
       command "le follow /var/log/nginx/#{domain}.access.log --name #{name}-nginx-access"
       not_if "le whoami | grep #{name}-nginx-access"
     end
+
     
     # deleting old logrotate entries for rails apps
     file "/etc/logrotate.d/rails" do
