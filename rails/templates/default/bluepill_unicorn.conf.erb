@@ -1,6 +1,6 @@
 ENV['PATH'] = "#{ENV['PATH']}:/usr/local/bin"
 
-Bluepill.application("<%= @app_name %>", :log_file => "<%= @node[:bluepill][:log_dir] %>/bluepill.log") do |app|
+Bluepill.application("<%= @app_name %>", :log_file => "<%= @node[:bluepill][:log_dir] %>/<%= @app_name %>.log") do |app|
   app.working_dir = "<%= @app_root %>/current"
   <% if @environment_vars %>
   app.environment = {<% @environment_vars.each do |k, v| %><%= "\"#{k}\" => \"#{v}\"" %><% end %>}
