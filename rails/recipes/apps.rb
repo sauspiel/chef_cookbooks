@@ -34,7 +34,7 @@ if node[:active_applications]
     app_root = "/var/www/#{domain}"
 
     ssl = app["environments"][conf["env"]]["ssl"].nil? || app["environments"][conf["env"]]["ssl"] == true
-    
+
     ssl_certificate domain if ssl
     
     other_apps = @apps.collect {|a| a['id'] unless a['id'] == name }.compact.sort.join("|")
@@ -62,6 +62,15 @@ if node[:active_applications]
       notifies :reload, resources(:service => "nginx")
     end
 
+    unicorn_cmd = "/usr/bin/env RAILS_ENV=#{conf['env']} #{node[:languages][:ruby][:bin_dir]}/"
+    if app["environments"][conf["env"]]["cmd"].eql?('unicorn_rails')
+      unicorn_cmd = unicorn_cmd + "unicorn_rails"
+    else
+      unicorn_cmd = unicorn_cmd + "bundle exec unicorn #{app_root}/current/config.ru "
+    end
+
+    unicorn_cmd = unicorn_cmd + " -Dc #{node[:unicorn][:config_path]}/#{name}.conf.rb -E #{conf['env']}"
+
     common_variables = {
       :preload => app[:preload] || true,
       :app_root => app_root,
@@ -70,7 +79,8 @@ if node[:active_applications]
       :user => "deploy",
       :group => "deploy",
       :worker_count => app["environments"][conf["env"]]["worker_count"] || node[:unicorn][:worker_count],
-      :listen_port => app[:listen_port] || 8600
+      :listen_port => app[:listen_port] || 8600,
+      :unicorn_cmd => unicorn_cmd
     }
 
     template "#{node[:unicorn][:config_path]}/#{name}.conf.rb" do
