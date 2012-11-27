@@ -30,7 +30,7 @@ cookbook_file "/usr/local/bin/fetch_sfs_list.rb" do
   source "fetch_sfs_list.rb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0755
 end
 
 cron "sfs_deny_list" do

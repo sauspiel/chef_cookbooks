@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require 'logger'
 require 'choice'
 
@@ -44,8 +45,8 @@ begin
   Dir.chdir choices[:tmpdir]
 
   log.debug("Deleting old files")
-  File.delete tmpfile if File.exists? (tmpfile)
-  File.delete txttmpfile if File.exists? (txttmpfile)
+  File.delete tmpfile if File.exists?(tmpfile)
+  File.delete txttmpfile if File.exists?(txttmpfile)
 
   log.debug("Fetching list from #{choices[:url]}")
   system("wget #{choices[:url]}")
