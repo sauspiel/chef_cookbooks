@@ -4,7 +4,7 @@ worker_processes <%= @worker_count %>
 working_directory "#{app_root}/current"
 preload_app <%= @preload ? "true" : "false" %>
 timeout 300
-listen "/var/run/unicorn/unicorn.sock", :backlog => 2048
+listen "/var/run/unicorn/unicorn_<%= @app_name %>.sock", :backlog => 2048
 
 pid "#{app_root}/current/tmp/unicorn/unicorn.pid"
 stderr_path "#{app_root}/current/log/unicorn.stderr.log"
