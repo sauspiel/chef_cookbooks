@@ -7,7 +7,6 @@ apt_repository "logentries" do
   keyserver "pgp.mit.edu"
   key "C43C79AD"
   action :add
-  notifies :run, "execute[apt-get update]", :immediately
 end
 
 directory "/etc/le"
