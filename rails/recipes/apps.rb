@@ -24,12 +24,13 @@ if node[:active_applications]
       group "deploy"
     end
   end
+
+  if node[:active_applications].count > 1 && (node[:rails].nil? || node[:rails][:default_domain].nil?)
+    Chef::Log.warn("Please set node[:rails][:default_domain]!")
+  end
     
-  default_domain_count = 0
   node[:active_applications].each do |name, conf|
 
-    default_domain_count = default_domain_count + 1
-  
     app = search(:apps, "id:#{name}").first
 
     domain = app["environments"][conf["env"]]["domain"]
@@ -59,9 +60,19 @@ if node[:active_applications]
       end
     end
 
+    set_default_domain = false
+    
+    if node[:active_applications].count == 1
+      set_default_domain = true
+    else
+      if !node[:rails].nil? && !node[:rails][:default_domain].nil?
+        set_default_domain = domain.to_s.eql?(node[:rails][:default_domain].to_s)
+      end
+    end
+
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
-      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :ssl => ssl
+      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :ssl => ssl, :set_default_domain => set_default_domain
       notifies :reload, resources(:service => "nginx")
     end
 
@@ -73,7 +84,6 @@ if node[:active_applications]
     end
 
     unicorn_cmd = unicorn_cmd + " -Dc #{node[:unicorn][:config_path]}/#{name}.conf.rb -E #{conf['env']}"
-
     common_variables = {
       :preload => app[:preload] || true,
       :app_root => app_root,
@@ -83,8 +93,7 @@ if node[:active_applications]
       :group => "deploy",
       :worker_count => app["environments"][conf["env"]]["worker_count"] || node[:unicorn][:worker_count],
       :listen_port => app[:listen_port] || 8600,
-      :unicorn_cmd => unicorn_cmd,
-      :set_default_domain => default_domain_count == 1
+      :unicorn_cmd => unicorn_cmd
     }
 
     template "#{node[:unicorn][:config_path]}/#{name}.conf.rb" do

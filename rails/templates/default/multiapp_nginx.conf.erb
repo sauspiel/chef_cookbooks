@@ -70,13 +70,15 @@ server {
 }
 <% end -%>
 
+
+<% if @set_default_domain %>
+
 # The better way to "catch" and rewrite domains
 # http://wiki.nginx.org/Pitfalls
 # Rule 1) No using ifs, use server blocks
 # Rule 2) Specify this is a catch_all with "default_server"
 # Rule 3) Forget rewrites, just return a 301
 
-<% if @set_default_domain %>
 server {
   listen <%= bind_address_to_s(80) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
