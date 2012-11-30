@@ -8,9 +8,9 @@ package "nsd3" do
 end
 
 directory node[:nsd3][:zonesdir] do
-  mode 0755
+  mode 0775
   owner "root"
-  group "root"
+  group "nsd"
 end
 
 zones = Array.new
