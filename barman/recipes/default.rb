@@ -24,7 +24,7 @@ end
 logfile = "#{node[:barman][:log_dir]}/barman.log"
 
 logrotate "barman" do
-  files [logfile]
+  files ["#{node[:barman][:log_dir]}/*.log"]
   frequency "daily"
   rotate_count 10
   compress true
