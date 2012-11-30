@@ -17,6 +17,12 @@ end
 
 execute "echo Y | apt-get install --yes logentries-daemon"
 
+%w(logentries-daemon logentries).each do |pkg|
+  package pkg do
+    action :upgrade
+  end
+end
+
 execute "register agent" do
   command "le register"
   not_if "grep agent-key /etc/le/config"
