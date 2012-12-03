@@ -5,20 +5,21 @@ git "/usr/src/oh-my-zsh" do
 end
 
 search( :users, "shell:*zsh" ).each do |u|
-  user_id = u["id"]
 
-  theme = data_bag_item( "users", user_id )["oh-my-zsh-theme"]
+  theme = data_bag_item( "users", u["id"])["oh-my-zsh-theme"]
 
-  link "/home/#{user_id}/.oh-my-zsh" do
+  link "#{u["home_dir"]}/.oh-my-zsh" do
     to "/usr/src/oh-my-zsh"
-    not_if "test -d /home/#{user_id}/.oh-my-zsh"
+    only_if { File.exist?(u["home_dir"]) }
+    not_if { File.exist?("#{u["home_dir"]}/.oh-my-zsh") }
   end
 
-  template "/home/#{user_id}/.zshrc" do
+  template "#{u["home_dir"]}/.zshrc" do
     source "zshrc.erb"
-    owner user_id
-    group user_id
+    owner u[:id]
+    group u[:id]
     variables( :theme => ( theme || node[:ohmyzsh][:theme] ))
     action :create_if_missing
+    only_if { File.exist?(u["home_dir"]) }
   end
 end

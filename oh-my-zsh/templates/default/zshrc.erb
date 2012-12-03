@@ -24,3 +24,8 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
+
+alias sudo='nocorrect sudo'
+
+# preserve environment variables in sudo shell
+alias sudos='sudo -sE'

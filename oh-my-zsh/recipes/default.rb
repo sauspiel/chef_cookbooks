@@ -17,28 +17,27 @@
 # limitations under the License.
 #
 
-include_recipe "git"
 include_recipe "zsh"
 
 search( :users, "shell:*zsh" ).each do |u|
-  user_id = u["id"]
-
-  git "/home/#{user_id}/.oh-my-zsh" do
+  git "#{u["home_dir"]}/.oh-my-zsh" do
     repository "https://github.com/robbyrussell/oh-my-zsh.git"
     reference "master"
-    user user_id
-    group user_id
+    user u["id"]
+    group u["id"]
     action :checkout
-    not_if "test -d /home/#{user_id}/.oh-my-zsh"
+    only_if { File.exist?(u["home_dir"]) }
+    not_if { File.exist?("#{u["home_dir"]}/.oh-my-zsh") }
   end
 
-  theme = data_bag_item( "users", user_id )["oh-my-zsh-theme"]
+  theme = data_bag_item( "users", u["id"])["oh-my-zsh-theme"]
 
-  template "/home/#{user_id}/.zshrc" do
+  template "#{u["home_dir"]}/.zshrc" do
     source "zshrc.erb"
-    owner user_id
-    group user_id
+    owner u["id"]
+    group u["id"]
     variables( :theme => ( theme || node[:ohmyzsh][:theme] ))
     action :create_if_missing
+    only_if { File.exist?(u["home_dir"]) }
   end
 end
