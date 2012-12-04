@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default.local_bind_address = node[:network][:interfaces][:eth1][:addresses].find{|address, interface| interface[:family] == "inet"}.first
+default.local_bind_address = "127.0.0.1" 
 default.tmp_dir = ENV['TMPDIR'] = '/var/tmp'
 
 include_attribute "riak::package"
