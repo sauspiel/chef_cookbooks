@@ -18,8 +18,8 @@ compression = <%= node[:barman][:compression] %>
 <% @servers.each do |srv| %>
 [<%= srv[:id] %>] 
 description = "<%="#{srv[:id]} PostgreSQL Master Server @ #{srv[:name]}" %>"
-ssh_command = ssh postgres@<%= srv[:ip] %>
-conninfo = host=<%= srv[:ip] %> user=postgres
+ssh_command = ssh postgres@<%= srv[:ssh_master_address] %>
+conninfo = host=<%= srv[:pg_master_address] %> user=postgres port=<%= srv[:pg_master_port] %>
 
 <% end -%>
 
