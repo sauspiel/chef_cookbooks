@@ -13,6 +13,7 @@ directory "/etc/le"
 
 template "/etc/le/config" do
   not_if { File.exists?("/etc/le/config") }
+  variables :key => node[:logentries][:user_key]
 end
 
 execute "echo Y | apt-get install --yes logentries-daemon"
