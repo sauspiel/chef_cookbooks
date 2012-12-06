@@ -6,7 +6,7 @@ apt_repository "erlang_solutions" do
   action :add
 end
 
-package "esl-erlang" do
+apt_package_hold "esl-erlang" do
   version node[:erlang][:version]
-  action :install
+  action [:install, :hold]
 end
