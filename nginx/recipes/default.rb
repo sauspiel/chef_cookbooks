@@ -10,18 +10,18 @@ apt_repository "nginx" do
 end
 
 if !node[:nginx][:with_pam_authentication]
-  apt_package "nginx" do
+  apt_package_hold "nginx" do
     version node[:nginx][:version]
     default_release node[:nginx][:debian_release]
-    action :install
+    action [:install, :hold]
   end
 
 else
   # see https://github.com/sauspiel/hosting/wiki/Nginx
-  apt_package "nginx" do
+  apt_package_hold "nginx" do
     version "#{node[:nginx][:version]}+authpam1"
     default_release node[:nginx][:debian_release]
-    action :install
+    action [:install, :hold]
   end
 
   group "shadow" do

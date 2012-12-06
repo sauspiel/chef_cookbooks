@@ -1,18 +1,7 @@
 %w(erlang-base-hipe erlang-nox).each do |pkg|
-  apt_selections "#{pkg}" do
-    action :allow_upgrade
-  end
-end
-
-%w(erlang-base-hipe erlang-nox).each do |pkg|
-  apt_package "#{pkg}" do
+  apt_package_hold "#{pkg}" do
     default_release node[:erlang][:debian_release]
     version node[:erlang][:version]
-  end
-end
-
-%w(erlang-base-hipe erlang-nox).each do |pkg|
-  apt_selections "#{pkg}" do
-    action :deny_upgrade
+    action [:install, :hold]
   end
 end

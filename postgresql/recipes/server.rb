@@ -12,9 +12,10 @@ end
 
 
 %w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
-  apt_package "#{pkg}-#{node[:postgresql][:version]}" do
+  apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
+    action [:install, :hold]
   end
 end
 

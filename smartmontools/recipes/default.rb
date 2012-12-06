@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-package "smartmontools" do
-  action :install
+apt_package_hold "smartmontools" do
+  action [:install, :hold]
   version node['smartmontools']['version']
 end
 

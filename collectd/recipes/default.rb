@@ -20,9 +20,9 @@
 package "build-essential"
 
 %w(collectd-core collectd).each do |pkg|
-  package "#{pkg}" do
+  apt_package_hold "#{pkg}" do
     version node[:collectd][:version]
-    action :install
+    action [:install, :hold]
   end
 end
 
