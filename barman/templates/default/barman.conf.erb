@@ -20,6 +20,9 @@ compression = <%= node[:barman][:compression] %>
 description = "<%="#{srv[:id]} PostgreSQL Master Server @ #{srv[:name]}" %>"
 ssh_command = ssh postgres@<%= srv[:ssh_master_address] %>
 conninfo = host=<%= srv[:pg_master_address] %> user=postgres port=<%= srv[:pg_master_port] %>
+<% if srv[:rsync_options] %>
+rsync_options = <%= srv[:rsync_options] %>
+<% end -%>
 
 <% end -%>
 
