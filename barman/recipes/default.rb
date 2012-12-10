@@ -8,10 +8,15 @@ apt_repository "pgdg" do
 end
 
 
-%w(python-psycopg2 python-argh python-dateutil python-argparse barman).each do |pkg|
+%w(python-psycopg2 python-argh python-dateutil python-argparse).each do |pkg|
   package pkg do
     action :install
   end
+end
+
+apt_package_hold "barman" do
+  version node[:barman][:version]
+  action [:install, :hold]
 end
 
 directory node[:barman][:log_dir] do
