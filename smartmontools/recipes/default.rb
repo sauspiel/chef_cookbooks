@@ -58,6 +58,7 @@ end
 
 execute "update-smart-drivedb" do
   command "/usr/sbin/update-smart-drivedb"
+  ignore_failure true
   action :run
 end
 
