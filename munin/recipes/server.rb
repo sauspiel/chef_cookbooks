@@ -1,7 +1,7 @@
 include_recipe "munin::client"
 include_recipe "nginx"
 
-munin_servers = search(:node, "munin:[* TO *]")
+munin_servers = search(:node, "recipes:munin\\:\\:client OR recipes:munin\\:\\:server")
 
 if munin_servers.empty?
   Chef::Log.info("No munin nodes returned from search. Using this node so munin configuration has data.")
