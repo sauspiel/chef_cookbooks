@@ -21,6 +21,11 @@ class Chef
             @current_resource
           end
 
+          def install_package(name, version)
+            state_to_install(@new_resource.package_name)
+            super
+          end
+
           def upgrade_package(name, version)
             state_to_install(@new_resource.package_name)
             super
