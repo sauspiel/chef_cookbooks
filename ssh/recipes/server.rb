@@ -8,12 +8,12 @@ end
 nodes = search(:node, "*:*")
 
 addresses = []
-if node[:ssh][:interfaces].nil?
-  addresses << "0.0.0.0"
+if !node[:ssh][:addresses].nil?
+  addresses = node[:ssh][:addresses]
 else
-  node[:ssh][:interfaces].each do |interface|
-    if node[:network][:interfaces].has_key? interface
-      addresses << node[:network][:interfaces][interface][:addresses].select { |address, data| data["family"] == "inet" }[0][0]
+  node[:network][:interfaces].each do |iface, addrs|
+    addrs[:addresses].each do |ip, params|
+      addresses << ip if params[:family].eql?('inet')
     end
   end
 end
