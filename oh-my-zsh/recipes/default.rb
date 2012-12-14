@@ -24,7 +24,7 @@ search( :users, "shell:*zsh" ).each do |u|
     repository "https://github.com/robbyrussell/oh-my-zsh.git"
     reference "master"
     user u["id"]
-    group u["id"]
+    group u["groups"].first
     action :checkout
     only_if { File.exist?(u["home_dir"]) }
     not_if { File.exist?("#{u["home_dir"]}/.oh-my-zsh") }
@@ -35,7 +35,7 @@ search( :users, "shell:*zsh" ).each do |u|
   template "#{u["home_dir"]}/.zshrc" do
     source "zshrc.erb"
     owner u["id"]
-    group u["id"]
+    group u["groups"].first
     variables( :theme => ( theme || node[:ohmyzsh][:theme] ))
     action :create_if_missing
     only_if { File.exist?(u["home_dir"]) }

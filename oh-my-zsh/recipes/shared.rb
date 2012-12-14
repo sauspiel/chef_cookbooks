@@ -17,7 +17,7 @@ search( :users, "shell:*zsh" ).each do |u|
   template "#{u["home_dir"]}/.zshrc" do
     source "zshrc.erb"
     owner u[:id]
-    group u[:id]
+    group u[:groups].first
     variables( :theme => ( theme || node[:ohmyzsh][:theme] ))
     action :create_if_missing
     only_if { File.exist?(u["home_dir"]) }
