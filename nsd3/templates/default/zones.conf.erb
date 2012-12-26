@@ -7,6 +7,8 @@ zone:
   <% if node[:nsd3][:type] == "master" %>
     <% zone['ns'].select { |ns| ns.fetch("notify_on_update", false) }.map { |slaves| slaves.values[0] }.each do |slave| %>
   notify: <%= slave %> NOKEY
+    <% end -%>
+    <% zone['ns'].select { |ns| ns.fetch("provide_xfr", false) }.map { |slaves| slaves.values[0] }.each do |slave| %>
   provide-xfr: <%= slave %> NOKEY
     <% end -%>
   <% elsif node[:nsd3][:type] == "slave" %>
