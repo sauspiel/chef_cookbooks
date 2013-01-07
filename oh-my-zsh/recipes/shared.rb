@@ -18,7 +18,7 @@ search( :users, "shell:*zsh" ).each do |u|
     source "zshrc.erb"
     owner u[:id]
     group u[:groups].first
-    variables( :theme => ( theme || node[:ohmyzsh][:theme] ))
+    variables( :theme => ( theme || node[:ohmyzsh][:theme] ), :disable_auto_update => true )
     action :create_if_missing
     only_if { File.exist?(u["home_dir"]) }
   end
