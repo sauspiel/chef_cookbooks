@@ -9,8 +9,8 @@ action :enable do
       source "service.init.sh.erb"
       mode 0755
       only_if { ::File.exists?("#{node['bluepill']['conf_dir']}/#{new_resource.service_name}.pill") }
-      variables(:service => new_resource.service_name, :bppath => @node[:bluepill][:bin],
-               :conf_dir => @node[:bluepill][:conf_dir] )
+      variables(:service => new_resource.service_name, :bppath => node[:bluepill][:bin],
+               :conf_dir => node[:bluepill][:conf_dir] )
     end
   end
 end
