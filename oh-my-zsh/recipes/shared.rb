@@ -1,4 +1,4 @@
-git "/usr/src/oh-my-zsh" do
+git node[:ohmyzsh][:shared_path] do
   repository "https://github.com/robbyrussell/oh-my-zsh.git"
   reference "master"
   action :sync
