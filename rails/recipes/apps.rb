@@ -130,9 +130,9 @@ if node[:active_applications]
       restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
     end
     
-    execute "follow production log" do
-      command "le follow #{app_root}/current/log/production.log --name #{name}-production"
-      not_if "le whoami | grep #{name}-production"
+    execute "follow #{conf["env"]} log" do
+      command "le follow #{app_root}/current/log/#{conf["env"]}.log --name #{name}-#{conf["env"]}"
+      not_if "le whoami | grep #{name}-#{conf["env"]}"
     end
     
     execute "follow nginx access log" do
