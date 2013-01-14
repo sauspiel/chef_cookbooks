@@ -64,3 +64,12 @@ autovacuum = on
 autovacuum_max_workers = <%= @config[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @config[:autovacuum_naptime] %>
 
+shared_preload_libraries = '<%= @config[:shared_preload_libraries].join(",") %>'
+
+<% if @config[:shared_preload_libraries].include?("pg_stat_statements") %>
+pg_stat_statements.max = <%= @config[:pg_stat_statements_max] %>
+pg_stat_statements.track = <%= @config[:pg_stat_statements_track] %>
+pg_stat_statements.track_utility = <%= @config[:pg_stat_statements_track_utility] %>
+pg_stat_statements.save = <%= @config[:pg_stat_statements_save] %>
+<% end -%>
+

@@ -43,3 +43,10 @@ default[:postgresql][:max_standby_streaming_delay] = 30
 default[:postgresql][:max_standby_archive_delay] = 30
 default[:postgresql][:log_checkpoints] = "on"
 default[:postgresql][:wal_sync_method] = "fdatasync"
+default[:postgresql][:shared_preload_libraries] = []
+
+## pg_stat_statements
+default[:postgresql][:pg_stat_statements_max] = 1000
+default[:postgresql][:pg_stat_statements_track] = "top"
+default[:postgresql][:pg_stat_statements_track_utility] = "on"
+default[:postgresql][:pg_stat_statements_save] = "on"
