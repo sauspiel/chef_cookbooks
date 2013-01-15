@@ -2,6 +2,7 @@ git node[:ohmyzsh][:shared_path] do
   repository "https://github.com/robbyrussell/oh-my-zsh.git"
   reference "master"
   action :sync
+  ignore_failure true
 end
 
 search( :users, "shell:*zsh" ).each do |u|
