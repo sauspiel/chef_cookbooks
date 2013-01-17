@@ -1,3 +1,5 @@
+include_recipe "postgresql::default"
+
 apt_package "postgresql-common" do
   default_release node[:postgresql][:deb_release]
 end
