@@ -4,6 +4,7 @@ include_recipe "postgresql::default"
   apt_package_hold pkg do
     version node[:postgresql][:debversion]
     action [:install, :hold]
+    options "--force-yes"
   end
 end
 

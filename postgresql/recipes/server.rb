@@ -1,21 +1,21 @@
-include_recipe "postgresql::client"
-
-
 apt_package "postgresql-common" do
-  default_release "squeeze-backports"
-end
-
-apt_package "ptop" do
   default_release node[:postgresql][:deb_release]
-  options "--no-install-recommends"
 end
 
-
-%w(postgresql postgresql-server-dev postgresql-contrib).each do |pkg|
+%w(postgresql-contrib postgresql postgresql-server-dev).each do |pkg|
   apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
     action [:install, :hold]
+    options "--force-yes"
+  end
+end
+
+%w(libpq5 libpq-dev).each do |pkg|
+  apt_package_hold pkg do
+    default_release node[:postgresql][:deb_release]
+    action [:install, :hold]
+    options "--force-yes"
   end
 end
 
