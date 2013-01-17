@@ -57,6 +57,10 @@ log_timezone = 'localtime'
 log_lock_waits = <%= @config[:log_lock_waits] %>
 log_checkpoints = <%= @config[:log_checkpoints] %>
 
+## show hostnames in ps
+log_hostname = on
+update_process_title = on
+
 track_activities = on
 track_counts = on
 
