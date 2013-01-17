@@ -4,7 +4,7 @@ apt_package "postgresql-common" do
   default_release node[:postgresql][:deb_release]
 end
 
-%w(postgresql-contrib postgresql postgresql-server-dev).each do |pkg|
+%w(postgresql-contrib postgresql postgresql-server-dev postgresql-client).each do |pkg|
   apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
@@ -13,7 +13,7 @@ end
   end
 end
 
-%w(libpq5 libpq-dev).each do |pkg|
+%w(libpq5 libpq-dev postgresql-common postgresql-client-common).each do |pkg|
   apt_package_hold pkg do
     default_release node[:postgresql][:deb_release]
     action [:install, :hold]

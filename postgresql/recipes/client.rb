@@ -9,7 +9,7 @@ include_recipe "postgresql::default"
 end
 
 apt_package "postgresql-client-common" do
-  default_release "squeeze-backports"
+  default_release node[:postgresql][:deb_release]
 end
 
 apt_package_hold "postgresql-client-#{node[:postgresql][:version]}" do
