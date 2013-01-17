@@ -1,3 +1,5 @@
+include_recipe "postgresql::default"
+
 %w(libpq5 libpq-dev).each do |pkg|
   apt_package_hold pkg do
     version node[:postgresql][:debversion]
