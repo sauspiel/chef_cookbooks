@@ -2,7 +2,7 @@ def barman_master_servers
   servers = Array.new
   node[:barman][:databases].each do |name, conf|
 
-    master = search(:node, "postgresql_role:master AND postgres_databases_#{name}_env:production").first
+    master = search(:node, "postgresql_role:master AND chef_environment:production AND postgres_databases_#{name}_env:production").first
     eth = conf[:ssh_master_eth] || master[:postgresql][:interfaces].reject { |i| i == "lo" }.first
     x = Hash.new
     x[:id] = name
