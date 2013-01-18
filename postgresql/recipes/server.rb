@@ -4,7 +4,16 @@ apt_package "postgresql-common" do
   default_release node[:postgresql][:deb_release]
 end
 
-%w(postgresql-contrib postgresql postgresql-server-dev postgresql-client).each do |pkg|
+Chef::Log.warn("Postgresql has to be stopped/started manually!")
+
+# preventing postgresql from being started after installation
+ruby_block "creating policy-rc.d file" do
+  block do
+    apt_create_policy_rc_d_file
+  end
+end
+
+%w(postgresql postgresql-contrib).each do |pkg|
   apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
     version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
@@ -13,11 +22,35 @@ end
   end
 end
 
-%w(libpq5 libpq-dev postgresql-common postgresql-client-common).each do |pkg|
+%w(libpq5 libpq-dev).each do |pkg|
   apt_package_hold pkg do
+    version node[:postgresql][:debversion]
     default_release node[:postgresql][:deb_release]
     action [:install, :hold]
     options "--force-yes"
+  end
+end
+
+%w(postgresql-server-dev postgresql-client).each do |pkg|
+  apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
+    version node[:postgresql][:debversion]
+    default_release node[:postgresql][:deb_release]
+    action [:install, :hold]
+    options "--force-yes"
+  end
+end
+
+# allowing start of postgresql again
+ruby_block "deleting policy-rc.d file" do
+  block do
+    apt_remove_policy_rc_d_file
+  end
+end
+
+%w(postgresql-common postgresql-client-common).each do |pkg|
+  apt_package_hold pkg do
+    default_release node[:postgresql][:deb_release]
+    action [:hold]
   end
 end
 
