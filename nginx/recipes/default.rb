@@ -4,8 +4,9 @@ apt_repository "nginx" do
   uri "http://nginx.org/packages/debian"
   components ["nginx"]
   distribution node[:lsb][:codename]
-  keyserver "keyserver.ubuntu.com"
-  key "ABF5BD827BD9BF62"
+  #keyserver "keyserver.ubuntu.com"
+  #key "ABF5BD827BD9BF62"
+  key "http://nginx.org/keys/nginx_signing.key"
   action :add
 end
 
