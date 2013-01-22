@@ -36,7 +36,7 @@ server {
 
 <% if @ssl %>
 server {
-  listen <%= bind_address_to_s(443) %> <%= nginx_spdy_support? ? 'ssl spdy';
+  listen <%= bind_address_to_s(443) %> <%= nginx_spdy_support? ? 'ssl spdy' : '' %>;
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
