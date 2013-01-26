@@ -49,11 +49,11 @@ begin
   File.delete txttmpfile if File.exists?(txttmpfile)
 
   log.debug("Fetching list from #{choices[:url]}")
-  system("wget #{choices[:url]}")
+  system("wget -q #{choices[:url]}")
   raise "wget for #{choices[:url]} failed!" if !$?.success?
 
   log.debug("Unzipping #{tmpfile}")
-  system("unzip #{tmpfile}")
+  system("unzip -q #{tmpfile}")
   raise "unzip of #{tmpfile} failed!" if !$?.success?
 
   log.debug("Creating new file #{choices[:outputfile]}")
