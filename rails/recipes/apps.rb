@@ -4,7 +4,6 @@ include_recipe "unicorn"
 include_recipe "bluepill"
 include_recipe "users"
 include_recipe "bundler"
-include_recipe "logentries"
 
 if node[:active_applications]
 
@@ -132,14 +131,22 @@ if node[:active_applications]
       restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
     end
     
-    execute "follow #{conf["env"]} log" do
-      command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{conf["env"]}"
-      not_if "le whoami | grep #{name}-#{environment}"
+    use_logentries = true
+    if !app["environments"][environment]["logentries"].nil?
+      use_logentries = app["environments"][environment]["logentries"]
     end
-    
-    execute "follow nginx access log" do
-      command "le follow /var/log/nginx/#{domain}.access.log --name #{name}-nginx-access"
-      not_if "le whoami | grep #{name}-nginx-access"
+
+    if use_logentries
+      include_recipe "logentries"
+      execute "follow #{environment} log" do
+        command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{conf["env"]}"
+        not_if "le whoami | grep #{name}-#{environment}"
+      end
+      
+      execute "follow nginx access log" do
+        command "le follow /var/log/nginx/#{domain}.access.log --name #{name}-nginx-access"
+        not_if "le whoami | grep #{name}-nginx-access"
+      end
     end
 
     
