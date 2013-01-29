@@ -31,22 +31,24 @@ if node[:active_applications]
     
   node[:active_applications].each do |name, conf|
 
+    environment = conf["env"] || node.chef_environment
+
     app = search(:apps, "id:#{name}").first
 
-    domain = app["environments"][conf["env"]]["domain"]
+    domain = app["environments"][environment]["domain"]
 
     app_root = "/var/www/#{domain}"
 
-    ssl = app["environments"][conf["env"]]["ssl"].nil? || app["environments"][conf["env"]]["ssl"] == true
+    ssl = app["environments"][environment]["ssl"].nil? || app["environments"][environment]["ssl"] == true
 
     ssl_certificate domain if ssl
     
     other_apps = @apps.collect {|a| a['id'] unless a['id'] == name }.compact.sort.join("|")
 
     htpasswd = nil
-    if app["environments"][conf["env"]]["htpasswd"]
+    if app["environments"][environment]["htpasswd"]
       htpasswd = Hash.new
-      htpasswd[:user] = app["environments"][conf["env"]]["htpasswd"]
+      htpasswd[:user] = app["environments"][environment]["htpasswd"]
       htpasswd[:passwd] = Chef::EncryptedDataBagItem.load("passwords", "http")[htpasswd[:user]].crypt("salt")
     end
 
@@ -76,8 +78,8 @@ if node[:active_applications]
       notifies :reload, resources(:service => "nginx")
     end
 
-    unicorn_cmd = "/usr/bin/env RAILS_ENV=#{conf['env']} #{node[:languages][:ruby][:bin_dir]}/"
-    if app["environments"][conf["env"]]["cmd"].eql?('unicorn_rails')
+    unicorn_cmd = "/usr/bin/env RAILS_ENV=#{environment} #{node[:languages][:ruby][:bin_dir]}/"
+    if app["environments"][environment]["cmd"].eql?('unicorn_rails')
       unicorn_cmd = unicorn_cmd + "unicorn_rails"
     else
       unicorn_cmd = unicorn_cmd + "bundle exec unicorn #{app_root}/current/config.ru "
@@ -91,7 +93,7 @@ if node[:active_applications]
       :env => conf['env'],
       :user => "deploy",
       :group => "deploy",
-      :worker_count => app["environments"][conf["env"]]["worker_count"] || node[:unicorn][:worker_count],
+      :worker_count => app["environments"][environment]["worker_count"] || node[:unicorn][:worker_count],
       :listen_port => app[:listen_port] || 8600,
       :unicorn_cmd => unicorn_cmd
     }
@@ -131,8 +133,8 @@ if node[:active_applications]
     end
     
     execute "follow #{conf["env"]} log" do
-      command "le follow #{app_root}/current/log/#{conf["env"]}.log --name #{name}-#{conf["env"]}"
-      not_if "le whoami | grep #{name}-#{conf["env"]}"
+      command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{conf["env"]}"
+      not_if "le whoami | grep #{name}-#{environment}"
     end
     
     execute "follow nginx access log" do
