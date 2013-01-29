@@ -4,8 +4,7 @@ apt_repository "logentries" do
   uri "http://rep.logentries.com"
   distribution "squeeze"
   components ["main"]
-  keyserver "pgp.mit.edu"
-  key "C43C79AD"
+  key "http://rep.logentries.com/RPM-GPG-KEY-logentries"
   action :add
 end
 
