@@ -139,7 +139,7 @@ if node[:active_applications]
     if use_logentries
       include_recipe "logentries"
       execute "follow #{environment} log" do
-        command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{conf["env"]}"
+        command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{environment}"
         not_if "le whoami | grep #{name}-#{environment}"
       end
       
