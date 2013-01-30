@@ -13,7 +13,8 @@ if node[:memcached][:instances]
                          "max_connections" => node[:memcached][:max_connections],
                          "pid_path" => "/var/run/memcached_#{name}.pid",
                          "user" => "root",
-                         "group" => "root" }.merge(instance)
+                         "group" => "root",
+                         "bind_address" => node[:memcached][:bind_address]}.merge(instance)
 
     template "#{node[:bluepill][:conf_dir]}/#{full_name}.pill" do
      source "bluepill.conf.erb"

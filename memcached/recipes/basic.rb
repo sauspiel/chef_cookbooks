@@ -12,7 +12,8 @@ template node[:memcached][:conf_path] do
             :port => node[:memcached][:port],
             :user => node[:memcached][:user],
             :max_connections => node[:memcached][:max_connections],
-            :log_path => node[:memcached][:log_path])
+            :log_path => node[:memcached][:log_path],
+            :bind_address => node[:memcached][:bind_address])
 end
 
 service "memcached" do
