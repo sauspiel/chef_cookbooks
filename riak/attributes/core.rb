@@ -40,3 +40,4 @@ default.riak.core.platform_bin_dir = "/usr/sbin"
 default.riak.core.platform_etc_dir = "/etc/riak"
 default.riak.core.platform_data_dir = "/var/lib/riak"
 default.riak.core.ring_creation_size = 256
+default.riak.core.handoff_ip = node[:local_bind_address] || "0.0.0.0"
