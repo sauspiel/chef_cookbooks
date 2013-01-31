@@ -39,3 +39,4 @@ default.riak.core.cluster_name = "default"
 default.riak.core.platform_bin_dir = "/usr/sbin"
 default.riak.core.platform_etc_dir = "/etc/riak"
 default.riak.core.platform_data_dir = "/var/lib/riak"
+default.riak.core.ring_creation_size = 256
