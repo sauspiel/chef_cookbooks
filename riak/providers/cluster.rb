@@ -41,7 +41,7 @@ end
 action :join do
   if !current_resource.joined && peer = random_cluster_member
     execute "Joining node #{new_resource.node_name} to Riak cluster #{new_resource.cluster_name}" do
-      command "riak-admin join #{peer}"
+      command "riak-admin cluster join #{peer}"
       path [new_resource.riak_admin_path]
     end
     new_resource.updated_by_last_action(true)
