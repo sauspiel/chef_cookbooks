@@ -131,12 +131,7 @@ if node[:active_applications]
       restart_command "/bin/kill -USR1 `cat #{app_root}/current/tmp/unicorn/unicorn.pid` > /dev/null"
     end
     
-    use_logentries = true
-    if !app["environments"][environment]["logentries"].nil?
-      use_logentries = app["environments"][environment]["logentries"]
-    end
-
-    if use_logentries
+    if rails_with_logentries?(app, environment)
       include_recipe "logentries"
       execute "follow #{environment} log" do
         command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{environment}"
