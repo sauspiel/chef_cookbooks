@@ -38,7 +38,7 @@ if node[:active_applications]
 
     app_root = "/var/www/#{domain}"
 
-    includes = app["environments"][environment]["includes"]
+    includes = app["environments"][environment]["includes"] || Array.new
 
     ssl = app["environments"][environment]["ssl"].nil? || app["environments"][environment]["ssl"] == true
 
