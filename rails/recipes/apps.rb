@@ -38,6 +38,8 @@ if node[:active_applications]
 
     app_root = "/var/www/#{domain}"
 
+    includes = app["environments"][environment]["includes"]
+
     ssl = app["environments"][environment]["ssl"].nil? || app["environments"][environment]["ssl"] == true
 
     ssl_certificate domain if ssl
@@ -73,7 +75,7 @@ if node[:active_applications]
 
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
-      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :ssl => ssl, :set_default_domain => set_default_domain
+      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :ssl => ssl, :set_default_domain => set_default_domain, :includes => includes
       notifies :reload, resources(:service => "nginx")
     end
 

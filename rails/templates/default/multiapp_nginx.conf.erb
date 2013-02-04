@@ -32,6 +32,10 @@ server {
     proxy_pass http://unicorn_server_<%= @app_name %>;
     <% end -%>
   }
+
+  <% @includes.each do |inc| %>
+  include /etc/nginx/sites-include/<%= inc %>.conf;
+  <% end -%>
 }
 
 <% if @ssl %>
@@ -67,6 +71,10 @@ server {
     proxy_set_header X_FORWARDED_PROTO https;
     proxy_pass http://unicorn_server_<%= @app_name %>;
   }
+
+  <% @includes.each do |inc| %>
+  include /etc/nginx/sites-include/<%= inc %>.conf;
+  <% end -%>
 }
 <% end -%>
 
