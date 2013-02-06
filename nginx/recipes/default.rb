@@ -48,7 +48,7 @@ directory node[:nginx][:log_dir] do
   action :create
 end
 
-%w(sites-available sites-enabled helpers site-include common htpasswd.d).each do |dir|
+%w(sites-available sites-enabled helpers sites-include common htpasswd.d).each do |dir|
   directory "#{node[:nginx][:dir]}/#{dir}" do
     owner "root"
     group "root"
