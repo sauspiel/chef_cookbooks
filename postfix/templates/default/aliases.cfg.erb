@@ -1,0 +1,6 @@
+postmaster: root
+mailer-daemon: root
+
+<% @node[:postfix][:aliases].each do |src,name| %>
+<%= src %>: <%= name %>
+<% end %>
