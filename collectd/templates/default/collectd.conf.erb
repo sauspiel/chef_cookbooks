@@ -15,7 +15,7 @@ Hostname "<%= node[:collectd][:name] %>"
 FQDNLookup true
 BaseDir "<%= node[:collectd][:base_dir] %>"
 PluginDir "<%= node[:collectd][:plugin_dir] %>"
-TypesDB "<%= node[:collectd][:types_db].join('", "') %>"
+TypesDB "<%= @types_dbs.join('", "') %>"
 Interval <%= node[:collectd][:interval] %>
 ReadThreads <%= node[:collectd][:read_threads] %>
 

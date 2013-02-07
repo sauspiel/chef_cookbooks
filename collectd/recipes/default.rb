@@ -57,7 +57,7 @@ directory File.dirname("#{node[:collectd][:custom_typesdb]}") do
   mode "755"
 end
 
-template "#{node[:collectd][:custom_typesdb]}" do
+template "#{node[:collectd][:custom_types_db]}" do
   owner "root"
   group "root"
   mode 644
@@ -72,7 +72,9 @@ if node[:collectd][:remove_lvm2]
   end
 end
 
-node[:collectd][:types_db] << node[:collectd][:custom_typesdb]
+types_dbs = Array.new
+types_dbs.concat(node[:collectd][:types_db])
+types_dbs << node[:collectd][:custom_types_db]
 
 template "#{node[:collectd][:conf_dir]}/collectd.conf" do
   source "collectd.conf.erb"
@@ -80,6 +82,7 @@ template "#{node[:collectd][:conf_dir]}/collectd.conf" do
   group "root"
   mode "644"
   notifies :restart, resources(:service => "collectd")
+  variables :types_dbs => types_dbs
 end
 
 service "collectd" do
