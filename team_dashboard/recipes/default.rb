@@ -1,3 +1,5 @@
+include_recipe "rails"
+
 user = node[:team_dashboard][:user]
 group = node[:team_dashboard][:group]
 
@@ -38,5 +40,7 @@ git path do
   action :checkout
   notifies :run, resources(:execute => "bundle"), :immediately
 end
+
+include_recipe "team_dashboard::database"
 
 
