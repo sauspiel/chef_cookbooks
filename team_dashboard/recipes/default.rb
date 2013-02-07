@@ -1,7 +1,16 @@
-
 user = node[:team_dashboard][:user]
 group = node[:team_dashboard][:group]
-path = node[:team_dashboard][:path]
+
+app = search(:apps, "id:team_dashboard").first
+
+env = node.chef_environment
+env = 'development' if env == '_default'
+if node[:active_applications] && node[:active_applications][:team_dashboard]
+  env = node[:active_applications][:team_dashboard][:env] || env
+end
+
+domain = app["environments"][env]["domain"]
+path = "/var/www/#{domain}"
 
 directory path do
   owner user
