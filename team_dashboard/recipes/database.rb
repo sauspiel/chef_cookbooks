@@ -1,4 +1,5 @@
 include_recipe "percona::server"
+include_recipe "percona::client"
 include_recipe "database::mysql"
 
 root_pw = Chef::EncryptedDataBagItem.load('passwords', 'mysql')["root"]

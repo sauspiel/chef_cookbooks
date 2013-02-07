@@ -1,5 +1,3 @@
-include_recipe "rails"
-
 user = node[:team_dashboard][:user]
 group = node[:team_dashboard][:group]
 
