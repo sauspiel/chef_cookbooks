@@ -4,4 +4,3 @@ package "percona-server-client" do
   options "--force-yes"
 end
 
-include_recipe "percona::ruby"

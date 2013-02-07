@@ -1,9 +1,6 @@
-mysql = gem_package "mysql" do
+include_recipe "percona::client"
+
+chef_gem 'mysql' do
   action :nothing
-end
+end.run_action(:install)
 
-mysql.run_action(:install)
-
-require 'rubygems'
-Gem.clear_paths
-require 'mysql'
