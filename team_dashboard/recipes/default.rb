@@ -25,8 +25,9 @@ end
 end
 
 execute "bundle" do
+  user user
   cwd path
-  command "bundle install"
+  command "bundle install --path vendor"
   action :nothing
 end
 
