@@ -31,12 +31,23 @@ execute "bundle" do
   action :nothing
 end
 
+bash "modifying_gemfile" do
+  cwd path
+  user user
+  code <<-EOF
+  echo 'gem "unicorn", "~> 4.0.1"' >> Gemfile
+  EOF
+  not_if "grep -q unicorn Gemfile"
+  action :nothing
+end
+
 git path do
   repository "https://github.com/fdietz/team_dashboard.git"
   reference "master"
   user user
   group group
   action :checkout
+  notifies :run, resources(:bash => "modifying_gemfile"), :immediately
   notifies :run, resources(:execute => "bundle"), :immediately
 end
 
