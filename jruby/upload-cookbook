@@ -1,0 +1,1 @@
+knife cookbook site share jruby 'Programming Languages' -o /Users/jlbfalcao/Code/sources/ -k ~/.chef/jlbfalcao.pem -u jlbfalcao

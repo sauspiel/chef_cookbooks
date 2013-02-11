@@ -1,0 +1,8 @@
+
+Updating Metadata
+=================
+
+    knife cookbook metadata chef-jruby -o ../
+
+knife cookbook site share jruby 'Programming Languages' -o ../ -k
+~/.chef/opscode_community.pem
