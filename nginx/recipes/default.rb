@@ -79,18 +79,25 @@ node[:nginx][:helpers].each do |h|
   end
 end
 
-template "/etc/nginx/conf.d/default.conf" do
-  source "default.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  notifies :reload, resources(:service => "nginx")
-  variables(:with_stats => node[:nginx][:with_stats])
+if !node[:nginx][:with_default_site]
+  file "#{node[:nginx][:dir]}/conf.d/default.conf" do
+    action :delete
+    notifies :reload, resources(:service => "nginx")
+  end
+else
+  template "#{node[:nginx][:dir]}/conf.d/default.conf" do
+    source "default.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :reload, resources(:service => "nginx")
+    variables(:with_stats => node[:nginx][:with_stats])
+  end
 end
 
 # server-wide defaults, automatically loaded
 node[:nginx][:extras].each do |ex|
-  template "/etc/nginx/conf.d/#{ex}.conf" do
+  template "#{node[:nginx][:dir]}/conf.d/#{ex}.conf" do
     notifies :reload, resources(:service => "nginx")
   end
 end  
