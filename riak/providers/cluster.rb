@@ -33,7 +33,7 @@ def load_current_resource
   else
     current_resource.cluster_members([])
     #search(:node, "riak_core_cluster_name:#{new_resource.cluster_name} AND recipes:riak\\:\\:*") do |n|
-    riak_search_nodes.each do |n|
+    riak_search_nodes(new_resource.cluster_name).each do |n|
       current_resource.cluster_members << n.riak.erlang.node_name
     end
   end
