@@ -3,7 +3,7 @@ include_recipe "users"
 directory "/etc/nginx/sites-include"
 
 template "/etc/nginx/sites-include/rails-common.conf" do
-  source "app_nginx_include.conf.erb"
+  source "rails-common.conf.erb"
   notifies :reload, resources(:service => "nginx")
 end
 
