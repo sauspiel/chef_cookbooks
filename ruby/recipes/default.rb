@@ -10,9 +10,10 @@ remote_file "#{debpath}" do
   not_if { File.exists?("#{debpath}") }
 end
 
+version = node.ruby.version.gsub("_amd64","")
 dpkg_package "ruby" do
-  version node.ruby.version
+  version version
   source "#{debpath}"
-  not_if { "dpkg-query -W ruby-#{node.ruby.version}" }
+  not_if { "dpkg-query -W ruby-#{version}" }
   only_if { File.exists?("#{debpath}") }
 end
