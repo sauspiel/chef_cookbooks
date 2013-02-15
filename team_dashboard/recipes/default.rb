@@ -10,7 +10,7 @@ if node[:active_applications] && node[:active_applications][:team_dashboard]
 end
 
 domain = app["environments"][env]["domain"]
-path = "/var/www/#{domain}"
+path = "/var/www/#{domain}/current"
 
 directory path do
   owner user
