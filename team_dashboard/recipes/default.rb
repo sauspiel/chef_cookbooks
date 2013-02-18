@@ -1,35 +1,7 @@
-user = node[:team_dashboard][:user]
-group = node[:team_dashboard][:group]
-
-app = search(:apps, "id:team_dashboard").first
-
-env = node.chef_environment
-env = 'development' if env == '_default'
-if node[:active_applications] && node[:active_applications][:team_dashboard]
-  env = node[:active_applications][:team_dashboard][:env] || env
-end
-
-domain = app["environments"][env]["domain"]
-
-%w(unicorn tmp).each do |t|
-  directory "#{node[:team_dashboard][:path]}/tmp/#{t}" do
-    owner user
-    group group
-    mode 0755
-    action :create
-    recursive true
-  end
-end
+include_recipe "team_dashboard::database"
 
 %w(libxml2 libxml2-dev libxslt1.1 libxslt1-dev).each do |pkg|
   package pkg
-end
-
-execute "bundle" do
-  user user
-  cwd node[:team_dashboard][:path]
-  command "bundle install --path vendor"
-  action :nothing
 end
 
 bash "modifying_gemfile" do
@@ -42,16 +14,31 @@ bash "modifying_gemfile" do
   action :nothing
 end
 
-git node[:team_dashboard][:path] do
+db_password = Chef::EncryptedDataBagItem.load('passwords', 'mysql')["dashboard_web"]
+app = search(:apps, "id:team_dashboard").first
+env = node.chef_environment
+env = 'development' if env == '_default'
+
+application "team_dashboard" do
+  path node[:team_dashboard][:path]
   repository "https://github.com/fdietz/team_dashboard.git"
-  reference "master"
-  user user
-  group group
-  action :checkout
-  notifies :run, resources(:bash => "modifying_gemfile"), :immediately
-  notifies :run, resources(:execute => "bundle"), :immediately
+  scm_provider Chef::Provider::Git
+  owner "deploy"
+  group "deploy"
+  revision "master"
+  environment_name env
+  enable_submodules true
+  migrate true
+  action :force_deploy
+
+  rails do
+    bundler true
+    database do
+      database "team_dashboard_#{env}"
+      username "dashboard_web"
+      password db_password
+      adapter "mysql2"
+      host "localhost"
+    end
+  end
 end
-
-include_recipe "team_dashboard::database"
-
-

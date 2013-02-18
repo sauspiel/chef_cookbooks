@@ -6,4 +6,4 @@ version          '0.0.1'
 
 depends "database"
 depends "percona"
-depends "rails"
+depends "application_ruby"
