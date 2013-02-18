@@ -89,7 +89,7 @@ if node[:active_applications]
     unicorn_cmd = unicorn_cmd + " -Dc #{node[:unicorn][:config_path]}/#{name}.conf.rb -E #{environment}}"
     common_variables = {
       :preload => app[:preload] || true,
-      :app_root => app_root,
+      :app_root => "#{app_root}/current",
       :app_name => name,
       :env => conf['env'],
       :user => "deploy",
