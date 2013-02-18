@@ -5,8 +5,8 @@ include Chef::Mixin::Command
 action :enable do
   unless @bp.enabled
     template "#{node[:bluepill][:init_dir]}/#{new_resource.service_name}" do
-      cookbook "bluepill"
-      source "service.init.sh.erb"
+      cookbook new_resource.cookbook
+      source new_resource.template
       mode 0755
       only_if { ::File.exists?("#{node['bluepill']['conf_dir']}/#{new_resource.service_name}.pill") }
       variables(:service => new_resource.service_name, :bppath => node[:bluepill][:bin],
