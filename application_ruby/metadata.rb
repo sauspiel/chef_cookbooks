@@ -6,7 +6,7 @@ description      "Deploys and configures Ruby-based applications"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.1.0"
 
-%w{ application unicorn nginx }.each do |cb|
+%w{ application unicorn nginx bluepill }.each do |cb|
   depends cb
 end
 
