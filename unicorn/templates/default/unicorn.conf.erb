@@ -1,14 +1,14 @@
 app_root = "<%= @app_root %>"
 
 worker_processes <%= @worker_count %>
-working_directory "#{app_root}/current"
+working_directory "#{app_root}"
 preload_app <%= @preload ? "true" : "false" %>
 timeout 300
 listen "/var/run/unicorn/unicorn_<%= @app_name %>.sock", :backlog => 2048
 
-pid "#{app_root}/current/tmp/unicorn/unicorn.pid"
-stderr_path "#{app_root}/current/log/unicorn.stderr.log"
-stdout_path "#{app_root}/current/log/unicorn.stdout.log"
+pid "#{app_root}/tmp/unicorn/unicorn.pid"
+stderr_path "#{app_root}/log/unicorn.stderr.log"
+stdout_path "#{app_root}/log/unicorn.stdout.log"
 
 if GC.respond_to?(:copy_on_write_friendly=)
   GC.copy_on_write_friendly = true
@@ -43,5 +43,5 @@ after_fork do |server, worker|
 end
 
 before_exec do |server|
-  Dir.chdir("#{app_root}/current")
+  Dir.chdir("#{app_root}")
 end
