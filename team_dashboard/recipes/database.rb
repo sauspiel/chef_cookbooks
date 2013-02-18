@@ -13,7 +13,6 @@ if node[:active_applications] && node[:active_applications][:team_dashboard]
 end
 
 domain = app["environments"][env]["domain"]
-path = "/var/www/#{domain}/current"
 dbname = "team_dashboard_#{env}"
 
 mysql_conn_info =  {:host => "localhost", :username => 'root', :password => root_pw }
@@ -33,12 +32,12 @@ mysql_database_user 'dashboard_web' do
 end
 
 execute "db_migrate" do
-  cwd path
+  cwd node[:team_dashboard][:path]
   command "rake db:migrate"
   action :nothing
 end
 
-template "#{path}/config/database.yml" do
+template "#{node[:team_dashboard]}/config/database.yml" do
   source "database.yml.erb"
   variables :user => 'dashboard_web', :password => team_pw
   owner node[:team_dashboard][:user]

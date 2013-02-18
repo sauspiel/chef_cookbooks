@@ -10,10 +10,9 @@ if node[:active_applications] && node[:active_applications][:team_dashboard]
 end
 
 domain = app["environments"][env]["domain"]
-path = "/var/www/#{domain}/current"
 
 %w(unicorn tmp).each do |t|
-  directory "#{path}/tmp/#{t}" do
+  directory "#{node[:team_dashboard][:path]}/tmp/#{t}" do
     owner user
     group group
     mode 0755
@@ -28,13 +27,13 @@ end
 
 execute "bundle" do
   user user
-  cwd path
+  cwd node[:team_dashboard][:path]
   command "bundle install --path vendor"
   action :nothing
 end
 
 bash "modifying_gemfile" do
-  cwd path
+  cwd node[:team_dashboard][:path]
   user user
   code <<-EOF
   echo 'gem "unicorn", "~> 4.0.1"' >> Gemfile
@@ -43,7 +42,7 @@ bash "modifying_gemfile" do
   action :nothing
 end
 
-git path do
+git node[:team_dashboard][:path] do
   repository "https://github.com/fdietz/team_dashboard.git"
   reference "master"
   user user
