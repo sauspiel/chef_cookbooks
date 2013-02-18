@@ -12,12 +12,14 @@ end
 domain = app["environments"][env]["domain"]
 path = "/var/www/#{domain}/current"
 
-directory path do
-  owner user
-  group group
-  mode 0755
-  action :create
-  recursive true
+%w(unicorn tmp).each do |t|
+  directory "#{path}/tmp/#{t}" do
+    owner user
+    group group
+    mode 0755
+    action :create
+    recursive true
+  end
 end
 
 %w(libxml2 libxml2-dev libxslt1.1 libxslt1-dev).each do |pkg|
