@@ -25,7 +25,7 @@ application "team_dashboard" do
     bash "modifying_gemfile" do
       cwd release_path
       code <<-EOF
-      echo 'gem "unicorn", "~> 4.0.1"' >> Gemfile
+      echo 'gem "unicorn", "~> #{node[:unicorn][:version]}"' >> Gemfile
       EOF
       not_if "grep -q unicorn Gemfile"
     end
@@ -48,5 +48,11 @@ application "team_dashboard" do
     preload_app true
     worker_timeout 300
     environment_vars :GRAPHITE_URL => node[:team_dashboard][:graphite_url]
+  end
+
+  nginx do
+    cookbook "team_dashboard"
+    template "nginx.conf.erb"
+    variables :app_name => "team_dashboard", :domain => app["environments"][env]["domain"]
   end
 end
