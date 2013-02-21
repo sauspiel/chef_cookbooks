@@ -125,8 +125,8 @@ end
 
 node[:riak][:kv][:add_paths].each do |dir|
   directory dir do
-    owner "deploy"
-    group "deploy"
+    owner "root"
+    group "root"
     mode "0755"
     recursive true
     action :create
