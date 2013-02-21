@@ -123,6 +123,16 @@ directory node[:riak][:package][:config_dir] do
   action :create
 end
 
+node[:riak][:kv][:add_paths].each do |dir|
+  directory dir do
+    owner "deploy"
+    group "deploy"
+    mode "0755"
+    recursive true
+    action :create
+  end
+end
+
 template "#{node[:riak][:package][:config_dir]}/app.config" do
   source "app.config.erb"
   owner "root"

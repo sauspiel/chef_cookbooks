@@ -35,3 +35,4 @@ default.riak.kv.legacy_keylisting = false
 default.riak.kv.pb_ip = node[:local_bind_address]
 default.riak.kv.pb_port = 8087
 default.riak.kv.storage_backend = :riak_kv_bitcask_backend
+default.riak.kv.add_paths = []
