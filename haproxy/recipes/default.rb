@@ -1,14 +1,9 @@
-remote_file "/tmp/haproxy_1.4.15-2~lucid.1_amd64.deb" do
-  source "#{node[:package_url]}/haproxy_1.4.15-2~lucid.1_amd64.deb"
-  not_if { File.exists?("/tmp/haproxy_1.4.15-2~lucid.1_amd64.deb") }
-end
+include_recipe "rsyslog"
 
-dpkg_package "haproxy" do
-  source "/tmp/haproxy_1.4.15-2~lucid.1_amd64.deb"
-  only_if { File.exists?("/tmp/haproxy_1.4.15-2~lucid.1_amd64.deb") }
+apt_package_hold "haproxy" do
+  version node[:haproxy][:version]
+  action [:install, :hold]
 end
-
-include_recipe "nginx"
 
 directory "/etc/haproxy" do
   action :create
@@ -32,3 +27,21 @@ directory "/var/run/haproxy" do
 end
 
 template "/etc/haproxy/500.http"
+
+template "/etc/rsyslog.d/haproxy.conf" do
+  owner "root"
+  group "root"
+  mode 0644
+  source "rsyslog.conf.erb"
+  notifies :reload, resources(:service => "rsyslog")
+end
+
+logrotate "haproxy" do
+  files ["/var/log/haproxy/*.log"]
+  frequency "daily"
+  rotate_count 10
+  compress true
+  user node[:haproxy][:user]
+  group node[:haproxy][:user]
+  restart_command "restart rsyslog >/dev/null 2>&1 || true"
+end
