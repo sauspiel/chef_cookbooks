@@ -17,6 +17,7 @@ ssl = <%= @config[:ssl] %>
 shared_buffers = <%= @config[:shared_buffers] %> 
 temp_buffers = <%= @config[:temp_buffers] %>
 work_mem = <%= @config[:work_mem] %>
+effective_cache_size = <%= @config[:effective_cache_size] %>
 maintenance_work_mem = <%= @config[:maintenance_work_mem] %>
 
 effective_io_concurrency = <%= @config[:effective_io_concurrency] %>
@@ -67,6 +68,8 @@ track_counts = on
 autovacuum = on
 autovacuum_max_workers = <%= @config[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @config[:autovacuum_naptime] %>
+
+random_page_cost = <%= @config[:random_page_cost] %>
 
 shared_preload_libraries = '<%= @config[:shared_preload_libraries].join(",") %>'
 
