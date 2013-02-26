@@ -23,6 +23,10 @@ before_fork do |server, worker|
     rescue Errno::ENOENT, Errno::ESRCH
     end
   end
+
+  # http://bit.ly/XWJLCb
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.connection.disconnect!
   
   sleep 1
 end
@@ -38,8 +42,10 @@ after_fork do |server, worker|
   # sockets, e.g. db connections.
   
   Rails.cache.instance_variable_get(:@data).reset if Rails.cache.instance_variable_get(:@data).respond_to?(:reset)
-  
-  ActiveRecord::Base.establish_connection
+
+  # http://bit.ly/XWJLCb 
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection
 end
 
 before_exec do |server|

@@ -1,5 +1,5 @@
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diuvia.net"
 description       "Configures unicorn"
-version           "0.2"
+version           "0.3"
 depends           "ruby"
