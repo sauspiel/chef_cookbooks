@@ -1,0 +1,96 @@
+From 4df4c2dda02b7e8b1913b19023ea7201ce28cb49 Mon Sep 17 00:00:00 2001
+From: Holger Amann <holger@sauspiel.de>
+Date: Tue, 26 Feb 2013 23:10:25 +0100
+Subject: [PATCH] adding rsync_options for applying arguments to rsync
+
+---
+ barman/backup.py           |  2 +-
+ barman/command_wrappers.py | 10 +++++++---
+ barman/config.py           |  3 ++-
+ barman/server.py           |  1 +
+ 4 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/barman/backup.py b/barman/backup.py
+index 02eec67..019eda6 100644
+--- a/barman/backup.py
++++ b/barman/backup.py
+@@ -847,7 +847,7 @@ class BackupManager(object):
+         :param backup_info: the backup information structure
+         '''
+         backup_dest = os.path.join(backup_info.get_basebackup_directory(), 'pgdata')
+-        rsync = RsyncPgData(ssh=self.server.ssh_command, ssh_options=self.server.ssh_options)
++        rsync = RsyncPgData(ssh=self.server.ssh_command, ssh_options=self.server.ssh_options, rsync_options=self.server.rsync_options)
+         retval = rsync(':%s/' % backup_info.pgdata, backup_dest)
+         if retval not in (0, 24):
+             msg = "ERROR: data transfer failure"
+diff --git a/barman/command_wrappers.py b/barman/command_wrappers.py
+index b18fc28..4e98829 100644
+--- a/barman/command_wrappers.py
++++ b/barman/command_wrappers.py
+@@ -103,11 +103,15 @@ class Rsync(Command):
+     This class is a wrapper for the rsync system command,
+     which is used vastly by barman
+     '''
+-    def __init__(self, rsync='rsync', args=[], ssh=None, ssh_options=None, debug=False):
++    def __init__(self, rsync='rsync', args=[], ssh=None, ssh_options=None, debug=False, rsync_options=None):
+         if ssh:
+             options = ['-e', self._cmd_quote(ssh, ssh_options)] + args
+         else:
+             options = args
++
++        if rsync_options != None and len(rsync_options) > 0:
++          options = options + rsync_options
++
+         Command.__init__(self, rsync, options, debug=debug)
+ 
+     def from_file_list(self, filelist, src, dst):
+@@ -135,11 +139,11 @@ class Rsync(Command):
+ class RsyncPgData(Rsync):
+     ''' This class is a wrapper for rsync, specialized in Postgres data directory syncing
+     '''
+-    def __init__(self, rsync='rsync', args=[], ssh=None, ssh_options=None, debug=False):
++    def __init__(self, rsync='rsync', args=[], ssh=None, ssh_options=None, debug=False, rsync_options=None):
+         options = ['-rLKpts', '--delete-excluded', '--inplace',
+                    '--exclude=/pg_xlog/*',
+                    '--exclude=/pg_log/*',
+                    '--exclude=/postmaster.pid'
+                    ] + args
+-        Rsync.__init__(self, rsync, options, ssh, ssh_options, debug)
++        Rsync.__init__(self, rsync, options, ssh, ssh_options, debug, rsync_options)
+ 
+diff --git a/barman/config.py b/barman/config.py
+index 2476b8a..b69e1eb 100644
+--- a/barman/config.py
++++ b/barman/config.py
+@@ -40,7 +40,7 @@ class Server(object):
+         'compression', 'custom_compression_filter',
+         'custom_decompression_filter', 'retention_policy_mode', 'retention_policy',
+         'wal_retention_policy', 'pre_backup_script', 'post_backup_script',
+-        'minimum_redundancy',
++        'minimum_redundancy', 'rsync_options'
+     ]
+ 
+     BARMAN_KEYS = ['compression', 'custom_compression_filter',
+@@ -60,6 +60,7 @@ class Server(object):
+         'retention_policy_mode' : 'auto',
+         'wal_retention_policy' : 'main',
+         'minimum_redundancy' : '0',
++        'rsync_options': '',
+     }
+ 
+     def __init__(self, config, name):
+diff --git a/barman/server.py b/barman/server.py
+index 140115c..bbd4a2e 100644
+--- a/barman/server.py
++++ b/barman/server.py
+@@ -51,6 +51,7 @@ class Server(object):
+         self.backup_manager = BackupManager(self)
+         self.configuration_files = None
+         self.enforce_retention_policies = False
++        self.rsync_options = config.rsync_options.split()
+         
+         # Set minimum redundancy (default 0)
+         if self.config.minimum_redundancy.isdigit():
+-- 
+1.7.12.4 (Apple Git-37)
+
