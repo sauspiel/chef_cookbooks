@@ -57,6 +57,16 @@ action :before_restart do
     command command
     config_path config_path
   end
+
+  logrotate new_resource.name do
+    files ["#{new_resource.path}/current/*.log"]
+    frequency "daily"
+    rotate_count 10
+    compress true
+    user new_resource.user
+    group new_resource.group
+    restart_command "/bin/kill -USR1 `cat #{new_resource.path}/current/tmp/unicorn/unicorn.pid` > /dev/null"
+  end
 end
 
 action :after_restart do
