@@ -9,6 +9,24 @@ app = search(:apps, "id:team_dashboard").first
 env = node.chef_environment
 env = 'development' if env == '_default'
 
+htpasswd = nil
+if app["environments"][env]["htpasswd"]
+  user = app["environments"][env]["htpasswd"]
+  pw = Chef::EncryptedDataBagItem.load("passwords", "http")[user].crypt("salt")
+  htpasswd = { 
+    :user => user,
+    :passwd => pw }
+
+  template "#{node[:nginx][:dir]}/htpasswd.d/team_dashboard.htpasswd" do
+    source "htpasswd.erb"
+    variables :htpasswd => htpasswd
+    owner node[:nginx][:user]
+    group node[:nginx][:group]
+    mode 0600
+  end
+end
+
+
 application "team_dashboard" do
   path node[:team_dashboard][:path]
   repository node[:team_dashboard][:repository]
@@ -50,9 +68,12 @@ application "team_dashboard" do
     environment_vars :GRAPHITE_URL => node[:team_dashboard][:graphite_url]
   end
 
+  
   nginx do
     cookbook "team_dashboard"
     template "nginx.conf.erb"
-    variables :app_name => "team_dashboard", :domain => app["environments"][env]["domain"]
+    variables :app_name => "team_dashboard", 
+      :domain => app["environments"][env]["domain"],
+      :htpasswd => htpasswd
   end
 end
