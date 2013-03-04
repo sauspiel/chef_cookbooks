@@ -11,11 +11,11 @@ env = 'development' if env == '_default'
 
 application "team_dashboard" do
   path node[:team_dashboard][:path]
-  repository "https://github.com/fdietz/team_dashboard.git"
+  repository node[:team_dashboard][:repository]
   scm_provider Chef::Provider::Git
   owner "deploy"
   group "deploy"
-  revision "master"
+  revision node[:team_dashboard][:repository_revision]
   environment_name env
   enable_submodules true
   migrate true
