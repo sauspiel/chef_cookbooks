@@ -33,7 +33,13 @@ end
 
 after_fork do |server, worker|
   if ENV['RAILS_ENV'] != 'development'
-    ENV["UNICORN_PROCTITLE"] = "<%= @app_name %> #{File.read("#{Rails.root}/REVISION")[0,6]}"
+    rev = 0
+    if File.exists? "#{Rails.root}/REVISION"
+      rev = File.read("#{Rails.root}/REVISION")[0,8]
+    else
+      rev = `git rev-parse HEAD`.chomp[0,8]
+    end
+    ENV["UNICORN_PROCTITLE"] = "<%= @app_name %> #{rev}"
     $0 = ENV["UNICORN_PROCTITLE"]
   end
 
