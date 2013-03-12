@@ -1,0 +1,6 @@
+name             'lsyncd'
+maintainer       'Sauspiel GmbH'
+maintainer_email 'holger@sauspiel.de'
+license          'All rights reserved'
+description      'Installs/Configures lsyncd'
+version          '0.0.1'
