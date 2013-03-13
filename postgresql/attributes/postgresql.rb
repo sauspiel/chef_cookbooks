@@ -46,6 +46,10 @@ default[:postgresql][:max_standby_archive_delay] = 30
 default[:postgresql][:log_checkpoints] = "on"
 default[:postgresql][:wal_sync_method] = "fdatasync"
 default[:postgresql][:shared_preload_libraries] = []
+default[:postgresql][:vacuum_cost_delay] = 0
+default[:postgresql][:vacuum_cost_limit] = 200
+default[:postgresql][:autovacuum_vacuum_cost_delay] = 20
+default[:postgresql][:autovacuum_vacuum_cost_limit] = -1
 
 ## pg_stat_statements
 default[:postgresql][:pg_stat_statements_max] = 1000

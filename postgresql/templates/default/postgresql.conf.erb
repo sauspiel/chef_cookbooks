@@ -65,6 +65,11 @@ update_process_title = on
 track_activities = on
 track_counts = on
 
+vacuum_cost_delay = <%= @config[:vacuum_cost_delay] %>
+vacuum_cost_limit = <%= @config[:vacuum_cost_limit] %>
+autovacuum_vacuum_cost_delay = <%= @config[:autovacuum_vacuum_cost_delay] %>
+autovacuum_vacuum_cost_limit = <%= @config[:autovacuum_vacuum_cost_limit] %>
+
 autovacuum = on
 autovacuum_max_workers = <%= @config[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @config[:autovacuum_naptime] %>
