@@ -11,6 +11,7 @@ remote_directory node[:campfire_notifier][:dir] do
   action :create
 end
 
-execute "bundle install" do
-  command "cd #{node[:campfire_notifier][:dir]} && bundle install --deployment"
+execute "bundle" do
+  command "bundle install --path vendor/bundle"
+  cwd node[:campfire_notifier][:dir]
 end
