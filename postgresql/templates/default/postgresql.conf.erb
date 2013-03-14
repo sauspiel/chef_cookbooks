@@ -57,6 +57,7 @@ log_line_prefix = '%t %d %p '
 log_timezone = 'localtime'
 log_lock_waits = <%= @config[:log_lock_waits] %>
 log_checkpoints = <%= @config[:log_checkpoints] %>
+log_autovacuum_min_duration = <%= @config[:log_autovacuum_min_duration] %>
 
 ## show hostnames in ps
 log_hostname = on

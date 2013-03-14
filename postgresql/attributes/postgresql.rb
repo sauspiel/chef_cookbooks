@@ -50,6 +50,7 @@ default[:postgresql][:vacuum_cost_delay] = 0
 default[:postgresql][:vacuum_cost_limit] = 200
 default[:postgresql][:autovacuum_vacuum_cost_delay] = 20
 default[:postgresql][:autovacuum_vacuum_cost_limit] = -1
+default[:postgresql][:log_autovacuum_min_duration] = 10000
 
 ## pg_stat_statements
 default[:postgresql][:pg_stat_statements_max] = 1000
