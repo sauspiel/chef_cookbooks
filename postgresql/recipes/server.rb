@@ -2,6 +2,7 @@ include_recipe "postgresql::default"
 
 apt_package "postgresql-common" do
   default_release node[:postgresql][:deb_release]
+  options "--force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
 end
 
 Chef::Log.warn("Postgresql has to be stopped/started manually!")
