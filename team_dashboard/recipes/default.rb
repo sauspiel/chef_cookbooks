@@ -39,16 +39,6 @@ application "team_dashboard" do
   migrate true
   action :force_deploy
 
-  before_migrate do
-    bash "modifying_gemfile" do
-      cwd release_path
-      code <<-EOF
-      echo 'gem "unicorn", "~> #{node[:unicorn][:version]}"' >> Gemfile
-      EOF
-      not_if "grep -q unicorn Gemfile"
-    end
-  end
-
   rails do
     bundler true
     bundler_deployment false
