@@ -13,7 +13,7 @@ search( :users, "shell:*zsh" ).each do |u|
     source "zshrc.erb"
     owner u[:id]
     group u[:groups].first
-    variables( :theme => ( theme || node[:ohmyzsh][:theme] ), :shared => true )
+    variables( :theme => ( theme || node[:ohmyzsh][:theme] ), :shared => true, :source_dirs => node[:ohmyzsh][:source_dirs] || [])
     action :create
     only_if { File.exist?(u["home_dir"]) }
   end

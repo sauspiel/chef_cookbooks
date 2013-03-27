@@ -33,8 +33,16 @@ alias vserver='nocorrect vserver'
 # preserve environment variables in sudo shell
 alias sudos='sudo -sE'
 
+<% @source_dirs.each do |dir| %>
+for config_file (<%= dir %>/*.zsh ); do
+  source $config_file
+done
+<% end -%>
+
 <% if @shared %>
 if [ -f ~/.zshrc_local ]; then
   source ~/.zshrc_local
 fi
 <% end -%>
+
+
