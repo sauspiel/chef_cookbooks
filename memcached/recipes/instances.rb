@@ -14,6 +14,7 @@ if node[:memcached][:instances]
                          "pid_path" => "/var/run/memcached_#{name}.pid",
                          "user" => "root",
                          "group" => "root",
+                         "slab_page_size" => node[:memcached][:slab_page_size],
                          "bind_address" => node[:memcached][:bind_address]}.merge(instance)
 
     template "#{node[:bluepill][:conf_dir]}/#{full_name}.pill" do
