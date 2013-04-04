@@ -56,6 +56,8 @@ action :before_restart do
     group new_resource.group
     command command
     config_path config_path
+    cookbook new_resource.cookbook 
+    template new_resource.template
   end
 
   logrotate new_resource.name do

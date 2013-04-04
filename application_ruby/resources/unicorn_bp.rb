@@ -32,6 +32,9 @@ attribute :group, :kind_of => String, :default => "deploy"
 attribute :bundler, :kind_of => [TrueClass, FalseClass, NilClass], :default => nil
 attribute :bundle_command, :kind_of => [String, NilClass], :default => nil
 attribute :command, :kind_of => [String, NilClass], :default => nil
+attribute :template, :kind_of => [String, NilClass], :default => nil
+attribute :cookbook, :kind_of => [String, NilClass], :default => nil
+
 
 def options(*args, &block)
   @options ||= Mash[:tcp_nodelay => true, :backlog => 100]
