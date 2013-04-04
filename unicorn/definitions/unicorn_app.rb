@@ -11,11 +11,18 @@ define :unicorn_app do
     end
   end
 
+  directory "#{params[:app_root]}/log" do
+    owner params[:user]
+    group params[:user]
+    mode 0755
+    recursive true
+  end
+
   config_path = params[:config_path] || "#{node[:unicorn][:config_path]}/#{params[:name]}.conf.rb"
 
   template config_path do
-    cookbook 'unicorn'
-    source "unicorn.conf.erb"
+    cookbook params[:cookbook] || 'unicorn'
+    source params[:template] || "unicorn.conf.erb"
     owner params[:user]
     group params[:group]
     mode 0644
