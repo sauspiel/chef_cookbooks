@@ -61,7 +61,7 @@ action :before_restart do
   end
 
   logrotate new_resource.name do
-    files ["#{new_resource.path}/current/*.log"]
+    files ["#{new_resource.path}/current/log/*.log"]
     frequency "daily"
     rotate_count 10
     compress true
