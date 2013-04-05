@@ -6,6 +6,27 @@ env = 'development' if env == '_default'
 node.default[:unicorn][:user] = "barman"
 node.default[:unicorn][:group] = "barman"
 
+app = search(:apps, "id:barmaid").first
+
+htpasswd = nil
+if app["environments"][env]["htpasswd"]
+  user = app["environments"][env]["htpasswd"]
+  pw = Chef::EncryptedDataBagItem.load("passwords", "http")[user].crypt("salt")
+  htpasswd = {
+    :user => user,
+    :passwd => pw
+  }
+
+  template "#{node[:nginx][:dir]}/htpasswd.d/barmaid.htpasswd" do
+    source "htpasswd.erb"
+    variables :htpasswd => htpasswd
+    owner node[:nginx][:user]
+    group node[:nginx][:group]
+    mode 0600
+  end
+  
+end
+
 application "barmaid" do
   path node[:barmaid][:path]
   repository node[:barmaid][:repository]
@@ -15,7 +36,7 @@ application "barmaid" do
   revision node[:barmaid][:repository_revision]
   environment_name env
   enable_submodules true
-  action :force_deploy
+  action :deploy
 
   rails do
     bundler true
@@ -38,5 +59,15 @@ application "barmaid" do
     user "barman"
     group "barman"
     cookbook "barmaid"
+  end
+
+  nginx do
+    user "barman"
+    group "barman"
+    cookbook "barmaid"
+    template "nginx.conf.erb"
+    variables :app_name => "barmaid",
+      :domain => node[:fqdn],
+      :htpasswd => htpasswd
   end
 end
