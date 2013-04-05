@@ -36,6 +36,7 @@ action :before_restart do
   new_resource = @new_resource
 
   new_resource.environment_vars['RAILS_ENV'] = new_resource.environment_name
+  new_resource.environment_vars['RACK_ENV'] = new_resource.environment_name
 
   command = new_resource.command
   config_path = "#{node[:unicorn][:config_path]}/#{new_resource.name}.conf.rb"
