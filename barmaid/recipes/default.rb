@@ -27,6 +27,28 @@ if app["environments"][env]["htpasswd"]
   
 end
 
+%w{config log tmp jobs}.each do |dir|
+  directory "#{node[:barmaid][:path]}/shared/#{dir}" do
+    owner "barman"
+    group "barman"
+    mode 0755
+    recursive true
+    action :create
+  end
+end
+
+template "#{node[:bluepill][:conf_dir]}/barmaid-resque.pill" do
+  mode 0644
+  source "bluepill-resque.pill.erb"
+  variables :name => "barmaid-resque",
+    :log => "log/resque.log",
+    :root => "#{node[:barmaid][:path]}/current",
+    :env => env,
+    :pid_file => "tmp/pids/resque.pid",
+    :gid => "barman",
+    :uid => "barman"
+end
+
 application "barmaid" do
   path node[:barmaid][:path]
   repository node[:barmaid][:repository]
@@ -35,22 +57,32 @@ application "barmaid" do
   group "barman"
   revision node[:barmaid][:repository_revision]
   environment_name env
-  enable_submodules true
+  symlinks "config/barmaid.yml" => "config/barmaid.yml",
+    "config/resque.yml" => "config/resque.yml",
+    "log" => "log",
+    "tmp" => "tmp"
   action :deploy
 
-  rails do
-    bundler true
-    bundler_deployment false
-  end
-
-  before_restart do
+  before_symlink do
     %w(barmaid resque).each do |conf|
-      template "#{release_path}/config/#{conf}.yml" do
+      file = "#{node[:barmaid][:path]}/shared/config/#{conf}.yml"
+      template file do
         owner "barman"
         group "barman"
         source "#{conf}.yml.erb"
+        action :create_if_missing
       end
     end
+  end
+
+  after_restart do
+    bluepill_service "barmaid-resque" do
+      action [:enable, :load, :restart]
+    end
+  end
+
+  rails do
+    bundler true
   end
 
   unicorn_bp do

@@ -1,0 +1,16 @@
+ENV['PATH'] = "#{ENV['PATH']}:/usr/local/bin"
+
+Bluepill.application("<%= @name %>", :log_file => "<%= "#{node[:bluepill][:log_dir]}/#{@name}.log" %>") do |app|
+  app.working_dir = "<%= @root %>"
+  app.process("<%= @name %>") do |process|
+    process.start_command = "/usr/bin/env RACK_ENV=<%= @env %> bundle exec rake resque:work"
+    process.stop_command = "kill -QUIT {{PID}}"
+    process.pid_file = "<%= "#{@root}/#{@pid_file}" %>"
+    process.stop_grace_time = 5.seconds
+    process.stop_signales = [:term, 10.seconds, :kill]
+    process.stdout = process.stderr = "<%= "#{@root}/#{@log}" %>"
+    process.daemonize = true
+    process.uid = "<%= @uid %>"
+    process.gid = "<%= @gid %>"
+  end
+end

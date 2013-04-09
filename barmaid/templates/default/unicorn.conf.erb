@@ -23,11 +23,9 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  if ENV['RACK_ENV'] != 'development'
-    rev = `git rev-parse HEAD`.chomp[0,8]
-    ENV["UNICORN_PROCTITLE"] = "<%= @app_name %> #{rev}"
-    $0 = ENV["UNICORN_PROCTITLE"]
-  end
+  rev = `git rev-parse HEAD`.chomp[0,8]
+  ENV["UNICORN_PROCTITLE"] = "<%= @app_name %> #{rev}"
+  $0 = ENV["UNICORN_PROCTITLE"]
 end
 
 
