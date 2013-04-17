@@ -8,6 +8,7 @@ define :unicorn_app do
       group params[:user]
       mode 0755
       recursive true
+      not_if { ::File.symlink?("#{params[:app_root]}/tmp/#{dir}") }
     end
   end
 
@@ -16,6 +17,7 @@ define :unicorn_app do
     group params[:user]
     mode 0755
     recursive true
+    not_if { ::File.symlink?("#{params[:app_root]}/log") }
   end
 
   config_path = params[:config_path] || "#{node[:unicorn][:config_path]}/#{params[:name]}.conf.rb"
