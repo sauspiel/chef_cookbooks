@@ -27,6 +27,14 @@ if app["environments"][env]["htpasswd"]
   
 end
 
+service "barmaid" do
+  supports [:start, :stop, :restart]
+end
+
+service "barmaid-resque" do
+  supports [:start, :stop, :restart]
+end
+
 %w{config log tmp jobs}.each do |dir|
   directory "#{node[:barmaid][:path]}/shared/#{dir}" do
     owner "barman"
