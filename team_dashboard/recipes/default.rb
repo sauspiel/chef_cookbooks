@@ -26,6 +26,15 @@ if app["environments"][env]["htpasswd"]
   end
 end
 
+%w{config}.each do |dir|
+  directory "#{node[:team_dashboard][:path]}/shared/#{dir}" do
+    owner "deploy"
+    group "deploy"
+    mode 0700
+    recursive true
+    action :create
+  end
+end
 
 application "team_dashboard" do
   path node[:team_dashboard][:path]
