@@ -174,6 +174,16 @@ def run_deploy(force = false)
     after_restart do
       app_provider.send(:run_actions_with_context, :after_restart, @run_context)
     end
+
+    fix_git_index_permissions
+  end
+end
+
+def fix_git_index_permissions
+  execute "fixup git index permissions" do
+    command "chown #{new_resource.owner}:#{new_resource.group} #{new_resource.path}/shared/cached-copy/.git/index"
+    only_if { ::File.exists?("#{new_resource.path}/shared/cached-copy/.git/index") }
+    action :run
   end
 end
 
