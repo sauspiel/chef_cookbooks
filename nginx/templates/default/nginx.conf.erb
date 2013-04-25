@@ -43,6 +43,7 @@ http {
   gzip_comp_level <%= @node[:nginx][:gzip_comp_level] %>;
   gzip_proxied <%= @node[:nginx][:gzip_proxied] %>;
   gzip_types <%= @node[:nginx][:gzip_types].join(' ') %>;
+  gzip_static <%= @node[:nginx][:gzip_static] %>;
   <% end %>
 
   charset utf-8;

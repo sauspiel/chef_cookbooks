@@ -22,6 +22,7 @@ default.nginx[:gzip] = "on"
 default.nginx[:gzip_http_version] = "1.0"
 default.nginx[:gzip_comp_level] = "2"
 default.nginx[:gzip_proxied] = "any"
+default.nginx[:gzip_static] = "on"
 
 default.nginx[:keepalive] = "on"
 default.nginx[:keepalive_timeout] = 8
