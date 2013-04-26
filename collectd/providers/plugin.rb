@@ -45,3 +45,10 @@ action :create do
     end
   end
 end
+
+action :delete do
+  file "#{node[:collectd][:conf_dir]}/conf.d/#{new_resource.name}.conf" do
+    action :delete
+    notifies :restart, resources(:service => "collectd")
+  end
+end
