@@ -5,3 +5,5 @@ default[:repmgr][:user] = 'repmgr'
 default[:repmgr][:dbname] = 'postgres'
 default[:repmgr][:host] = node[:fqdn].split(".")[0]
 default[:repmgr][:log] = '/var/log/repmgrd.log'
+default[:repmgr][:version] = '1.2-1'
+default[:repmgr][:release] = 'squeeze-sauspiel'

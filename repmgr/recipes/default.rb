@@ -1,6 +1,10 @@
 include_recipe "bluepill"
 
-package "repmgr"
+apt_package_hold 'repmgr' do
+  version node[:repmgr][:version]
+  default_release node[:repmgr][:release]
+  action [:install, :hold]
+end
 
 template "#{node[:repmgr][:config]}" do
   source "repmgr.conf.erb"

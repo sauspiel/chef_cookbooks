@@ -57,8 +57,6 @@ end
 
 %w(libxslt1-dev libxml2-dev libpam0g-dev libedit-dev).each {|p| package p }
 
-package "repmgr" if node[:postgresql][:with_repmgr]
-
 directory "/etc/postgresql" do
   mode 0755
   owner "postgres"
