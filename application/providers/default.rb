@@ -174,9 +174,9 @@ def run_deploy(force = false)
     after_restart do
       app_provider.send(:run_actions_with_context, :after_restart, @run_context)
     end
-
-    fix_git_index_permissions
   end
+
+  fix_git_index_permissions
 end
 
 def fix_git_index_permissions
