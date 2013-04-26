@@ -96,6 +96,10 @@ instances.each do |instance, instconfig|
     action :run
   end
 
+  if node[:postgresql][:role]
+    node.normal.postgresql.role = node[:postgresql][:role]
+  end
+
   if node[:postgresql][:role] == "slave"
     directory "#{datadir}/pg_xlog_archive" do
       mode 0755
