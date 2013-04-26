@@ -7,4 +7,4 @@ default.bluepill[:log_dir] = "/var/log/bluepill"
 default.bluepill[:pid_dir] = "/var/run/bluepill"
 default.bluepill[:state_dir] = "/var/lib/bluepill"
 
-default.bluepill[:version] = "0.0.62"
+default.bluepill[:version] = "0.0.63"
