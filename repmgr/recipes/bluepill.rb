@@ -8,7 +8,12 @@ template "#{node[:bluepill][:conf_dir]}/repmgrd.pill" do
   mode 0644
 end
 
+bluepill_action = [:stop, :disable]
+if node[:postgresql][:role].to_s == "slave"
+  bluepill_action = [:enable, :load, :start]
+end
+
 bluepill_service "repmgrd" do
-  action [:enable]
+  action bluepill_action
 end
 
