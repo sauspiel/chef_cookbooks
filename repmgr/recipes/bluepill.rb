@@ -6,6 +6,7 @@ template "#{node[:bluepill][:conf_dir]}/repmgrd.pill" do
   owner "root"
   group "root"
   mode 0644
+  action node[:postgresql][:role].to_s == "slave" ? :create : :delete
 end
 
 bluepill_action = [:stop, :disable]
