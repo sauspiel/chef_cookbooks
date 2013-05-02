@@ -50,6 +50,11 @@ action :restart do
   end
 end
 
+action :force_restart do
+  execute "#{node['bluepill']['bin']} #{new_resource.service_name} stop" if @bp.running
+  execute "#{node['bluepill']['bin']} #{new_resource.service_name} start"
+end
+
 def load_current_resource
   @bp = Chef::Resource::BluepillService.new(new_resource.name)
   @bp.service_name(new_resource.service_name)

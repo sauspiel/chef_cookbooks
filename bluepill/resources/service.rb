@@ -1,4 +1,4 @@
-actions :start, :stop, :enable, :disable, :load, :restart
+actions :start, :stop, :enable, :disable, :load, :restart, :force_restart
 
 attribute :service_name, :name_attribute => true
 attribute :enabled, :default => false
