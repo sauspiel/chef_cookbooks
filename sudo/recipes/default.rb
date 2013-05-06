@@ -2,6 +2,7 @@ include_recipe 'users'
 
 package "sudo" do
   action :upgrade
+  options "--force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
 end
 
 directory "/etc/sudoers.d" do
