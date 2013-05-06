@@ -138,11 +138,13 @@ if node[:active_applications]
       execute "follow #{environment} log" do
         command "le follow #{app_root}/current/log/#{environment}.log --name #{name}-#{environment}"
         not_if "le whoami | grep #{name}-#{environment}"
+        ignore_failure true
       end
       
       execute "follow nginx access log" do
         command "le follow /var/log/nginx/#{domain}.access.log --name #{name}-nginx-access"
         not_if "le whoami | grep #{name}-nginx-access"
+        ignore_failure true
       end
     end
 
