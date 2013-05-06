@@ -37,4 +37,5 @@ default[:postfix][:disabledsn] = false
 default[:postfix][:sender_dependent_relayhost_maps] = "/etc/postfix/relayhost_map"
 default[:postfix][:sender_dependent_relayhosts] = {}
 default[:postfix][:inet_interfaces] = 'all'
+default[:postfix][:inet_protocols] = "ipv4"
 

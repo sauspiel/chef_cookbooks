@@ -24,6 +24,7 @@ smtp_use_tls = <%= node[:postfix][:smtp_use_tls] %>
 <% end -%>
 
 inet_interfaces = <%= node[:postfix][:inet_interfaces] %>
+inet_protocols = <%= node[:postfix][:inet_protocols] %>
 
 myhostname = <%= node[:postfix][:myhostname] %>
 mydomain = <%= node[:postfix][:mydomain] %>
