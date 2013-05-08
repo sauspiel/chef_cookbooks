@@ -1,0 +1,5 @@
+name             'megacli'
+maintainer       'Sauspiel GmbH'
+maintainer_email 'holger@sauspiel.de'
+description      'Installs/Configures megacli'
+version          '0.0.1'
