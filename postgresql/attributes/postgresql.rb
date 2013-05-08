@@ -34,6 +34,7 @@ default[:postgresql][:synchronous_commit] = "off"
 default[:postgresql][:commit_delay] = 0
 default[:postgresql][:commit_siblings] = 5
 default[:postgresql][:checkpoint_segments] = 16
+default[:postgresql][:checkpoint_completion_target] = 0.5
 default[:postgresql][:log_min_duration_statement] = 2000
 default[:postgresql][:autovacuum_max_workers] = 3
 default[:postgresql][:autovacuum_naptime] = "1min"
