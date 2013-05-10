@@ -8,7 +8,7 @@ server {
 
   <% if @htpasswd %>
   auth_basic "Team Dashboard Restricted Access";
-  auth_basic_user_file <%= node[:nginx][:dir] %>/htpasswd.d/tdash.htpasswd;
+  auth_basic_user_file <%= node[:nginx][:dir] %>/htpasswd.d/team_dashboard.htpasswd;
   <% end -%>
 
   location / {
