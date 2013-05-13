@@ -87,3 +87,8 @@ pg_stat_statements.track_utility = <%= @config[:pg_stat_statements_track_utility
 pg_stat_statements.save = <%= @config[:pg_stat_statements_save] %>
 <% end -%>
 
+<% if @config[:shared_preload_libraries].include?("pg_stat_plans") %>
+pg_stat_plans.max = <%= @config[:pg_stat_plans_max] %>
+pg_stat_plans.track = <%= @config[:pg_stat_plans_track] %>
+<% end -%>
+

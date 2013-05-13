@@ -57,3 +57,7 @@ default[:postgresql][:pg_stat_statements_max] = 1000
 default[:postgresql][:pg_stat_statements_track] = "top"
 default[:postgresql][:pg_stat_statements_track_utility] = "on"
 default[:postgresql][:pg_stat_statements_save] = "on"
+
+## pg_stat_plans
+default[:postgresql][:pg_stat_plans_max] = 10000
+default[:postgresql][:pg_stat_plans_track] = 'all'
