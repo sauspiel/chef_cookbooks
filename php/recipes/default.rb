@@ -3,7 +3,7 @@ include_recipe 'apt'
 apt_repository "dotdeb" do
   uri "http://packages.dotdeb.org"
   components ["all"]
-  distribution "stable"
+  distribution node.lsb.codename
   key "http://www.dotdeb.org/dotdeb.gpg"
   action :add
 end
