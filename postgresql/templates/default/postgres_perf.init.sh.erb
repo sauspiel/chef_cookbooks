@@ -16,7 +16,7 @@ case "$1" in
     log_daemon_msg "Executing performance settings for postgres"
 
     <% @node[:postgresql][:blockdev].each do |dev,value| -%>
-    blockdev --setra <%= value %> <%= dev %>
+    blockdev --setra <%= value %> <%= dev %> 2>/dev/null
     <% end-%>
 
     log_end_msg 0
