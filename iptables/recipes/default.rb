@@ -30,8 +30,18 @@ directory "/etc/iptables.d" do
 end
 
 cookbook_file "/usr/sbin/rebuild-iptables" do
-  source "rebuild-iptables"
+  source node[:iptables][:rebuild_iptables_script]
   mode 0755
+end
+
+common_templates_action = node[:iptables][:rebuild_iptables_script] == 'rebuild-iptables.rb' ? :create : :delete
+
+%w(prefix suffix postfix).each do |f|
+  template "/etc/iptables.d/#{f}" do
+    source "#{f}.erb"
+    mode 0644
+    action common_templates_action
+  end
 end
 
 case node[:platform]
