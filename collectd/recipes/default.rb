@@ -65,13 +65,6 @@ template "#{node[:collectd][:custom_types_db]}" do
   action :create_if_missing
 end
 
-if node[:collectd][:remove_lvm2]
-  package "lvm2" do
-    action :remove
-    ignore_failure true
-  end
-end
-
 types_dbs = Array.new
 types_dbs.concat(node[:collectd][:types_db])
 types_dbs << node[:collectd][:custom_types_db]
