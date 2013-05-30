@@ -38,6 +38,7 @@ template "/etc/ssh/known_hosts" do
   owner "root"
   group "root"
   variables(:nodes => nodes)
+  notifies :restart, resources(:service => "ssh")
 end
 
 template "/etc/ssh/ssh_config" do
@@ -45,6 +46,7 @@ template "/etc/ssh/ssh_config" do
   mode 0644
   owner "root"
   group "root"
+  notifies :restart, resources(:service => "ssh")
 end
 
 template "/etc/ssh/sshd_config" do
@@ -54,9 +56,4 @@ template "/etc/ssh/sshd_config" do
   group "root"
   notifies :restart, resources(:service => "ssh")
   variables(:addresses => addresses) 
-end
-
-
-service "ssh" do
-  action :start
 end
