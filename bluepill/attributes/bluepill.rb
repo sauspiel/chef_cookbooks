@@ -1,4 +1,4 @@
-default.bluepill[:bin] = languages[:ruby][:bin_dir] + "/bluepill"
+default.bluepill[:bin] = "#{node['languages']['ruby']['bin_dir']}/bluepill"
 
 default.bluepill[:logfile] = "/var/log/bluepill.log"
 default.bluepill[:init_dir] = "/etc/init.d"

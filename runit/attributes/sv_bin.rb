@@ -1,4 +1,4 @@
-runit_sv_bin "/usr/bin/sv"
+default.runit_sv_bin "/usr/bin/sv"
 
-runit_service_dir "/etc/service"
-runit_sv_dir "/etc/sv"
+default.runit_service_dir "/etc/service"
+default.runit_sv_dir "/etc/sv"
