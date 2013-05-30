@@ -41,6 +41,8 @@ end
   end
 end
 
+include_recipe "postgresql::pg_stat_plans"
+
 # allowing start of postgresql again
 ruby_block "deleting policy-rc.d file" do
   block do
