@@ -33,7 +33,7 @@ template "/etc/rsyslog.d/haproxy.conf" do
   group "root"
   mode 0644
   source "rsyslog.conf.erb"
-  notifies :reload, resources(:service => "rsyslog")
+  notifies :restart, resources(:service => "rsyslog")
 end
 
 logrotate "haproxy" do
