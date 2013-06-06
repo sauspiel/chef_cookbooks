@@ -38,7 +38,7 @@ server {
   <% end -%>
 }
 
-<% if @ssl %>
+<% if @certificate_name %>
 server {
   listen <%= bind_address_to_s(443) %> <%= nginx_spdy_support? ? 'ssl spdy' : '' %>;
   server_name <%= @server_name %>;
@@ -57,8 +57,8 @@ server {
   }
 
   ssl on;
-  ssl_certificate /etc/ssl_certs/<%=  @server_name %>.crt;
-  ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
+  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>.crt;
+  ssl_certificate_key /etc/ssl_certs/<%=  @certificate_name %>.key;
 
   # for PCI compliance
   ssl_protocols SSLv3 TLSv1;
@@ -92,14 +92,14 @@ server {
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 }
 
-  <% if @ssl %>
+  <% if @certificate_name %>
 server {
   listen <%= bind_address_to_s(443) %> default_server;
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 
   ssl on;
-  ssl_certificate /etc/ssl_certs/<%=  @server_name %>.crt;
-  ssl_certificate_key /etc/ssl_certs/<%=  @server_name %>.key;
+  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>.crt;
+  ssl_certificate_key /etc/ssl_certs/<%=  @certificate_name %>.key;
   ssl_verify_depth 3;
 }
   <% end -%>

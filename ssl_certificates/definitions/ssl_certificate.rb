@@ -4,7 +4,7 @@ define :ssl_certificate do
     mode 0755
   end
   
-  name = params[:name] =~ /\*\.(.+)/ ? "#{$1}_wildcard" : params[:name]
+  name = ssl_certificate_as_wildcard(params[:name])
 
   # gsub is required since databags can't contain dashes
   cert = Chef::EncryptedDataBagItem.load(:certificates, name.gsub(".", "_"))
