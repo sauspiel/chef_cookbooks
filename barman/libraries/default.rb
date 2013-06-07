@@ -9,7 +9,7 @@ def barman_master_servers
       eth = conf[:ssh_master_eth] || master[:postgresql][:interfaces].reject { |i| i == "lo" }.first
       x = Hash.new
       x[:id] = name
-      x[:ip] = master[:network][:interfaces][eth][:addresses].select { |address, data| data[:family] == "inet"}[0][0]
+      x[:ip] = master[:network][:interfaces][eth][:addresses].detect { |k,v| v[:family] == 'inet' }.first
 
       x[:ssh_master_address] = conf[:ssh_master_address] || x[:ip]
       x[:pg_master_address] = conf[:pg_master_address] || x[:ip]
