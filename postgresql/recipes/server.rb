@@ -122,9 +122,9 @@ instances.each do |instance, instconfig|
   addresses = Array.new
   config[:interfaces].each do |eth|
     begin
-      addresses <<  node[:network][:interfaces][eth][:addresses].select { |address,data| data["family"] == "inet"}[0][0]
+      addresses << node[:network][:interfaces][eth][:addresses].select { |addr,data| data["family"] == "inet" }.keys[0]
     rescue
-      Chef::Log.error("Interface #{eth} does not exist!")
+      Chef::Log.warn("Interface #{eth} does not exist!")
     end
   end
 
