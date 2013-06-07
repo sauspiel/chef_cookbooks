@@ -11,7 +11,7 @@ addresses = []
 if !node[:ssh][:interfaces].nil?
   node[:ssh][:interfaces].each do |interface|
     if node[:network][:interfaces].has_key? interface
-      addresses << node[:network][:interfaces][interface][:addresses].select { |address, data| data["family"] == "inet"}[0][0]
+      addresses << node[:network][:interfaces][interface][:addresses].detect{|k,v| v[:family] == "inet" }.first
     end
   end
 else
