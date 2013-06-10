@@ -2,7 +2,7 @@ def nginx_bind_address_to_s(port)
   if node[:nginx][:bind_interface].nil? || node[:nginx][:bind_interface]['all']
     return port
   else
-    return "#{node[:network][:interfaces][node[:nginx][:bind_interface]][:addresses].select { |addr,data| data["family"] == "inet" }.keys[0]
+    return node[:network][:interfaces][node[:nginx][:bind_interface]][:addresses].select { |addr,data| data["family"] == "inet" }.keys[0]
   end
 end
 

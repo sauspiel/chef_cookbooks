@@ -1,4 +1,5 @@
 include_recipe "apt"
+include_recipe "ssl_certificates"
 
 apt_repository "nginx" do
   uri "http://nginx.org/packages/debian"
@@ -27,6 +28,11 @@ else
     members node[:nginx][:user]
     append true
   end
+end
+
+group "ssl-cert" do
+  members node[:nginx][:user]
+  append true
 end
 
 template "/etc/logrotate.d/nginx" do
