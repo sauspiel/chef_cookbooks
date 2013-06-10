@@ -126,7 +126,7 @@ if node[:active_applications]
     logrotate name do
       files ["#{app_root}/current/log/*.log"]
       frequency "daily"
-      rotate_count 10
+      rotate_count node[:rails][:keep_logs]
       compress true
       user 'deploy'
       group 'deploy'
