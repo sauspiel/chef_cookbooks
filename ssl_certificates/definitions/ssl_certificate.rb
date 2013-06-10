@@ -13,8 +13,8 @@ define :ssl_certificate do
     source "cert.erb"
     mode "0640"
     cookbook "ssl_certificates"
-    owner "root"
-    group "www-data"
+    owner node[:ssl_certificates][:owner]
+    group node[:ssl_certificates][:group]
     variables :cert => cert["cert"]
   end
 
@@ -22,8 +22,8 @@ define :ssl_certificate do
     source "cert.erb"
     mode "0640"
     cookbook "ssl_certificates"
-    owner "root"
-    group "www-data"
+    owner node[:ssl_certificates][:owner]
+    group node[:ssl_certificates][:group]
     variables :cert => cert["key"]
   end
 
@@ -31,8 +31,8 @@ define :ssl_certificate do
     source "cert.erb"
     mode "0640"
     cookbook "ssl_certificates"
-    owner "root"
-    group "www-data"
+    owner node[:ssl_certificates][:owner]
+    group node[:ssl_certificates][:group]
     extra = cert["intermediate"] || ""
     variables :cert => cert["cert"], :extra => extra
   end
@@ -42,8 +42,8 @@ define :ssl_certificate do
       source "cert.erb"
       mode "0640"
       cookbook "ssl_certificates"
-      owner "root"
-      group "www-data"
+      owner node[:ssl_certificates][:owner]
+      group node[:ssl_certificates][:group]
       variables :cert => cert["intermediate"]
     end
   end
