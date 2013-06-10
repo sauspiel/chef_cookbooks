@@ -57,7 +57,7 @@ server {
   }
 
   ssl on;
-  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>.crt;
+  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>_combined.crt;
   ssl_certificate_key /etc/ssl_certs/<%=  @certificate_name %>.key;
 
   # for PCI compliance
@@ -98,7 +98,7 @@ server {
   return 301 $scheme://<%= @node[:rails][:default_domain] %>$request_uri;
 
   ssl on;
-  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>.crt;
+  ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>_combined.crt;
   ssl_certificate_key /etc/ssl_certs/<%=  @certificate_name %>.key;
   ssl_verify_depth 3;
 }
