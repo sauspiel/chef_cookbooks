@@ -32,7 +32,7 @@ when "fedora", "centos", "redhat"
   package_name = package_file.split("[-_]\d+\.").first
 end
 
-if node['riak']['package']['local_package'] == nil
+if node['riak']['package']['local_package'] 
   package_file = node['riak']['package']['local_package']
 
   cookbook_file "#{Chef::Config[:file_cache_path]}/#{package_file}" do
@@ -53,8 +53,22 @@ else
       key "http://apt.basho.com/gpg/basho.apt.key"
     end
 
-    package "riak" do
-      action :install
+    package_version_name = "#{node['riak']['package']['version']['major']}.#{node['riak']['package']['version']['minor']}.#{node['riak']['package']['version']['incremental']}"
+    if node['riak']['package']['version']['minor'] >= 3
+      package_version_name += "~#{node['lsb']['codename']}"
+    end
+
+    if node['riak']['package']['version']['build'] != nil
+      if node['riak']['package']['version']['minor'] >= 3
+        package_version_name += "#{node['riak']['package']['version']['build']}"
+      else
+        package_version_name += "-#{node['riak']['package']['version']['build']}"
+      end
+    end
+    
+    apt_package_hold "riak" do
+      version package_version_name
+      action [:install,:hold]
     end
 
   when "centos", "redhat"
