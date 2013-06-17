@@ -17,7 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe "ulimit"
 
 if node['riak']['package']['enterprise_key'].empty?
   include_recipe "riak::package"
@@ -37,10 +36,6 @@ file "#{node['riak']['package']['config_dir']}/vm.args" do
   owner "root"
   mode 0644
   notifies :restart, "service[riak]"
-end
-
-user_ulimit "riak" do
-  filehandle_limit node['riak']['limits']['nofile']
 end
 
 node['riak']['patches'].each do |patch|

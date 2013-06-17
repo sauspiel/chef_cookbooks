@@ -27,7 +27,7 @@ version           "2.1.0"
 recipe            "riak", "Installs Riak from a package"
 recipe            "riak::source", "Installs Erlang and Riak from source"
 
-%w{apt yum build-essential erlang git ulimit}.each do |d|
+%w{apt erlang}.each do |d|
   depends d
 end
 
