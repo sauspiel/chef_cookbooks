@@ -1,8 +1,8 @@
 #
-# Author:: Benjamin Black (<b@b3k.us>) and Sean Cribbs (<sean@basho.com>)
+# Author:: Benjamin Black (<b@b3k.us>), Sean Cribbs (<sean@basho.com>), Seth Thomas (<sthomas@basho.com>)
 # Cookbook Name:: riak
 #
-# Copyright (c) 2011 Basho Technologies, Inc.
+# Copyright (c) 2013 Basho Technologies, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,20 @@
 # limitations under the License.
 #
 
+name              "riak"
 maintainer        "Basho Technologies, Inc."
 maintainer_email  "riak@basho.com"
 license           "Apache 2.0"
 description       "Installs and configures Riak distributed data store"
-version           "1.2.1"
-recipe            "riak", "Installs Riak"
-recipe            "riak::autoconf", "Automatically configure nodes from chef-server information."
-recipe            "riak::innostore", "Install and configure the Innostore backend."
-recipe            "riak::iptables", "Automatically configure iptables rules for Riak."
+version           "2.1.0"
 
-%w{ubuntu debian centos redhat suse fedora}.each do |os|
+recipe            "riak", "Installs Riak from a package"
+recipe            "riak::source", "Installs Erlang and Riak from source"
+
+%w{apt yum build-essential erlang git ulimit}.each do |d|
+  depends d
+end
+
+%w{ubuntu debian centos redhat fedora}.each do |os|
   supports os
 end
