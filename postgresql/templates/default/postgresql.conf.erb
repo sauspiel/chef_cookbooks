@@ -54,7 +54,7 @@ checkpoint_segments = <%= @config[:checkpoint_segments] %>
 checkpoint_completion_target = <%= @config[:checkpoint_completion_target] %>
 
 log_min_duration_statement = <%= @config[:log_min_duration_statement] %>
-log_line_prefix = '%t %d %u %h %p '
+log_line_prefix = '%t %d %u %h %p %e '
 log_timezone = 'localtime'
 log_lock_waits = <%= @config[:log_lock_waits] %>
 log_checkpoints = <%= @config[:log_checkpoints] %>
