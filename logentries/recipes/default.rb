@@ -1,8 +1,15 @@
 package "python-simplejson"
 
+codename = node.lsb.codename
+
+# logentries doesn't have a repository for raring, so we're using quantal as fallback
+if node.platform == 'ubuntu' && node.lsb.codename == 'raring'
+  codename = 'quantal'
+end
+
 apt_repository "logentries" do
   uri "http://rep.logentries.com"
-  distribution node.lsb.codename
+  distribution codename
   components ["main"]
   key "http://rep.logentries.com/RPM-GPG-KEY-logentries"
   action :add
