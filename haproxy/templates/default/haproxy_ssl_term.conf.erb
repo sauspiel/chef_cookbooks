@@ -1,0 +1,38 @@
+global
+  log /dev/log local0
+  log /dev/log local1 debug
+  maxconn <%= @config.maxconn %>
+  user <%= @node.haproxy.user %>
+  group <%= @node.haproxy.group %>
+  pidfile /var/run/haproxy/haproxy_ssl_term_<%= @config.name %>.pid
+  stats socket /var/run/haproxy/haproxy_ssl_term_<%= @config.name %>.stats level admin
+
+defaults
+  log global
+  <%= "stats enable" if @config.mode == 'http' %>
+  option dontlognull
+  option contstats
+
+  timeout connect <%= @config.global_timeout_connect %>
+  timeout client <%= @config.global_timeout_client %>
+  timeout server <%= @config.global_timeout_server %>
+
+  mode <%= @config.mode %>
+  <% if @config.mode == 'tcp' %>
+  option tcpka
+  option srvtcpka
+  option tcplog
+  <% end -%>
+
+  frontend <%= @config.name %>
+    bind <%= "#{@config.frontend_bind_address}:#{@config.frontend_bind_port}" %> ssl crt <%= "#{@node[:ssl_certificates][:path]}/#{@ssl_certificate}" %>
+    default_backend <%= @config.name %>
+
+  backend <%= @config.name %>
+  <% @config.backends.each do |b| %>
+    server <%= "#{b[:name]} #{b[:address]}:#{b[:port]} #{b[:options].join(" ")}" %>
+  <% end -%>
+
+  listen <%= "#{@config.name}_admin #{@config.admin_bind_address}:#{@config.admin_bind_port}" %>
+    mode http
+    stats uri /
