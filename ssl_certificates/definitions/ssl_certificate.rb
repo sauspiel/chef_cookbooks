@@ -47,4 +47,13 @@ define :ssl_certificate do
       variables :cert => cert["intermediate"]
     end
   end
+
+  template "#{node[:ssl_certificates][:path]}/#{name}_all_in_one.crt" do
+    source "cert.erb"
+    mode "0640"
+    cookbook "ssl_certificates"
+    owner node[:ssl_certificates][:owner]
+    group node[:ssl_certificates][:group]
+    variables :cert => "#{cert["key"]}\n#{cert["cert"]}\n#{(cert["intermediate"] || "")}"
+  end
 end
