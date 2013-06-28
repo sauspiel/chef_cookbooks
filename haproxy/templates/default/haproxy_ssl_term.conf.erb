@@ -35,4 +35,12 @@ defaults
 
   listen <%= "#{@config.name}_admin #{@config.admin_bind_address}:#{@config.admin_bind_port}" %>
     mode http
+    stats enable
+    stats refresh 30s
+    stats show-node
+    stats show-legends
+    stats show-desc
     stats uri /
+    <% if @config.stats_auth_user %>
+    <%= 'stats auth ' "#{@config.stats_auth_user}:#{@config.stats_auth_password}" %>
+    <% end -%>
