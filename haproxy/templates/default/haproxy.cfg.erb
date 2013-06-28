@@ -1,5 +1,6 @@
 global
-  log localhost local1 info
+  log /dev/log local0 info
+  log /dev/log local1 notice
   maxconn 8000
   user <%= @node[:haproxy][:user] %>
   group <%= @node[:haproxy][:user] %>

@@ -1,6 +1,6 @@
 global
-  log /dev/log local0
-  log /dev/log local1 debug
+  log /dev/log local0 info
+  log /dev/log local1 notice
   maxconn <%= @config.maxconn %>
   user <%= @node.haproxy.user %>
   group <%= @node.haproxy.group %>
