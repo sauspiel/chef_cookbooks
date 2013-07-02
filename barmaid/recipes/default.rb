@@ -35,7 +35,7 @@ service "barmaid-resque" do
   supports [:start, :stop, :restart]
 end
 
-%w{config log tmp jobs}.each do |dir|
+%w{config log tmp jobs scripts}.each do |dir|
   directory "#{node[:barmaid][:path]}/shared/#{dir}" do
     owner "barman"
     group "barman"
@@ -68,7 +68,8 @@ application "barmaid" do
   symlinks "config/barmaid.yml" => "config/barmaid.yml",
     "config/resque.yml" => "config/resque.yml",
     "log" => "log",
-    "tmp" => "tmp"
+    "tmp" => "tmp",
+    "scripts" => "scripts"
   action :deploy
 
   before_symlink do
