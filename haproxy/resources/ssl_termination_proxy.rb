@@ -23,3 +23,4 @@ attribute :backend_options, :kind_of => Hash, :default => {}
 attribute :global_options, :kind_of => Hash, :default => {}
 attribute :stats_auth_user, :kind_of => String, :default => nil
 attribute :stats_auth_password, :kind_of => String, :default => nil
+attribute :forward_source_ip, :kind_of => [TrueClass,FalseClass], :default => true

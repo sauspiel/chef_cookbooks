@@ -10,7 +10,7 @@ action :add do
   template "/etc/haproxy/#{name}.conf" do
     owner node.haproxy[:user]
     group node.haproxy[:group]
-    mode 0644
+    mode 0640
     source "haproxy_ssl_term.conf.erb"
     cookbook "haproxy"
     variables :config => new_resource,
