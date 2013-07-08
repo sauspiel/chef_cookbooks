@@ -32,7 +32,7 @@ defaults
 
   backend <%= @config.name %>
   <% @config.backends.each do |b| %>
-    server <%= "#{b[:name]} #{b[:address]}:#{b[:port]} #{b[:options].join(" ")}" %> <%= 'proxy-send' if @config.mode == 'tcp' && @config.forward_source_ip %>
+    server <%= "#{b[:name]} #{b[:address]}:#{b[:port]} #{b[:options].join(" ")}" %> <%= 'send-proxy' if @config.mode == 'tcp' && @config.forward_source_ip %>
     <%= 'option forwardfor' if @config.mode == 'http' && @config.forward_source_ip %> <%= "except #{@config.forward_source_ip_except}" if @config.forward_source_ip_except %>
   <% end -%>
 
