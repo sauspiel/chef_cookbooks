@@ -9,7 +9,6 @@ global
 
 defaults
   log global
-  <%= "stats enable" if @config.mode == 'http' %>
   option dontlognull
   option contstats
 
@@ -27,7 +26,7 @@ defaults
   <% end -%>
 
   frontend <%= @config.name %>
-    bind <%= "#{@config.frontend_bind_address}:#{@config.frontend_bind_port}" %> ssl crt <%= "#{@node[:ssl_certificates][:path]}/#{@ssl_certificate}" %>
+    bind <%= "#{@config.frontend_bind_address}:#{@config.frontend_bind_port}" %> ssl <%= haproxy_ssl_certificates_to_multi_crt_string(@config.ssl_certificates) %>
     default_backend <%= @config.name %>
 
   backend <%= @config.name %>
