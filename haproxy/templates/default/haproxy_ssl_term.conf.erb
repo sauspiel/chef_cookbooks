@@ -27,12 +27,21 @@ defaults
 
   frontend <%= @config.name %>
     bind <%= "#{@config.frontend_bind_address}:#{@config.frontend_bind_port}" %> ssl <%= haproxy_ssl_certificates_to_multi_crt_string(@config.ssl_certificates) %>
-    default_backend <%= @config.name %>
+    <% @config.acls.each do |acl| %>
+    acl <%= acl %>
+    <% end -%>
+    <% @config.use_backends.each do |use_backend| %>
+    use_backend <%= use_backend %>
+    <% end -%>
+    default_backend <%= @config.backends.keys.first %>
 
-  backend <%= @config.name %>
-  <% @config.backends.each do |b| %>
-    server <%= "#{b[:name]} #{b[:address]}:#{b[:port]} #{b[:options].join(" ")}" %> <%= 'send-proxy' if @config.mode == 'tcp' && @config.forward_source_ip %>
+  <% @config.backends.each do |name, conf| -%>
+  backend <%= name %>
+    <% conf[:servers].each do |server, server_conf| %>
+    server <%= "#{server} #{server_conf[:address]}:#{server_conf[:port]} #{server_conf[:options].join(" ")}" %> <%= 'send-proxy' if @config.mode == 'tcp' && @config.forward_source_ip %>
     <%= 'option forwardfor' if @config.mode == 'http' && @config.forward_source_ip %> <%= "except #{@config.forward_source_ip_except}" if @config.forward_source_ip_except %>
+    <% end -%>
+
   <% end -%>
 
   listen <%= "#{@config.name}_admin #{@config.admin_bind_address}:#{@config.admin_bind_port}" %>
