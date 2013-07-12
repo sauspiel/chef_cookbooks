@@ -27,3 +27,4 @@ attribute :forward_source_ip, :kind_of => [TrueClass,FalseClass], :default => tr
 attribute :forward_source_ip_except, :kind_of => String, :default => nil
 attribute :acls, :kind_of => Array, :default => []
 attribute :use_backends, :kind_of => Array, :default => []
+attribute :balance, :kind_of => String, :default => "leastconn"
