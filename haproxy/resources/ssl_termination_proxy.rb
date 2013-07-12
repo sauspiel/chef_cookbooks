@@ -19,7 +19,6 @@ attribute :backends, :kind_of => Hash, :default => {}
 attribute :admin_bind_address, :kind_of => String, :default => "127.0.0.1"
 attribute :admin_bind_port, :kind_of => Integer, :default => nil
 attribute :frontend_options, :kind_of => Hash, :default => {}
-attribute :backend_options, :kind_of => Hash, :default => {}
 attribute :global_options, :kind_of => Hash, :default => {}
 attribute :stats_auth_user, :kind_of => String, :default => nil
 attribute :stats_auth_password, :kind_of => String, :default => nil
