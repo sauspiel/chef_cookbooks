@@ -12,8 +12,6 @@ defaults
   option dontlognull
   option contstats
 
-  balance <%= @config.balance %>
-
   timeout connect <%= @config.global_timeout_connect %>
   timeout client <%= @config.global_timeout_client %>
   timeout server <%= @config.global_timeout_server %>
@@ -27,22 +25,38 @@ defaults
   option httplog
   <% end -%>
 
-  frontend <%= @config.name %>
-    bind <%= "#{@config.frontend_bind_address}:#{@config.frontend_bind_port}" %> ssl <%= haproxy_ssl_certificates_to_multi_crt_string(@config.ssl_certificates) %>
-    <% @config.acls.each do |acl| %>
+
+  <% @config.frontends.each do |name, conf| -%>
+## BEGIN <%= name %>
+
+  frontend <%= name %>
+    mode <%= conf[:mode] %>
+    <% conf[:options].each do |option| %>
+    option <%= option %>
+    <% end -%>
+    bind <%= "#{conf[:frontend_bind_address]}:#{conf[:frontend_bind_port]}" %> ssl <%= haproxy_ssl_certificates_to_multi_crt_string(conf[:ssl_certificates]) %>
+        <% conf[:acls].each do |acl| %>
     acl <%= acl %>
     <% end -%>
-    <% @config.use_backends.each do |use_backend| %>
+    <% conf[:use_backends].each do |use_backend| %>
     use_backend <%= use_backend %>
     <% end -%>
-    default_backend <%= @config.backends.keys.first %>
+    default_backend <%= conf[:backends].keys.first %>
 
-  <% @config.backends.each do |name, conf| -%>
-  backend <%= name %>
-    <% conf[:servers].each do |server, server_conf| %>
-    server <%= "#{server} #{server_conf[:address]}:#{server_conf[:port]} #{server_conf[:options].join(" ")}" %> <%= 'send-proxy' if @config.mode == 'tcp' && @config.forward_source_ip %>
+    <% conf[:backends].each do |b_name, b_conf| -%>
+  backend <%= b_name %>
+    mode <%= conf[:mode] %>
+      <% b_conf[:servers].each do |server, server_conf| %>
+    server <%= "#{server} #{server_conf[:address]}:#{server_conf[:port]} #{server_conf[:options].join(" ")}" %>
+      <% end -%>
+      <% b_conf[:options].each do |option| %>
+    option <%= option %>
+      <% end -%>
+    balance <%= b_conf[:balance] || 'leastconn' %>
     <% end -%>
-    <%= 'option forwardfor' if @config.mode == 'http' && @config.forward_source_ip %> <%= "except #{@config.forward_source_ip_except}" if @config.forward_source_ip_except %>
+
+## END <%= name %>
+
 
   <% end -%>
 
