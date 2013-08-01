@@ -1,3 +1,4 @@
 gem_package "campy" do
   version node[:campy][:version]
-end
+  action :nothing
+end.run_action(:install)
