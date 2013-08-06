@@ -44,14 +44,12 @@ application "team_dashboard" do
   group "deploy"
   revision node[:team_dashboard][:repository_revision]
   environment_name env
-  enable_submodules true
-  migrate true
+  #migrate true
   shallow_clone false
   action :deploy
 
   rails do
     bundler true
-    bundler_deployment false
     bundle_command "/usr/local/bin/bundle"
     database do
       database "team_dashboard_#{env}"
