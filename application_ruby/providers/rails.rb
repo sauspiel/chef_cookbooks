@@ -30,16 +30,10 @@ action :before_compile do
     new_resource.migration_command command
   end
 
-  new_resource.environment.merge!({
+  new_resource.environment.update({
     "RAILS_ENV" => new_resource.environment_name,
-  }) { |k, v1, v2| v1 }  # user's environment settings will override
-
-  if new_resource.use_omnibus_ruby
-    Chef::Log.warn("Tying your Application to the Chef Omnibus Ruby is not recommended.")
-    new_resource.environment.merge!({
-      "PATH" => [Gem.default_bindir, ENV['PATH']].join(':')
-    }) { |k, v1, v2| v1 }  # user's environment settings will override
-  end
+    "PATH" => [Gem.default_bindir, ENV['PATH']].join(':')
+  })
 
   new_resource.symlink_before_migrate.update({
     "config/database.yml" => "config/database.yml"
