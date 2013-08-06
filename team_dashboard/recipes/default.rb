@@ -46,7 +46,8 @@ application "team_dashboard" do
   environment_name env
   enable_submodules true
   migrate true
-  action :force_deploy
+  shallow_clone false
+  action :deploy
 
   rails do
     bundler true
