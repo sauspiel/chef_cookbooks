@@ -92,6 +92,7 @@ application "barmaid" do
 
   rails do
     bundler true
+    bundle_command "/usr/local/bin/bundle"
   end
 
   unicorn_bp do

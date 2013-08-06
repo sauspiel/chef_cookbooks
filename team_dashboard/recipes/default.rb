@@ -52,6 +52,7 @@ application "team_dashboard" do
   rails do
     bundler true
     bundler_deployment false
+    bundle_command "/usr/local/bin/bundle"
     database do
       database "team_dashboard_#{env}"
       username "dashboard_web"
