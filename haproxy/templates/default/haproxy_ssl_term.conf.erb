@@ -30,6 +30,8 @@ defaults
 ## BEGIN <%= name %>
 
   frontend <%= name %>
+    <%= "maxconn #{conf[:maxconn]}" if conf[:maxconn] %>
+    timeout client <%= conf[:client_timeout] || @config.global_timeout_client %>
     mode <%= conf[:mode] %>
     <% conf[:options].each do |option| %>
     option <%= option %>
