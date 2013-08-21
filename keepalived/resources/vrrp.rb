@@ -28,3 +28,4 @@ attribute :track_script, :kind_of => String, :required => false
 attribute :notify_master, :kind_of => String, :required => false
 attribute :notify_backup, :kind_of => String, :required => false
 attribute :notify_fault, :kind_of => String, :required => false
+attribute :smtp_alert, :kind_of => [TrueClass, FalseClass], :required => false, :default => false

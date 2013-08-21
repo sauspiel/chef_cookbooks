@@ -30,6 +30,10 @@ vrrp_instance <%= @name.upcase %> {
   }
   <% end -%>
 
+  <% if @params["smtp_alert"] %>
+  smtp_alert
+  <% end -%>
+
   <% if @params.has_key?("notify_master") %>
   notify_master "<%= @params['notify_master'] %>"
   <% end -%>

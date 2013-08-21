@@ -7,7 +7,7 @@ action :create do
   params = Hash.new()
   attributes = [
     'notify_master', 'notify_backup', 'notify_fault', 'interface', 'virtual_router_id', 'state',
-    'nopreempt', 'priority', 'virtual_ipaddress', 'advert_int', 'auth_type', 'auth_pass', 'track_script'
+    'nopreempt', 'priority', 'virtual_ipaddress', 'advert_int', 'auth_type', 'auth_pass', 'track_script', 'smtp_alert'
   ]
   attributes.each do |attribute|
     if new_resource.respond_to?(attribute)
