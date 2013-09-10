@@ -36,14 +36,22 @@ defaults
     <% conf[:options].each do |option| %>
     option <%= option %>
     <% end -%>
-    bind <%= "#{conf[:frontend_bind_address]}:#{conf[:frontend_bind_port]}" %> ssl <%= haproxy_ssl_certificates_to_multi_crt_string(conf[:ssl_certificates]) %>
+    bind <%= "#{conf[:frontend_bind_address]}:#{conf[:frontend_bind_port]}" %> <%= haproxy_ssl_certificates_to_multi_crt_string(conf[:ssl_certificates], :with_spdy => conf[:with_spdy]) %>
         <% conf[:acls].each do |acl| %>
     acl <%= acl %>
     <% end -%>
     <% conf[:use_backends].each do |use_backend| %>
     use_backend <%= use_backend %>
     <% end -%>
+    <% if conf[:backends].count > 0 %>
     default_backend <%= conf[:backends].keys.first %>
+    <% end -%>
+    <% if conf[:redirect] %>
+    redirect <%= conf[:redirect] %>
+    <% end -%>
+    <% if conf[:extra] %>
+    <%= conf[:extra].join("\n") %>
+    <% end -%>
 
     <% conf[:backends].each do |b_name, b_conf| -%>
   backend <%= b_name %>
@@ -55,6 +63,10 @@ defaults
     option <%= option %>
       <% end -%>
     balance <%= b_conf[:balance] || 'leastconn' %>
+    <% if b_conf[:extra] %>
+    <%= b_conf[:extra].join("\n") %>
+    <% end -%>
+
     <% end -%>
 
 ## END <%= name %>
@@ -68,7 +80,6 @@ defaults
     stats refresh 30s
     stats show-node
     stats show-legends
-    stats show-desc
     stats uri /
     <% if @config.stats_auth_user %>
     <%= 'stats auth ' "#{@config.stats_auth_user}:#{@config.stats_auth_password}" %>
