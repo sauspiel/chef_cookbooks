@@ -3,7 +3,7 @@ upstream unicorn_server_<%= @app_name %> {
 }
 
 server {  
-  listen <%= bind_address_to_s(80) %>;
+  listen <%= nginx_bind_address_to_s(80) %>;
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
@@ -40,7 +40,7 @@ server {
 
 <% if @certificate_name %>
 server {
-  listen <%= bind_address_to_s(443) %> <%= nginx_spdy_support? ? 'ssl spdy' : '' %>;
+  listen <%= nginx_bind_address_to_s(443) %> <%= nginx_spdy_support? ? 'ssl spdy' : '' %>;
   server_name <%= @server_name %>;
   set $domain <%= @server_name %>;
   set $app <%= @app_name %>; 
