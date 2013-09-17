@@ -17,7 +17,7 @@ def barman_master_servers
 
       x[:name] = master[:fqdn]
 
-      x[:rsync_options] = conf[:rsync_options]
+      x[:bandwidth_limit] = conf[:bandwidth_limit]
 
       servers << x if servers.select { |f| f[:ip] == x[:ip] }.count == 0
     end
