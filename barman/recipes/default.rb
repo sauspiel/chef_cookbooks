@@ -1,12 +1,4 @@
-apt_repository "pgdg" do
-  uri "http://apt.postgresql.org/pub/repos/apt" 
-  distribution "#{node[:lsb][:codename]}-pgdg"
-  components ["main"]
-  keyserver "keys.gnupg.net"
-  key "ACCC4CF8"
-  action :add
-end
-
+include_recipe "postgresql::default"
 
 %w(python-psycopg2 python-argh python-dateutil python-argparse).each do |pkg|
   package pkg do
