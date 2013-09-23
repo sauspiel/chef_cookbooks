@@ -19,96 +19,11 @@ groups.each do |group|
     end
 
     search(:users, "groups:#{group[:id]}").each do |user|
-      home_dir = user[:home_dir] || "/home/#{user[:id]}"
-
-      # make sure users main group exists before creating the user and assigning a group to it
-      usergroup = user[:groups].first
-      group usergroup do 
-        group_name usergroup.to_s
-        gid groups.find { |grp| grp[:id] == usergroup }[:gid]
-        action [ :create, :modify, :manage ]
-      end
-
-      user user[:id] do
-        comment user[:full_name]
-        uid user[:uid]
-        gid user[:groups].first
-        home home_dir
-        shell user[:shell] || "/bin/bash"
-        password user[:password]
-        supports :manage_home => false
-        action [:create, :manage]
-      end
-      
-      user[:groups].each do |g|
-        group g do
-          group_name g.to_s
-          gid groups.find { |grp| grp[:id] == g }[:gid]
-          members [user[:id]]
-          append true
-          action [ :create, :modify, :manage ]
-        end
-      end
-
-      if (node[:users][:manage_files] || user[:local_files] == true)
-        directory "#{home_dir}" do
-          owner user[:id]
-          group user[:groups].first.to_s
-          mode 0700
-          recursive true
-        end
-
-        directory "#{home_dir}/.ssh" do
-          action :create
-          owner user[:id]
-          group user[:groups].first.to_s
-          mode 0700
-        end
-
-        keys = Mash.new
-        keys[user[:id]] = user[:ssh_key]
-
-        if user[:ssh_key_groups]
-          user[:ssh_key_groups].each do |group|
-            users = search(:users, "groups:#{group}")
-            users.each do |key_user|
-              keys[key_user[:id]] = key_user[:ssh_key]
-            end
-          end
-        end
-      
-        if user[:extra_ssh_keys]
-          user[:extra_ssh_keys].each do |username|
-            keys[username] = search(:users, "id:#{username}").first[:ssh_key]
-          end
-        end
-
-        if user[:ssh_private_key]
-          template "#{home_dir}/.ssh/id_rsa" do
-            source "private_key.erb"
-            action :create
-            owner user[:id]
-            group user[:groups].first.to_s
-            variables(:key => user[:ssh_private_key])
-            mode 0600
-          end
-        end
-        
-        template "#{home_dir}/.ssh/authorized_keys" do
-          source "authorized_keys.erb"
-          action :create
-          owner user[:id]
-          group user[:groups].first.to_s
-          variables(:keys => keys)
-          mode 0600
-          not_if { user[:preserve_keys] }
-        end
-      else
-        log "Not managing files for #{user[:id]} because home directory does not exist or this is not a management host." do
-          level :debug
-        end
+      users_manage_user user[:id] do
+        action :create
       end
     end
+
   end
 end
 
