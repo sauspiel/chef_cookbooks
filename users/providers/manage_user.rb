@@ -12,6 +12,20 @@ action :create do
     action [ :create, :modify, :manage ]
   end
 
+  # check if parent directory exists
+
+  if home_dir != "/dev/null"
+    parent_dir = Pathname.new(home_dir).parent
+    directory parent_dir.to_s do
+      owner 'root'
+      group 'root'
+      mode 0755
+      not_if { ::File.exists?(parent_dir) }
+      action :create
+    end
+  end
+
+
   user user[:id] do
     comment user[:full_name]
     uid user[:uid]
