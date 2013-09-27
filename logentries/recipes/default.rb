@@ -28,7 +28,10 @@ template "/etc/le/config" do
   variables :key => node[:logentries][:user_key]
 end
 
-execute "echo Y | apt-get install --yes logentries-daemon --force-yes"
+execute "install_logentries_daemon" do
+  command "echo Y | apt-get install --yes logentries-daemon --force-yes"
+  not_if "dpkg -l | grep -i logentries-daemon"
+end
 
 %w(logentries-daemon logentries).each do |pkg|
   package pkg do
@@ -42,7 +45,7 @@ execute "register agent" do
 end
 
 service "logentries" do
-  supports :restart => true
+  action [:enable]
 end
 
 if node[:logentries][:logs]
@@ -51,13 +54,7 @@ if node[:logentries][:logs]
       command "le follow #{path} --name \"#{name}\""
       not_if "le followed #{path}"
       ignore_failure true
+      notifies :restart, resources(:service => "logentries")
     end
   end
 end
-
-service "logentries" do
-  action [:enable, :restart]
-end
-
-
-
