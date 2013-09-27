@@ -37,7 +37,7 @@ template "/etc/ssh/known_hosts" do
   mode 0644
   owner "root"
   group "root"
-  variables(:nodes => nodes)
+  variables(:nodes => nodes.sort)
   notifies :restart, resources(:service => "ssh")
 end
 
