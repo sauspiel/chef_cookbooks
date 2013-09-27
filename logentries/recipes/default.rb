@@ -15,18 +15,17 @@ apt_repository "logentries" do
   action :add
 end
 
+policyrcd_policy "logentries" do
+  action :create
+  default_policy true
+  status "101"
+end
+
 directory "/etc/le"
 
 template "/etc/le/config" do
   not_if { File.exists?("/etc/le/config") }
   variables :key => node[:logentries][:user_key]
-end
-
-# preventing logentries-daemon from being started after installation
-ruby_block "creating policy-rc.d file" do
-  block do
-    apt_create_policy_rc_d_file
-  end
 end
 
 execute "echo Y | apt-get install --yes logentries-daemon --force-yes"
@@ -40,13 +39,6 @@ end
 execute "register agent" do
   command "le register"
   not_if "grep agent-key /etc/le/config"
-end
-
-# allowing start of logentries daemon
-ruby_block "deleting policy-rc.d file" do
-  block do
-    apt_remove_policy_rc_d_file
-  end
 end
 
 service "logentries" do
