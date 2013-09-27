@@ -8,10 +8,10 @@ end
 Chef::Log.warn("Postgresql has to be stopped/started manually!")
 
 # preventing postgresql from being started after installation
-ruby_block "creating policy-rc.d file" do
-  block do
-    apt_create_policy_rc_d_file
-  end
+policyrcd_policy "postgresql-#{node[:postgresql][:version]}" do
+  action :create
+  default_policy true
+  status "101"
 end
 
 %w(postgresql postgresql-contrib).each do |pkg|
@@ -42,13 +42,6 @@ end
 end
 
 include_recipe "postgresql::pg_stat_plans"
-
-# allowing start of postgresql again
-ruby_block "deleting policy-rc.d file" do
-  block do
-    apt_remove_policy_rc_d_file
-  end
-end
 
 %w(postgresql-common postgresql-client-common).each do |pkg|
   apt_package_hold pkg do
