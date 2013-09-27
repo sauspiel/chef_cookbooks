@@ -27,5 +27,5 @@ logrotate "bluepill" do
 end
 
 service "bluepill" do
-  action [:enable, :start]
+  action [:enable]
 end
