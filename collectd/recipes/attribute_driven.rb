@@ -37,4 +37,4 @@ keys = node[:collectd][:plugins].keys.collect{|k| k.to_s}
       notifies :restart, resources(:service => "collectd"), :delayed
     end
   end
-end if File.exist?(conf_dir)
+end if File.exist?(conf_dir) && node[:collectd][:delete_plugins]
