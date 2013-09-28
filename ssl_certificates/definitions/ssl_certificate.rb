@@ -1,7 +1,10 @@
 define :ssl_certificate do
 
   directory node[:ssl_certificates][:path] do
-    mode 0755
+    mode 0750
+    owner node[:ssl_certificates][:owner]
+    group node[:ssl_certificates][:group]
+    action :create
   end
   
   name = ssl_certificate_as_wildcard(params[:name])
