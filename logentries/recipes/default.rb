@@ -15,10 +15,8 @@ apt_repository "logentries" do
   action :add
 end
 
-policyrcd_policy "logentries" do
-  action :create
-  default_policy true
-  status "101"
+dpkg_autostart "logentries" do
+  allow false
 end
 
 directory "/etc/le"

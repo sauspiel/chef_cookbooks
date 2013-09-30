@@ -1,7 +1,7 @@
 maintainer "Joshua Sierles"
 maintainer_email "joshua@diluvia.net"
 description "Configures logentries"
-version "0.0.6"
+version "0.0.7"
 
 depends "apt"
-depends "policyrcd"
+depends "dpkg_autostart"
