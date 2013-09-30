@@ -27,7 +27,7 @@ t.run_action(:create)
 
 
 # install dependent package
-%w(libssl-dev libmysqlclient16 libmysqlclient16-dev libmysqlclient18 libmysqlclient-dev libmysqlclient18-dev).each do |pkg|
+%w(libssl-dev libmysqlclient-dev).each do |pkg|
   apt_package pkg do
     action :install
     options "--force-yes"
