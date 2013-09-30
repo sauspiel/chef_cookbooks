@@ -4,7 +4,7 @@ $TTL <%= @zone['times']['ttl'] %>
 $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
 
 @ IN  SOA <%= @zone['ns'][0].keys[0] %>. <%= @zone['admin'].gsub(/@/,".") %>. (
-                  <%= @serial %> ; Serial
+                  <%= @zone['serial'] %> ; Serial
                   <%= @zone['times']['refresh'] %> ; Refresh
                   <%= @zone['times']['retry'] %> ; Retry
                   <%= @zone['times']['expire'] %> ; Expire
