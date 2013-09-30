@@ -8,10 +8,8 @@ end
 Chef::Log.warn("Postgresql has to be stopped/started manually!")
 
 # preventing postgresql from being started after installation
-policyrcd_policy "postgresql-#{node[:postgresql][:version]}" do
-  action :create
-  default_policy true
-  status "101"
+dpkg_autostart "postgresql" do
+  allow false
 end
 
 %w(postgresql postgresql-contrib).each do |pkg|
