@@ -6,7 +6,11 @@ hba_file = '<%= @confdir %>/pg_hba.conf'
 ident_file = '<%= @confdir %>/pg_ident.conf'	
 
 external_pid_file = '/var/run/postgresql/<%= @config[:version] %>-<%= @instance %>.pid'
+<% if @config[:version].to_f < 9.3 %>
 unix_socket_directory = '/var/run/postgresql'
+<% else %>
+unix_socket_directories = '/var/run/postgresql'
+<% end -%>
 
 listen_addresses = '<%= @addresses.join(",")%>'
 port = <%= @config[:port] %>
