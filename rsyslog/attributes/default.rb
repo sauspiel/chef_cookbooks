@@ -1,1 +1,1 @@
-default['rsyslog']['pidfile'] = '/var/run/rsyslog.pid'
+default['rsyslog']['pidfile'] = '/var/run/rsyslogd.pid'
