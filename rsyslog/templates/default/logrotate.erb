@@ -7,7 +7,7 @@
   delaycompress
   compress
   postrotate
-    kill -SIGHUP $(cat <%= @node['rsyslog']['pidfile'] %>) > /dev/null
+    kill -HUP $(cat <%= @node['rsyslog']['pidfile'] %>) > /dev/null
   endscript
 }
 
@@ -32,6 +32,6 @@
   delaycompress
   sharedscripts
   postrotate
-    kill -SIGHUP $(cat <%= @node['rsyslog']['pidfile'] %>) > /dev/null
+    kill -HUP $(cat <%= @node['rsyslog']['pidfile'] %>) > /dev/null
   endscript
 }
