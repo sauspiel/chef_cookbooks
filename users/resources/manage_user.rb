@@ -1,4 +1,4 @@
-actions :create
+actions :create, :remove
 
 attribute :cookbook, :kind_of => String, :default => "users"
 

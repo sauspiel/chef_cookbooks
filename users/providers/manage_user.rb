@@ -1,3 +1,11 @@
+action :remove do
+  user = search(:users, "id:#{new_resource.name}").first
+
+  user user[:id] do
+    action :remove
+  end
+end
+
 action :create do
   user = search(:users, "id:#{new_resource.name}").first
   groups = search(:groups)
