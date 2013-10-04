@@ -31,7 +31,6 @@ if user[:ssh_key]
 end
 
 keys = Mash.new
-keys[user[:id]] = user[:ssh_key]
 
 if user[:extra_ssh_keys]
   user[:extra_ssh_keys].each do |username|
