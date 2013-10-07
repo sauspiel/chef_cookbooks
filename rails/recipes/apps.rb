@@ -75,7 +75,14 @@ if node[:active_applications]
 
     template "/etc/nginx/sites-available/#{name}.conf" do
       source "multiapp_nginx.conf.erb"
-      variables :app_name => name, :server_name => domain, :other_apps => other_apps, :htpasswd => htpasswd, :certificate_name => ssl_certificate_as_wildcard(certificate_name), :set_default_domain => set_default_domain, :includes => includes
+      variables :app_name => name, 
+        :server_name => domain, 
+        :other_apps => other_apps, 
+        :htpasswd => htpasswd, 
+        :certificate_name => ssl_certificate_as_wildcard(certificate_name), 
+        :set_default_domain => set_default_domain, 
+        :includes => includes,
+        :behind_ssl_proxy => app["environments"][environment]["behind_ssl_proxy"] || false
       notifies :reload, resources(:service => "nginx")
     end
 
