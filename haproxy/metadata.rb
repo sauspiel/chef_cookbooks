@@ -1,7 +1,7 @@
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures haproxy"
-version           "0.6"
+version           "0.7"
 
 depends "apt"
 depends "logrotate"

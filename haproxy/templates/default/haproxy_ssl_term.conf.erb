@@ -55,7 +55,7 @@ defaults
 
     <% conf[:backends].each do |b_name, b_conf| -%>
   backend <%= b_name %>
-    mode <%= conf[:mode] %>
+    mode <%= b_conf[:mode] || conf[:mode] %>
       <% b_conf[:servers].each do |server, server_conf| %>
     server <%= "#{server} #{server_conf[:address]}:#{server_conf[:port]} #{server_conf[:options].join(" ")}" %>
       <% end -%>
