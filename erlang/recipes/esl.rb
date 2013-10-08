@@ -1,8 +1,8 @@
 apt_repository "erlang_solutions" do
-  uri "http://binaries.erlang-solutions.com/debian"
+  uri "http://packages.erlang-solutions.com/debian"
   distribution node[:lsb][:codename]
   components ["contrib"]
-  key "http://binaries.erlang-solutions.com/debian/erlang_solutions.asc"
+  key "http://packages.erlang-solutions.com/debian/erlang_solutions.asc"
   action :add
 end
 
