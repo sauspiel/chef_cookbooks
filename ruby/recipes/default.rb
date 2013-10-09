@@ -16,7 +16,7 @@ remote_file "#{debpath}" do
   source "#{node[:package_url]}/#{rubypkg}"
   not_if { File.exists?("#{debpath}") }
   action :create
-  notifies :install, resource(:dpkg_package, "ruby"), :immediately
+  notifies :install, resources(:dpkg_package => "ruby"), :immediately
 end
 
 
