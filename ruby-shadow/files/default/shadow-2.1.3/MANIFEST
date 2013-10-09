@@ -1,8 +1,0 @@
-depend
-extconf.rb
-HISTORY
-MANIFEST
-README
-README.euc
-ruby-shadow.gemspec
-shadow.c
