@@ -49,6 +49,16 @@ action :create do
     action [:create, :manage]
   end
 
+  user[:groups].each do |g|
+    group g do
+      group_name g.to_s
+      gid groups.find { |grp| grp[:id] == g }[:gid]
+      members [user[:id]]
+      append true
+      action [:create, :modify, :manage]
+    end
+  end
+
   if (!node[:users][:manage_files] && !user[:local_files])
     Chef::Log.info "Not managing files for #{user[:id]} because home directory does not exist or this is not a management host."
   else
