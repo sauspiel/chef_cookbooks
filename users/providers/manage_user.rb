@@ -37,7 +37,7 @@ action :create do
   user user[:id] do
     comment user[:full_name]
     uid user[:uid]
-    gid user[:groups].first
+    gid groups.find { |grp| grp[:id] == user[:groups].first }[:gid]
     home home_dir
     shell user[:shell] || "/bin/bash"
     password user[:password]
@@ -53,8 +53,9 @@ action :create do
     group g do
       group_name g.to_s
       gid groups.find { |grp| grp[:id] == g }[:gid]
-      members [user[:id]]
+      members user[:id]
       append true
+      not_if { g == user[:groups].first }
       action [:create, :modify, :manage]
     end
   end
