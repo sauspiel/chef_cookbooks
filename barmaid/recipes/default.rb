@@ -1,4 +1,5 @@
 include_recipe "barman"
+include_recipe "nginx"
 
 env = node.chef_environment
 env = 'development' if env == '_default'
