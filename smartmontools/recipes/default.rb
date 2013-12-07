@@ -17,10 +17,7 @@
 # limitations under the License.
 #
 
-apt_package_hold "smartmontools" do
-  action [:install, :hold]
-  version node['smartmontools']['version']
-end
+package "smartmontools" 
 
 template "/etc/default/smartmontools" do
   source "smartmontools.default.erb"
