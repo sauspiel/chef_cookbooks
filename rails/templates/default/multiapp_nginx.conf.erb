@@ -129,10 +129,6 @@ server {
   ssl_certificate /etc/ssl_certs/<%=  @certificate_name %>_combined.crt;
   ssl_certificate_key /etc/ssl_certs/<%=  @certificate_name %>.key;
 
-  # for PCI compliance
-  ssl_protocols SSLv3 TLSv1;
-  ssl_ciphers ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP;
-
   include /etc/nginx/sites-include/rails-common.conf;
 
   location @rails {    
