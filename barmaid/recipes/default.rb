@@ -88,6 +88,7 @@ application "barmaid" do
   after_restart do
     bluepill_service "barmaid-resque" do
       action [:enable, :load, :restart]
+      only_if { ::File.exist?("/etc/init.d/barmaid-resque") }
     end
   end
 
