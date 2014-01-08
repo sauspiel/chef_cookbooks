@@ -1,0 +1,31 @@
+# vi: set ft=eruby :
+
+Eye.load("/etc/eye/deploy/config.rb")
+
+Eye.application "<%= @app_name %>" do
+  working_dir "<%= @app_root %>"
+
+  process "unicorn" do
+
+    pid_file "<%= @app_root %>/tmp/unicorn/unicorn.pid"
+    start_command "<%= @unicorn_cmd %>"
+    stop_signals [:QUIT, 40.seconds, :TERM, 5.seconds, :KILL]
+    restart_command "kill -<%= @preload ? 'USR2' : 'HUP' %> {PID}"
+
+    stdall "<%= @app_root %>/log/unicorn.log"
+
+    start_timeout 40.seconds
+    restart_grace 40.seconds
+
+    trigger :flapping, :times => 2, :within => 30.seconds, :retry_in => 7.seconds
+    check :memory, :every => 10, :below => <%= @memory_limit %>.megabytes, :times => 2
+
+    monitor_children do
+      stop_command "kill -QUIT {PID}"
+
+      check :memory, :every => 10, :below => <%= @memory_limit %>.megabytes, :times => 2
+      check :cpu, :every => 10, :below => <%= @cpu_limit %>, :times => 5
+    end
+
+  end
+end

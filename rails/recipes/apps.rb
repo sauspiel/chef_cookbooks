@@ -1,7 +1,6 @@
 include_recipe "nginx"
 include_recipe "rails::app_dependencies"
 include_recipe "unicorn"
-include_recipe "bluepill"
 include_recipe "users"
 include_recipe "bundler"
 
@@ -113,17 +112,17 @@ if node[:active_applications]
       variables common_variables
     end
 
-    template "#{node[:bluepill][:conf_dir]}/#{name}.pill" do
-      mode 0644
-      source "bluepill_unicorn.conf.erb"
+    eye_app name do
+      user_srv true
+      user_srv_uid 'deploy'
+      user_srv_gid 'deploy'
+      template "rails.eye.erb"
+      cookbook "rails"
       variables common_variables.merge(
         :interval => node[:rails][:monitor_interval],
         :memory_limit => app[:memory_limit] || node[:rails][:memory_limit],
-        :cpu_limit => app[:cpu_limit] || node[:rails][:cpu_limit])
-    end
-
-    bluepill_service name do
-      action [:enable, :load, :start]
+        :cpu_limit => app[:cpu_limit] || node[:rails][:cpu_limit]
+      )
     end
     
     nginx_site name do
