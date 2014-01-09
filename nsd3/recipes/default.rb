@@ -54,15 +54,3 @@ logrotate "nsd3" do
   group 'nsd'
   restart_command "/usr/sbin/nsdc reload"
 end
-
-template "#{node[:bluepill][:conf_dir]}/nsd3.pill" do
-  source "nsd3.pill.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  variables :owner => "root", :group => "root", :pid => node[:nsd3][:pid]
-end
-
-bluepill_service "nsd3" do
-  action [:load, :start]
-end
