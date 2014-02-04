@@ -1,9 +1,6 @@
 include_recipe "rsyslog"
 
-apt_package_hold "haproxy" do
-  version node[:haproxy][:version]
-  action [:install, :hold]
-end
+package 'haproxy'
 
 directory "/etc/haproxy" do
   action :create
