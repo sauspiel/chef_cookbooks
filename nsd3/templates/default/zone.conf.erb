@@ -15,8 +15,10 @@ $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
                   IN  NS  <%= ns.keys[0] %>.
                   <% end -%>
                                               
+                  <% if @zone['mx'] %>
                   <% @zone['mx'].each do |mx| %>
                   IN  MX  <%= mx.values[0] %> <%= mx.keys[0] %>. 
+                  <% end -%>
                   <% end -%>
 
 <% @zone['host'].each do |host| %>
