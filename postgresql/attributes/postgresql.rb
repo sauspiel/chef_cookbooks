@@ -1,6 +1,4 @@
 default[:postgresql][:version] = "9.2"
-default[:postgresql][:debversion] = "9.2.3-1.pgdg60+1"
-default[:postgresql][:deb_release] = "squeeze-pgdg"
 default[:postgresql][:manage_keys] = false
 default[:postgresql][:interfaces] = []
 default[:postgresql][:networks] = []

@@ -1,7 +1,6 @@
 include_recipe "postgresql::default"
 
 apt_package "postgresql-common" do
-  default_release node[:postgresql][:deb_release]
   options "--force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\""
 end
 
@@ -13,40 +12,24 @@ dpkg_autostart "postgresql" do
 end
 
 %w(postgresql postgresql-contrib).each do |pkg|
-  apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
-    version node[:postgresql][:debversion]
-    default_release node[:postgresql][:deb_release]
-    action [:install, :hold]
+  apt_package "#{pkg}-#{node[:postgresql][:version]}" do
     options "--force-yes"
   end
 end
 
 %w(libpq5 libpq-dev).each do |pkg|
-  apt_package_hold pkg do
-    version node[:postgresql][:debversion]
-    default_release node[:postgresql][:deb_release]
-    action [:install, :hold]
+  apt_package pkg do
     options "--force-yes"
   end
 end
 
 %w(postgresql-server-dev postgresql-client).each do |pkg|
-  apt_package_hold "#{pkg}-#{node[:postgresql][:version]}" do
-    version node[:postgresql][:debversion]
-    default_release node[:postgresql][:deb_release]
-    action [:install, :hold]
+  apt_package "#{pkg}-#{node[:postgresql][:version]}" do
     options "--force-yes"
   end
 end
 
 include_recipe "postgresql::pg_stat_plans"
-
-%w(postgresql-common postgresql-client-common).each do |pkg|
-  apt_package_hold pkg do
-    default_release node[:postgresql][:deb_release]
-    action [:hold]
-  end
-end
 
 %w(libxslt1-dev libxml2-dev libpam0g-dev libedit-dev).each {|p| package p }
 
