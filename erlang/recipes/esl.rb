@@ -6,7 +6,11 @@ apt_repository "erlang_solutions" do
   action :add
 end
 
-apt_package_hold "esl-erlang" do
+template '/etc/apt/preferences.d/erlang.pref' do
+  variables name: 'esl-erlang', version: node[:erlang][:version]
+end
+
+apt_package "esl-erlang" do
   version node[:erlang][:version]
-  action [:install, :hold]
+  action :install
 end
