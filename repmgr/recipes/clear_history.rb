@@ -1,5 +1,3 @@
-include_recipe "bluepill"
-
 delete_or_create = :create
 if node[:postgresql][:role].nil? || node[:postgresql][:role]["slave"]
   delete_or_create = :delete

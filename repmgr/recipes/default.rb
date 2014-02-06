@@ -1,10 +1,7 @@
-include_recipe "bluepill"
+include_recipe 'postgresql'
+include_recipe 'bluepill'
 
-apt_package_hold 'repmgr' do
-  version node[:repmgr][:version]
-  default_release node[:repmgr][:release]
-  action [:install, :hold]
-end
+apt_package 'repmgr'
 
 template "#{node[:repmgr][:config]}" do
   source "repmgr.conf.erb"
