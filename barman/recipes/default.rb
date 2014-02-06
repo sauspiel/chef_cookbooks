@@ -6,9 +6,8 @@ include_recipe "postgresql::default"
   end
 end
 
-apt_package_hold "barman" do
-  version node[:barman][:version]
-  action [:install, :hold]
+apt_package "barman" do
+  action :install
 end
 
 directory node[:barman][:log_dir] do
