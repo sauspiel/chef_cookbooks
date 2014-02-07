@@ -66,9 +66,9 @@ else
       end
     end
     
-    apt_package_hold "riak" do
+    package "riak" do
       version package_version_name
-      action [:install,:hold]
+      action :install
     end
 
   when "centos", "redhat"
