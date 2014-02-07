@@ -1,6 +1,5 @@
-apt_package_hold 'redis-server' do
-  version node[:redis][:version]
-  action [:install, :hold]
+apt_package 'redis-server' do
+  action :install
 end
 
 service "redis-server" do
