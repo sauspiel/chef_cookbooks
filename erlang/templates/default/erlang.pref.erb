@@ -1,3 +1,6 @@
-Package: <%= @name %>
+<% @packages.each do |pkg| %>
+Package: <%= pkg %>
 Pin: version <%= @version %>
 Pin-Priority: 1000
+
+<% end -%>
