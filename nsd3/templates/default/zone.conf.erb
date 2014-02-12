@@ -30,7 +30,9 @@ $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
     <% elsif k.eql?('*') %>
 <%= "#{k}.#{@zone['id'].gsub(/_/,'.')}" %>. IN A <%= v %>
     <% else %>
-<%= k %> IN A <%= v %>
+      <% unless v.eql?("") %>
+<%= k.match(/([a-z\-0-9\.\*@]+)_*/)[1] %> IN A <%= v %>
+      <% end %>
     <% end -%>
   <% end -%>
 <% end -%>
