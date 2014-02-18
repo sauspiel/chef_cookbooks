@@ -1,5 +1,4 @@
 maintainer        "fcgiwrap"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures fcgiwrap"
-version           "0.2"
-depends           "bluepill"
+version           "0.3"
