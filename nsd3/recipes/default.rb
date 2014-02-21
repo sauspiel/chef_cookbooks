@@ -1,5 +1,4 @@
 include_recipe "logrotate"
-include_recipe "bluepill"
 
 package "dnsutils"
 
