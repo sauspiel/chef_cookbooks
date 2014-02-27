@@ -1,6 +1,6 @@
 maintainer       "Holger Amann"
 maintainer_email "holger@sauspiel.de"
 description      "Installs/Configures nsd3"
-version          "0.0.8"
+version          "0.0.9"
 
 depends "logrotate"

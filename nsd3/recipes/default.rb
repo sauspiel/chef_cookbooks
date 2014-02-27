@@ -12,6 +12,12 @@ directory node[:nsd3][:zonesdir] do
   group "nsd"
 end
 
+directory node[:nsd3][:run_dir] do
+  mode 0755
+  owner "nsd"
+  group "nsd"
+end
+
 service "nsd3" do
   supports [:enable, :restart]
   action :enable
