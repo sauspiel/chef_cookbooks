@@ -1,5 +1,5 @@
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures memcached"
-version           "0.3"
-depends           "bluepill"
+version           "1.0"
+depends           "eye"

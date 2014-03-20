@@ -17,13 +17,10 @@ if node[:memcached][:instances]
                          "slab_page_size" => node[:memcached][:slab_page_size],
                          "bind_address" => node[:memcached][:bind_address]}.merge(instance)
 
-    template "#{node[:bluepill][:conf_dir]}/#{full_name}.pill" do
-     source "bluepill.conf.erb"
-     variables memcached_config
-    end
-
-    bluepill_service full_name do
-     action [:enable, :load, :start]
+    eye_app full_name do
+      template 'memcached.eye.erb'
+      cookbook 'memcached'
+      variables memcached_config
     end
   end
 end

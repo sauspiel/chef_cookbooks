@@ -1,0 +1,20 @@
+# vi: set ft=ruby :
+
+Eye.load("/etc/eye/root/config.rb")
+
+Eye.application "<%= @full_name %>" do
+  working_dir "/"
+
+  process "<%= @name %>" do
+    start_command = "/usr/bin/memcached -d -P <%= @pid_path %> -m <%= @max_memory %> -p <%= @port %> -c <%= @max_connections %> -i <%= @user %> -l <%= @bind_address %>"
+    stop_command "kill -QUIT {PID}"
+    pid_file "<%= @pid_path %>"
+
+    start_timeout 10.seconds
+    restart_timeout 10.seconds
+
+    check :flapping, times: 2, within: 30.seconds, retiry_in: 7.seconds
+  end
+end
+
+
