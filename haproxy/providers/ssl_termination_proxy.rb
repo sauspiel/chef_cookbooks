@@ -1,7 +1,6 @@
 action :add do
   run_context.include_recipe "haproxy::default"
   run_context.include_recipe "ssl_certificates"
-  run_context.include_recipe "bluepill"
 
   new_resource.ssl_certificates.each do |cert|
     ssl_certificate cert
@@ -18,13 +17,10 @@ action :add do
     variables :config => new_resource
   end
 
-  template "#{node[:bluepill][:conf_dir]}/#{name}.pill" do
-    variables :full_name => name, :short_name => name
-    cookbook "haproxy"
-    source "bluepill.conf.erb"
-  end
-
-  bluepill_service name do
-    action [:enable, :load, :start]
+  eye_app full_name do
+    template 'haproxy.eye.erb'
+    cookbook 'haproxy'
+    variables full_name: full_name,
+      short_name: name
   end
 end
