@@ -17,10 +17,10 @@ action :add do
     variables :config => new_resource
   end
 
-  eye_app full_name do
+  eye_app name do
     template 'haproxy.eye.erb'
     cookbook 'haproxy'
-    variables full_name: full_name,
+    variables full_name: name,
       short_name: name
   end
 end

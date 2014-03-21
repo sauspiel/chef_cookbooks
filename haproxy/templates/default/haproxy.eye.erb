@@ -2,6 +2,8 @@
 
 Eye.load("/etc/eye/root/config.rb")
 
+FileUtils.mkdir_p "/var/run/haproxy"
+
 Eye.application "<%= @full_name %>" do
   working_dir "/"
 
