@@ -10,7 +10,7 @@ Eye.application "<%= @full_name %>" do
   process "<%= @short_name %>" do
     start_command '/usr/sbin/haproxy -D -f /etc/haproxy/<%= @short_name %>.conf'
     stop_command '/bin/kill -SIGUSR1 {PID}'
-    restart_command '/usr/sbin/haproxy -D -f /etc/haproxy/<%= @short_command %>.conf -sf {PID}'
+    restart_command '/usr/sbin/haproxy -D -f /etc/haproxy/<%= @short_name %>.conf -sf {PID}'
     pid_file '/var/run/haproxy/<%= @short_name %>.pid'
     stdall '/var/log/haproxy.log'
   end
