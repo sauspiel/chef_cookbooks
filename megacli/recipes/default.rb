@@ -11,6 +11,12 @@ end
 #libsfs is present in the system.
 link "/lib/libsysfs.so.2.0.2" do
   to "/lib/libsysfs.so.2"
+  only_if { File.exist?('/lib/libsysfs.so.2')}
+end
+
+link "/lib/libsysfs.so.2.0.2" do
+  to "/lib/x86_64-linux-gnu/libsysfs.so.2"
+  only_if { File.exist?('/lib/x86_64-linux-gnu/libsysfs.so.2')}
 end
 
 cookbook_file "MegaCli64" do
