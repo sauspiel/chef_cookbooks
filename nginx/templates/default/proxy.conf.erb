@@ -6,3 +6,7 @@ proxy_set_header X-Real-IP $remote_addr;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 proxy_set_header X-Http-Authorization $http_authorization;
 proxy_set_header Host $http_host;
+
+# Rails IP Spoofing detection raises when headers are mismatched. Client-IP is only sent by broken proxies, so remove it
+# http://writeheavy.com/2011/07/31/when-its-ok-to-turn-of-rails-ip-spoof-checking.html
+proxy_set_header Client-Ip "";
