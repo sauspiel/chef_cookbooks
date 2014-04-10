@@ -1,0 +1,11 @@
+<%= @node[:nsd3][:logfile] %> {
+  <%= @frequency %>
+  rotate <%= @rotate_count %>
+  dateext
+  compress
+  delaycompress
+  create 640 <%= @user %> <%= @group %>
+  missingok
+  notifempty
+  copytruncate
+}

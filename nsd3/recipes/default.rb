@@ -49,13 +49,13 @@ template "#{node[:nsd3][:confdir]}/nsd.conf" do
   notifies :restart, resources(:service => "nsd3")
 end
 
-
-logrotate "nsd3" do
-  files ["#{node[:nsd3][:logfile]}"]
-  frequency "daily"
-  rotate_count 3 
-  compress true
-  user 'nsd'
-  group 'nsd'
-  restart_command "/usr/sbin/nsdc reload"
+template '/etc/logrotate.d/nsd3' do
+  source 'logrotate.conf.erb'
+  mode 0644
+  owner 'root'
+  group 'root'
+  variables frequency: 'daily',
+    rotate_count: 3,
+    user: 'nsd',
+    group: 'nsd'
 end
