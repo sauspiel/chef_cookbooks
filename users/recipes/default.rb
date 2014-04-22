@@ -12,7 +12,7 @@ groups.each do |group|
 
     search(:users, "groups:#{group[:id]}").each do |user|
       users_manage_user user[:id] do
-        action :create
+        action user[:action] || :create
       end
     end
 
