@@ -2,8 +2,6 @@ include_recipe "redis"
 
 if node[:redis][:instances]  
 
-  include_recipe "bluepill"
-
   node[:redis][:instances].each do |name, config|  
 
     default_config = {
@@ -25,7 +23,7 @@ if node[:redis][:instances]
       mode 0750
       recursive true
     end
-    
+
     directory merged_config["data_directory"] do
       owner merged_config["owner"]
       group merged_config["group"]
@@ -40,14 +38,10 @@ if node[:redis][:instances]
       mode 0644      
     end
 
-    template "#{node[:bluepill][:conf_dir]}/#{merged_config["name"]}.pill" do
-      mode 0644
-      source "bluepill.conf.erb"
+    eye_app "redis_#{name}" do
+      template 'redis.eye.erb'
+      cookbook 'redis'
       variables merged_config
-    end
-    
-    bluepill_service merged_config["name"] do
-      action [:enable, :load, :start]
     end
   end
 end
