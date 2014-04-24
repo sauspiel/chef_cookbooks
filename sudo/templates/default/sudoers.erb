@@ -15,7 +15,7 @@ root    			ALL=(ALL) ALL
 <% @sudoers_groups.each do |group, conf| -%>
 <% if conf[:enabled] %>
 # Members of the group '<%= group %>' may gain root privileges
-%<%= group %> ALL=(ALL) ALL
+%<%= group %> ALL=(ALL) <% if conf[:nopassword] %><%= "NOPASSWD: " %><% end %><%= conf[:command] || "ALL" %>
 <% end -%>
 <% end -%>
 <% end %>
