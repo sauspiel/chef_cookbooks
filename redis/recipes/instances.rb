@@ -38,6 +38,14 @@ if node[:redis][:instances]
       mode 0644      
     end
 
+    # for some reason logfile will be created with root ownership
+    file merged_config["log_path"] do
+      owner merged_config["owner"]
+      group merged_config["group"]
+      mode 0750
+      action :create_if_missing
+    end
+
     eye_app "redis_#{name}" do
       template 'redis.eye.erb'
       cookbook 'redis'
