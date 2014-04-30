@@ -1,0 +1,13 @@
+# vi: set ft=ruby :
+
+Eye.application "repmgrd" do
+  working_dir "/var/tmp"
+
+  process "repmgrd" do
+    start_command "/usr/bin/repmgrd -f <%= node[:repmgr][:config] %> --verbose"
+    stop_command "/bin/kill {PID}"
+    pid_file '/var/run/repmgrd.pid'
+    stdall '<%= node[:repmgr][:log] %>'
+    daemonize true
+  end
+end
