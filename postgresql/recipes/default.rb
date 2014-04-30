@@ -5,6 +5,6 @@ apt_repository "pgdg" do
   uri "http://apt.postgresql.org/pub/repos/apt"
   distribution "#{node[:lsb][:codename]}-pgdg"
   components components
-  key "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
+  key "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
   action :add
 end
