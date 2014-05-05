@@ -3,7 +3,7 @@ app_root = "<%= @app_root %>"
 worker_processes <%=@worker_count %>
 working_directory app_root
 preload_app <%= @preload ? "true" : "false" %>
-listen "/var/run/unicorn/unicorn_<%= @app_name %>.sock", :backlog => 2048
+listen "#{app_root}/tmp/unicorn/unicorn_<%= @app_name %>.sock", :backlog => 2048
 
 pid "#{app_root}/tmp/unicorn/unicorn.pid"
 stderr_path "#{app_root}/log/unicorn.stderr.log"

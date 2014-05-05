@@ -112,6 +112,7 @@ application "barmaid" do
     template "nginx.conf.erb"
     variables :app_name => "barmaid",
       :domain => node[:fqdn],
-      :htpasswd => htpasswd
+      :htpasswd => htpasswd,
+      :socket => "#{node[:barmaid][:path]}/current/tmp/unicorn/unicorn_barmaid.sock"
   end
 end
