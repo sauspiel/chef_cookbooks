@@ -1,4 +1,5 @@
 include_recipe "rsyslog"
+include_recipe 'runit'
 
 package 'haproxy'
 
@@ -42,3 +43,9 @@ logrotate "haproxy" do
   group node[:haproxy][:user]
   restart_command "restart rsyslog >/dev/null 2>&1 || true"
 end
+
+cookbook_file "/usr/local/bin/haproxy_runit_wrapper.sh" do
+  mode 0755
+end
+
+runit_service "haproxy"

@@ -1,0 +1,27 @@
+global
+  log /dev/log local0 info
+  log /dev/log local1 notice
+  maxconn 8000
+  user <%= @node[:haproxy][:user] %>
+  group <%= @node[:haproxy][:user] %>
+  pidfile /var/run/haproxy/<%= @name %>.pid
+  stats socket /var/run/haproxy/<%= @name %>.stats level admin
+
+defaults
+  log global
+  balance leastconn
+  option dontlognull
+  option redispatch
+  option forwardfor
+  option httplog
+  option http-server-close
+  timeout http-keep-alive 8s
+  mode http
+  retries 3
+  contimeout <%= @node[:haproxy][:connection_timeout] %>
+  clitimeout <%= @node[:haproxy][:client_timeout] %>
+  srvtimeout <%= @node[:haproxy][:server_timeout] %>
+  
+  errorfile 500 /etc/haproxy/500.http
+  errorfile 502 /etc/haproxy/500.http
+  errorfile 503 /etc/haproxy/500.http
