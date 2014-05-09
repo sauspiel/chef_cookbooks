@@ -1,31 +1,3 @@
-global
-  log /dev/log local0 info
-  log /dev/log local1 notice
-  maxconn <%= @config.maxconn %>
-  user <%= @node.haproxy.user %>
-  group <%= @node.haproxy.group %>
-  pidfile /var/run/haproxy/haproxy_ssl_term_<%= @config.name %>.pid
-  stats socket /var/run/haproxy/haproxy_ssl_term_<%= @config.name %>.stats level admin
-
-defaults
-  log global
-  option dontlognull
-  option contstats
-
-  timeout connect <%= @config.global_timeout_connect %>
-  timeout client <%= @config.global_timeout_client %>
-  timeout server <%= @config.global_timeout_server %>
-
-  mode <%= @config.mode %>
-  <% if @config.mode == 'tcp' %>
-  option tcpka
-  option srvtcpka
-  option tcplog
-  <% else %>
-  option httplog
-  <% end -%>
-
-
   <% @config.frontends.each do |name, conf| -%>
 ## BEGIN <%= name %>
 
