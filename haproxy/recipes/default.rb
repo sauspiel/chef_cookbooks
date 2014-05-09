@@ -48,4 +48,6 @@ cookbook_file "/usr/local/bin/haproxy_runit_wrapper.sh" do
   mode 0755
 end
 
-runit_service "haproxy"
+runit_service "haproxy" do
+  reload_command "/usr/bin/sv reload /etc/service/haproxy"
+end
