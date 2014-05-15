@@ -1,4 +1,2 @@
 #!/bin/sh
-exec 2>&1
-
-/usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
+exec /usr/local/bin/haproxy_runit_wrapper.sh 2>&1
