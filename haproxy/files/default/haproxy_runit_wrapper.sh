@@ -21,7 +21,7 @@ function on_reload()
 export HAPROXY_SUPERVISOR_PID=$$
 
 trap on_exit EXIT
-trap on_reload USR2
+trap on_reload USR2 HUP
 
 /usr/sbin/haproxy -D -f /etc/haproxy/haproxy.cfg
 
