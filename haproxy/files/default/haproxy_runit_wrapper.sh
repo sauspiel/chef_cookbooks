@@ -29,7 +29,7 @@ HAPROXY_PID=`cat /var/run/haproxy/haproxy.pid`
 
 echo "supervisor pid: $HAPROXY_SUPERVISOR_PID haproxy pid: $HAPROXY_PID"
 
-while [ -e /proc/$HAPROXY_PID ]
+while kill -0 $HAPROXY_PID
 do
-  sleep 0.1
+  sleep 1
 done
