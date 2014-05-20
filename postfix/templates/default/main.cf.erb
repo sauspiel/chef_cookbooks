@@ -51,3 +51,7 @@ recipient_delimiter = +
 <% if node[:postfix][:disabledsn] -%>
 smtpd_discard_ehlo_keywords = silent-discard, dsn
 <% end -%>
+
+<% if node[:postfix][:smtpd_upstream_proxy_protocol].to_s != '' %>
+smtpd_upstream_proxy_protocol = <%= node[:postfix][:smtpd_upstream_proxy_protocol] %>
+<% end %>
