@@ -23,6 +23,7 @@ export HAPROXY_SUPERVISOR_PID=$$
 trap on_exit EXIT
 trap on_reload USR2 HUP
 
+mkdir -p /var/run/haproxy
 /usr/sbin/haproxy -D -f /etc/haproxy/haproxy.cfg
 
 HAPROXY_PID=`cat /var/run/haproxy/haproxy.pid`
