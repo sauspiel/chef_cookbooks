@@ -1,13 +1,13 @@
-app_root = "<%= @app_root %>"
+app_root = "<%= @working_dir %>"
 
 worker_processes <%=@worker_count %>
 working_directory app_root
-preload_app <%= @preload ? "true" : "false" %>
-listen "#{app_root}/tmp/unicorn/unicorn_<%= @app_name %>.sock", :backlog => 2048
+preload_app false
+listen "<%= @socket %>", :backlog => 2048
 
-pid "#{app_root}/tmp/unicorn/unicorn.pid"
-stderr_path "#{app_root}/log/unicorn.stderr.log"
-stdout_path "#{app_root}/log/unicorn.stdout.log"
+pid "<%= @pid %>"
+stderr_path "<%= @log_dir %>/unicorn.stderr.log"
+stdout_path "<%= @log_dir %>/unicorn.stdout.log"
 
 before_fork do |server, worker|
   old_pid = "#{server.config[:pid]}.oldbin"
@@ -24,7 +24,7 @@ end
 
 after_fork do |server, worker|
   rev = `git rev-parse HEAD`.chomp[0,8]
-  ENV["UNICORN_PROCTITLE"] = "<%= @app_name %> #{rev}"
+  ENV["UNICORN_PROCTITLE"] = "barmaid #{rev}"
   $0 = ENV["UNICORN_PROCTITLE"]
 end
 

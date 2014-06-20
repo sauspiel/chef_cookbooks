@@ -1,13 +1,24 @@
 include_recipe "barman"
 include_recipe "nginx"
 
-env = node.chef_environment
-env = 'development' if env == '_default'
+node.default[:unicorn][:user] = 'barman'
+node.default[:unicorn][:group] = 'barman'
 
-node.default[:unicorn][:user] = "barman"
-node.default[:unicorn][:group] = "barman"
+include_recipe "unicorn"
 
 app = search(:apps, "id:barmaid").first
+
+env = node.chef_environment
+
+directory node[:barmaid][:path] do
+  owner 'barman'
+  group 'barman'
+  action :create
+end
+
+base_dir = node[:barmaid][:path]
+work_dir = "#{base_dir}/current"
+shared_dir = "#{base_dir}/shared"
 
 htpasswd = nil
 if app["environments"][env]["htpasswd"]
@@ -28,16 +39,8 @@ if app["environments"][env]["htpasswd"]
   
 end
 
-service "barmaid" do
-  supports [:start, :stop, :restart]
-end
-
-service "barmaid-resque" do
-  supports [:start, :stop, :restart]
-end
-
-%w{config log tmp jobs scripts}.each do |dir|
-  directory "#{node[:barmaid][:path]}/shared/#{dir}" do
+%w(config log tmp jobs scripts vendor/bundle unicorn).each do |dir|
+  directory "#{shared_dir}/#{dir}" do
     owner "barman"
     group "barman"
     mode 0755
@@ -46,73 +49,103 @@ end
   end
 end
 
-template "#{node[:bluepill][:conf_dir]}/barmaid-resque.pill" do
-  mode 0644
-  source "bluepill-resque.pill.erb"
-  variables :name => "barmaid-resque",
-    :log => "log/resque.log",
-    :root => "#{node[:barmaid][:path]}/current",
-    :env => env,
-    :pid_file => "tmp/pids/resque.pid",
-    :gid => "barman",
-    :uid => "barman"
+%w(barmaid resque).each do |conf|
+  file = "#{shared_dir}/config/#{conf}.yml"
+  template file do
+    owner 'barman'
+    group 'barman'
+    source "#{conf}.yml.erb"
+    action :create_if_missing
+  end
 end
 
-application "barmaid" do
-  path node[:barmaid][:path]
+execute "bundle_barmaid" do
+  command "/usr/local/bin/bundle install --path #{shared_dir}/vendor/bundle"
+  cwd work_dir
+  user 'barman'
+  action :nothing
+end
+
+git work_dir do
   repository node[:barmaid][:repository]
-  scm_provider Chef::Provider::Git
-  owner "barman"
-  group "barman"
-  revision node[:barmaid][:repository_revision]
-  environment_name env
-  symlinks "config/barmaid.yml" => "config/barmaid.yml",
-    "config/resque.yml" => "config/resque.yml",
-    "log" => "log",
-    "tmp" => "tmp",
-    "scripts" => "scripts"
-  action :deploy
+  reference node[:barmaid][:repository_revision]
+  user 'barman'
+  group 'barman'
+  action :sync
+  notifies :run, resources(:execute => "bundle_barmaid"), :immediately
+end
 
-  before_symlink do
-    %w(barmaid resque).each do |conf|
-      file = "#{node[:barmaid][:path]}/shared/config/#{conf}.yml"
-      template file do
-        owner "barman"
-        group "barman"
-        source "#{conf}.yml.erb"
-        action :create_if_missing
-      end
-    end
+%w(log tmp jobs scripts).each do |dir|
+  link "#{work_dir}/#{dir}" do
+    to "#{shared_dir}/#{dir}"
   end
+end
 
-  after_restart do
-    bluepill_service "barmaid-resque" do
-      action [:enable, :load, :restart]
-      only_if { ::File.exist?("/etc/init.d/barmaid-resque") }
-    end
+%w(barmaid.yml resque.yml).each do |conf|
+  link "#{work_dir}/config/#{conf}" do
+    to "#{shared_dir}/config/#{conf}"
   end
+end
 
-  rails do
-    bundler true
-    bundle_command "/usr/local/bin/bundle"
-  end
+unicorn_pid = "#{shared_dir}/unicorn/unicorn.pid"
+unicorn_socket = "#{shared_dir}/unicorn/unicorn.sock"
 
-  unicorn_bp do
-    worker_processes 2
-    preload_app false
-    user "barman"
-    group "barman"
-    cookbook "barmaid"
-  end
+template "#{node[:unicorn][:config_path]}/barmaid.conf.rb" do
+  mode 0644
+  cookbook 'barmaid'
+  source 'unicorn.conf.erb'
+  variables pid: unicorn_pid,
+    working_dir: work_dir,
+    env: env,
+    worker_count: 2,
+    socket: unicorn_socket,
+    log_dir: "#{shared_dir}/log"
+end
 
-  nginx do
-    user "barman"
-    group "barman"
-    cookbook "barmaid"
-    template "nginx.conf.erb"
-    variables :app_name => "barmaid",
-      :domain => node[:fqdn],
-      :htpasswd => htpasswd,
-      :socket => "#{node[:barmaid][:path]}/current/tmp/unicorn/unicorn_barmaid.sock"
-  end
+eye_app 'barmaid' do
+  user_srv true
+  user_srv_uid 'barman'
+  user_srv_gid 'barman'
+  template 'barmaid.eye.erb'
+  cookbook 'barmaid'
+  variables working_dir: work_dir,
+    environment_vars: { "RACK_ENV" => env },
+    pid: unicorn_pid,
+    unicorn_cmd: "/usr/bin/env RACK_ENV=#{env} /usr/local/bin/bundle exec unicorn -Dc #{node[:unicorn][:config_path]}/barmaid.conf.rb -E #{env}",
+    resque_pid: "#{shared_dir}/tmp/resque.pid",
+    resque_cmd: "/usr/bin/env RACK_ENV=#{env} bundle exec rake resque:work"
+end
+
+eye_service 'barmaid' do
+  action :nothing
+  subscribes :restart, "git[#{work_dir}]"
+end
+
+template "#{node[:nginx][:dir]}/sites-available/barmaid.conf" do
+  source 'nginx.conf.erb'
+  variables domain: node[:fqdn],
+    htpasswd: htpasswd,
+    socket: unicorn_socket
+  notifies :reload, resources(service: 'nginx')
+end
+
+nginx_site 'barmaid' do
+  action :enable
+end
+
+log_files = [
+  "unicorn.log",
+  "resque.log",
+  "unicorn.stdout.log",
+  "unicorn.stderr.log"
+].map { |l| "#{shared_dir}/#{l}" }
+
+logrotate 'barmaid' do
+  files log_files
+  frequency 'daily'
+  rotate_count 3
+  compress true
+  user 'barman'
+  group 'barman'
+  restart_command '/usr/local/bin/eye restart barmaid'
 end

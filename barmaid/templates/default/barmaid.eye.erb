@@ -1,0 +1,34 @@
+Eye.load("/etc/eye/barman/config.rb")
+
+Eye.application "barmaid" do
+  <% @environment_vars.each do |k,v| %>
+  env "<%= k %>" => "<%= v %>"
+  <% end -%>
+
+  working_dir "<%= @working_dir %>"
+
+  process "barmaid" do
+    pid_file "<%= @pid %>"
+    start_command "<%= @unicorn_cmd %>"
+    stop_signals [:QUIT, 3.seconds, :TERM, 5.seconds, :KILL]
+    restart_command "kill -HUP {PID}"
+    stdall "<%= @working_dir %>/log/unicorn.log"
+
+    trigger :flapping, :times => 2, :within => 30.seconds, :retry_in => 7.seconds
+    check :memory, :every => 10, :below => 200.megabytes, :times => 2
+
+    monitor_children do
+      stop_command "kill -QUIT {PID}"
+      check :memory, :every => 10, :below => 200.megabytes, :times => 2
+      check :cpu, :every => 10, :below => 50, :times => 5
+    end
+  end
+
+  process "barmaid-resque" do
+    pid_file "<%= @resque_pid %>"
+    start_command "<%= @resque_cmd %>"
+    stop_signals [:QUIT, 10.seconds, :TERM, 5.seconds, :KILL]
+    stdall "<%= @working_dir %>/log/resque.log"
+    daemonize true
+  end
+end
