@@ -67,6 +67,8 @@ MaxStartups 30:50:75
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
 
+<% if @node[:ssh][:sftp_server_enabled] %>
 Subsystem sftp /usr/lib/openssh/sftp-server
+<% end -%>
 
 UsePAM yes
