@@ -44,6 +44,7 @@ template "#{home}/.ssh/authorized_keys" do
   owner "barman"
   group "barman"
   variables :keys => keys
+  not_if { user[:preserve_keys] }
   mode 0600
 end
 
