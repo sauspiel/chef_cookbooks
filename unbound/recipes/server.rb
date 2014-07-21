@@ -56,7 +56,7 @@ end
     mode 0644
     owner "root"
     group root_group
-    variables(:local_zones => local_zones)
+    variables(:local_zones => local_zones, :default_ttl => node['unbound']['local_zones']['default_ttl'])
     notifies :restart, "service[unbound]"
   end
 

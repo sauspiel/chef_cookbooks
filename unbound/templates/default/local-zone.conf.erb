@@ -40,12 +40,12 @@ server:
   local-zone: "<%= local_zone['id'].gsub(/_/, ".") %>." static
     <% local_zone['ns'].each do |rr| -%>
       <% rr.each do |fqdn,ip| -%>
-  local-data: "<%= fqdn %>. 10800 IN NS <%= ip %>"
+  local-data: "<%= fqdn %>. <%= local_zone['ttl'] || @default_ttl %> IN NS <%= ip %>"
       <% end -%>
     <% end -%>
     <% local_zone['host'].each do |rr| -%>
       <% rr.each do |fqdn,ip| -%>
-  local-data: "<%= fqdn.gsub(/:r/,"") %>. 10800 IN A <%= ip %>"
+  local-data: "<%= fqdn.gsub(/:r/,"") %>. <%= local_zone['ttl'] || @default_ttl %> IN A <%= ip %>"
         <% if fqdn.end_with?(":r") -%>
   local-data-ptr: "<%= ip %> <%= fqdn.gsub(/:r/, "") %>."
         <% end -%>

@@ -17,6 +17,7 @@ default['unbound']['remote_control']['port'] = "953"
 default['unbound']['stats']['interval'] = 0
 default['unbound']['stats']['cumulative'] = "no"
 default['unbound']['stats']['extended'] = "no"
+default['unbound']['local_zones']['default_ttl'] = 10800
 
 #default['unbound']['dnssec'] - disabled by default, future todo
 
