@@ -5,8 +5,8 @@ proxy_intercept_errors on;
 proxy_set_header X-Real-IP $remote_addr;
 
 set $forwarded_source_ip $proxy_add_x_forwarded_for;
-if ( $proxy_protocol_addr ) {
-  set $forwarded_source_ip $proxy_protocol_addr;
+if ( $forwarded_client_ip ) {
+  set $forwarded_source_ip $forwarded_client_ip;
 }
 
 proxy_set_header X-Forwarded-For $forwarded_source_ip;

@@ -1,0 +1,4 @@
+set $forwarded_client_ip $proxy_add_x_forwarded_for;
+if ( $proxy_protocol_addr ) {
+  set $forwarded_client_ip $proxy_protocol_addr;
+}
