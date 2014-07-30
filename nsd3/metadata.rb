@@ -1,3 +1,4 @@
+name             "nsd3"
 maintainer       "Holger Amann"
 maintainer_email "holger@sauspiel.de"
 description      "Installs/Configures nsd3"

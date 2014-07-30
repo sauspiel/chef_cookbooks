@@ -1,3 +1,4 @@
+name             'oh-my-zsh'
 maintainer       "Heavy Water Software Inc."
 maintainer_email "darrin@heavywater.ca"
 license          "Apache 2.0"

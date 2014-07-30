@@ -1,3 +1,4 @@
+name              "fcgiwrap"
 maintainer        "fcgiwrap"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures fcgiwrap"

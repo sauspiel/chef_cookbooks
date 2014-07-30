@@ -1,3 +1,4 @@
+name              "nginx"
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 license           "Apache 2.0"

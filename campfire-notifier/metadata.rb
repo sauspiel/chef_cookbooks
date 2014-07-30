@@ -1,3 +1,4 @@
+name             "campfire-notifier"
 maintainer       "Holger Amann"
 maintainer_email "holger@sauspiel.de"
 description      "Installs/Configures campfire-notifier"

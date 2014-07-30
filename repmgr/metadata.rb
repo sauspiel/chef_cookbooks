@@ -1,3 +1,4 @@
+name             'repmgr'
 maintainer       "Holger Amann"
 maintainer_email "holger@sauspiel.de"
 description      "Installs/Configures repmgr"

@@ -1,3 +1,4 @@
+name              'syslog-ng'
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures syslog-ng"

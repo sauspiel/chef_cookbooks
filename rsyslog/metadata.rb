@@ -1,3 +1,4 @@
+name 'rsyslog'
 maintainer "Sauspiel GmbH"
 maintainer_email "holger@sauspiel.de"
 description "Configures rsyslog"

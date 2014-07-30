@@ -1,3 +1,4 @@
+name 'security'
 maintainer "Sauspiel GmbH"
 maintainer_email "holger@sauspiel.de"
 description "Installs/Configures security"

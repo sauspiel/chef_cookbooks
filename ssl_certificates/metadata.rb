@@ -1,3 +1,4 @@
+name              'ssl_certificates'
 maintainer        "Joshua Sierles"
 maintainer_email  "joshua@diluvia.net"
 description       "Configures SSL certificate"

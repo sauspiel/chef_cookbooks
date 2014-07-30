@@ -1,3 +1,4 @@
+name 'sysctl'
 maintainer "Sauspiel GmbH"
 maintainer_email "holger@sauspiel.de"
 description "Installs/Configures sysctl"
