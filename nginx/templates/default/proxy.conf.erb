@@ -1,3 +1,5 @@
+include <%= node[:nginx][:dir] %>/helpers/forwarded_client_ip.conf;
+
 proxy_redirect off;
 proxy_max_temp_file_size 0;
 proxy_intercept_errors on;
