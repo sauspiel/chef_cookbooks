@@ -7,6 +7,8 @@ global
   pidfile /var/run/haproxy/<%= @name %>.pid
   stats socket /var/run/haproxy/<%= @name %>.stats level admin
 
+  ssl-default-bind-ciphers <%= @node[:haproxy][:ssl_default_bind_ciphers] %>
+
 defaults
   log global
   balance leastconn
