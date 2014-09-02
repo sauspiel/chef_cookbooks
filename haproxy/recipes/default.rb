@@ -26,7 +26,15 @@ end
 
 template "/etc/haproxy/500.http"
 
-template "/etc/rsyslog.d/haproxy.conf" do
+# default rsyslog template is 50-default
+# we don't want haproxy logs go to messages and syslog
+# so haproxy config has to be loaded before default conf (49-haproxy.conf)
+
+file "/etc/rsyslog.d/haproxy.conf" do
+  action :delete
+end
+
+template "/etc/rsyslog.d/49-haproxy.conf" do
   owner "root"
   group "root"
   mode 0644
