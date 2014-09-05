@@ -8,6 +8,7 @@ groups.each do |group|
       group_name group[:id]
       gid group[:gid]
       action [ :create, :modify, :manage ]
+      append true
     end
 
     search(:users, "groups:#{group[:id]}").each do |user|

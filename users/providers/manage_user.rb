@@ -17,6 +17,7 @@ action :create do
   group user_group do
     group_name user_group.to_s
     gid groups.find { |grp| grp[:id] == user_group }[:gid]
+    append true
     action [ :create, :modify, :manage ]
   end
 
@@ -57,6 +58,7 @@ action :create do
       append true
       not_if { g == user[:groups].first }
       action [:create, :modify, :manage]
+      append true
     end
   end
 
