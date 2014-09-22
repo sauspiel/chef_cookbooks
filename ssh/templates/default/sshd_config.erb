@@ -72,3 +72,4 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 <% end -%>
 
 UsePAM yes
+UseDNS <%= @node[:ssh][:use_dns] ? 'yes' : 'no' %>
