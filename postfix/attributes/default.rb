@@ -40,3 +40,4 @@ default[:postfix][:inet_interfaces] = 'all'
 default[:postfix][:inet_protocols] = "ipv4"
 default[:postfix][:smtpd_upstream_proxy_protocol] = ''
 
+default[:postfix][:virtual_alias_maps] = ''

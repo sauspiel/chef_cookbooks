@@ -55,3 +55,7 @@ smtpd_discard_ehlo_keywords = silent-discard, dsn
 <% if node[:postfix][:smtpd_upstream_proxy_protocol].to_s != '' %>
 smtpd_upstream_proxy_protocol = <%= node[:postfix][:smtpd_upstream_proxy_protocol] %>
 <% end %>
+
+<% if node[:postfix][:virtual_alias_maps].to_s != '' %>
+virtual_alias_maps = <%= node[:postfix][:virtual_alias_maps] %>
+<% end %>
