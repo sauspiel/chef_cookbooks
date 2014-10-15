@@ -3,6 +3,11 @@ include_recipe 'runit'
 
 package 'haproxy'
 
+execute 'check_haproxy_config' do
+  command 'haproxy -c -f /etc/haproxy/haproxy.cfg'
+  action :nothing
+end
+
 directory "/etc/haproxy" do
   action :create
   owner "root"
