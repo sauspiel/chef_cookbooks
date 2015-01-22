@@ -4,3 +4,4 @@ default.barman[:log_dir] = '/var/log/barman'
 default.barman[:databases] = []
 default.barman[:compression] = "None"
 default.barman[:manage_keys] = false
+default.barman[:hooks][:global] = {}
