@@ -15,6 +15,10 @@ compression = <%= node[:barman][:compression] %>
 ;pre_backup_script = env | grep ^BARMAN
 ;post_backup_script = env | grep ^BARMAN
 
+<% node[:barman][:hooks][:global].each do |hook, value| %>
+<%= hook %> = <%= value %>
+<% end %>
+
 <% @servers.each do |srv| %>
 [<%= srv[:id] %>] 
 description = "<%="#{srv[:id]} PostgreSQL Master Server @ #{srv[:name]}" %>"
