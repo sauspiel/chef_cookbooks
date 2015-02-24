@@ -59,3 +59,7 @@ smtpd_upstream_proxy_protocol = <%= node[:postfix][:smtpd_upstream_proxy_protoco
 <% if node[:postfix][:virtual_alias_maps].to_s != '' %>
 virtual_alias_maps = <%= node[:postfix][:virtual_alias_maps] %>
 <% end %>
+
+<% if node[:postfix][:smtp_header_checks].to_s != '' %>
+smtp_header_checks = <%= node[:postfix][:smtp_header_checks] %>
+<% end %>
