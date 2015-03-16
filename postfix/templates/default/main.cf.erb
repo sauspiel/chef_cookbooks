@@ -23,6 +23,12 @@ smtp_tls_CAfile = <%= node[:postfix][:smtp_tls_cafile] %>
 smtp_use_tls = <%= node[:postfix][:smtp_use_tls] %>
 <% end -%>
 
+<% if node[:postfix][:smtpd_sasl_auth_enable] == "yes" %>
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = <%= node[:postfix][:smtpd_sasl_type] %>
+smtpd_sasl_path = <%= node[:postfix][:smtpd_sasl_path] %>
+<% end %>
+
 inet_interfaces = <%= node[:postfix][:inet_interfaces] %>
 inet_protocols = <%= node[:postfix][:inet_protocols] %>
 
@@ -37,6 +43,7 @@ mydestination = <%= node[:postfix][:myhostname] %>, <%= node[:hostname] %>, <%= 
 mynetworks = <%= node[:postfix][:mail_relay_networks] %>
 
 smtpd_recipient_restrictions = 
+  permit_sasl_authenticated,
   permit_mynetworks,
   reject_unauth_destination,
   permit
