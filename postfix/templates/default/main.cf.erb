@@ -70,3 +70,10 @@ virtual_alias_maps = <%= node[:postfix][:virtual_alias_maps] %>
 <% if node[:postfix][:smtp_header_checks].to_s != '' %>
 smtp_header_checks = <%= node[:postfix][:smtp_header_checks] %>
 <% end %>
+
+<% if node[:postfix][:milters] %>
+milter_protocol = 2
+milter_default_action = accept
+smtpd_milters = <%= node[:postfix][:milters][:smtpd_milters].join(", ") %>
+non_smtpd_milters = <%= node[:postfix][:milters][:non_smtpd_milters].join(", ") %>
+<% end %>
