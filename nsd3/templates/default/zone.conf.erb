@@ -50,3 +50,6 @@ $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
   <% end -%>
 <% end -%>
 
+<% if @zone.has_key? 'dmarc' %>
+<%= "_dmarc.#{@zone['id'].gsub(/_/,'.')}. IN TXT \"#{@zone['dmarc']}\"" %>
+<% end -%>
