@@ -44,3 +44,9 @@ $ORIGIN <%= @zone['id'].gsub(/_/,'.') %>.
   <% end -%>
 <% end -%>
 
+<% if @zone.has_key? 'dkim' %>
+  <% @zone['dkim'].each do |selector, value| %>
+<%= "#{selector}.#{@zone['id'].gsub(/_/,'.')}. IN TXT \"#{value}\"" %>
+  <% end -%>
+<% end -%>
+
