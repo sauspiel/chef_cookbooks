@@ -80,26 +80,26 @@ action :create do
     end
 
     keys = Mash.new
-    keys[user[:id]] = user[:ssh_key]
+    keys[user[:id]] = ssh_key(node, user)
 
     if user[:ssh_key_groups]
       user[:ssh_key_groups].each do |group|
         users = search(:users, "groups:#{group}")
         users.each do |key_user|
-          keys[key_user[:id]] = key_user[:ssh_key]
+          keys[key_user[:id]] = ssh_key(node, key_user)
         end
       end
     end
 
     if user[:extra_ssh_keys]
       user[:extra_ssh_keys].each do |username|
-        keys[username] = search(:users, "id:#{username}").first[:ssh_key]
+        keys[username] = ssh_key(node, search(:users, "id:#{username}").first)
       end
     end
 
     if user[:ssh_private_key]
       template "#{home_dir}/.ssh/id_rsa" do
-        cookbook new_resource.cookbook 
+        cookbook new_resource.cookbook
         source "private_key.erb"
         action :create
         owner user[:id]
@@ -108,7 +108,7 @@ action :create do
         mode 0600
       end
     end
-    
+
     template "#{home_dir}/.ssh/authorized_keys" do
       cookbook new_resource.cookbook
       source "authorized_keys.erb"
