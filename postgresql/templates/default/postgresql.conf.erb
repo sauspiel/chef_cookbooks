@@ -1,9 +1,9 @@
 # configured by chef for <%= @node[:fqdn] %>
 
 
-data_directory = '<%= @datadir %>'	
-hba_file = '<%= @confdir %>/pg_hba.conf'	
-ident_file = '<%= @confdir %>/pg_ident.conf'	
+data_directory = '<%= @datadir %>'
+hba_file = '<%= @confdir %>/pg_hba.conf'
+ident_file = '<%= @confdir %>/pg_ident.conf'
 
 external_pid_file = '/var/run/postgresql/<%= @config[:version] %>-<%= @instance %>.pid'
 <% if @config[:version].to_f < 9.3 %>
@@ -18,7 +18,7 @@ max_connections = <%= @config[:max_connections] %>
 superuser_reserved_connections = <%= @config[:superuser_reserved_connections] %>
 ssl = <%= @config[:ssl] %>
 
-shared_buffers = <%= @config[:shared_buffers] %> 
+shared_buffers = <%= @config[:shared_buffers] %>
 temp_buffers = <%= @config[:temp_buffers] %>
 work_mem = <%= @config[:work_mem] %>
 effective_cache_size = <%= @config[:effective_cache_size] %>
@@ -28,10 +28,10 @@ effective_io_concurrency = <%= @config[:effective_io_concurrency] %>
 
 datestyle = '<%= @config[:datestyle] %>'
 timezone = '<%= @config[:timezone] %>'
-lc_messages = '<%= @config[:log_language] %>' 
-lc_monetary = '<%= @config[:lc_language] %>' 
+lc_messages = '<%= @config[:log_language] %>'
+lc_monetary = '<%= @config[:lc_language] %>'
 lc_numeric =  '<%= @config[:lc_language] %>'
-lc_time =     '<%= @config[:lc_language] %>'	
+lc_time =     '<%= @config[:lc_language] %>'
 default_text_search_config = '<%= @config[:text_search_config] %>'
 
 
@@ -41,7 +41,7 @@ wal_keep_segments = <%= @config[:wal_keep_segments] %>
 
 hot_standby = <%= @config[:hot_standby] %>
 hot_standby_feedback = <%= @config[:hot_standby_feedback] %>
-archive_mode = <%= @config[:archive_mode] %> 
+archive_mode = <%= @config[:archive_mode] %>
 archive_command = '<%= @datadir %>/archive_command.sh %p %f'
 archive_timeout = <%= @config[:archive_timeout] %>
 max_standby_streaming_delay = <%= @config[:max_standby_streaming_delay] %>
@@ -54,7 +54,11 @@ synchronous_commit = <%= @config[:synchronous_commit] %>
 commit_delay = <%= @config[:commit_delay] %>
 commit_siblings = <%= @config[:commit_siblings] %>
 
+<% if @config[:version].to_f < 9.5 %>
 checkpoint_segments = <%= @config[:checkpoint_segments] %>
+<% else %>
+max_wal_size = <%= @config[:max_wal_size] %>
+<% end -%>
 checkpoint_completion_target = <%= @config[:checkpoint_completion_target] %>
 checkpoint_timeout = <%= @config[:checkpoint_timeout] %>
 
