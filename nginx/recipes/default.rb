@@ -2,7 +2,7 @@ include_recipe "apt"
 include_recipe "ssl_certificates"
 
 apt_repository "nginx" do
-  uri "http://nginx.org/packages/debian"
+  uri "http://nginx.org/packages/mainline/debian/"
   components ["nginx"]
   distribution node[:lsb][:codename]
   key "http://nginx.org/keys/nginx_signing.key"
@@ -94,7 +94,7 @@ node[:nginx][:extras].each do |ex|
   template "#{node[:nginx][:dir]}/conf.d/#{ex}.conf" do
     notifies :reload, resources(:service => "nginx")
   end
-end  
+end
 
 cookbook_file "#{node[:nginx][:dir]}/mime.types" do
   source "mime.types"
