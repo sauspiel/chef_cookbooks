@@ -39,6 +39,11 @@ wal_level = <%= @config[:wal_level] %>
 max_wal_senders = <%= @config[:max_wal_senders] %>
 wal_keep_segments = <%= @config[:wal_keep_segments] %>
 
+<% if @config[:version].to_f >= 9.5 %>
+wal_log_hints = on
+<% end %>
+
+
 hot_standby = <%= @config[:hot_standby] %>
 hot_standby_feedback = <%= @config[:hot_standby_feedback] %>
 archive_mode = <%= @config[:archive_mode] %>
